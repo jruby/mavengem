@@ -1,7 +1,5 @@
 # mavengem
 
-
-
 this project consists of two modules. one is converting a rubygems repository
 into maven repository. this happens either via registered the protocol
 handler in JVM or by using a special ```MavenGemURLConnection``` which

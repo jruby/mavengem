@@ -21,7 +21,7 @@ pom.xml setup
       <extension>
         <groupId>org.torquebox.mojo</groupId>
         <artifactId>mavengem-wagon</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
       </extension>
     </extensions>
   </build>
@@ -32,9 +32,9 @@ pom.xml setup
 the same with POM using ruby-DSL
 
 ```
-repository :id => :mavengems, :url => 'mavengem:http://rubygems.org'
+repository :id => :mavengems, :url => 'mavengem:https://rubygems.org'
 
-extension 'org.torquebox.mojo:mavengem-wagon:0.1.0'
+extension 'org.torquebox.mojo:mavengem-wagon:0.2.0'
 ```
 
 the wagon extension allos the use of the **mavengem:** protocol in the
@@ -112,3 +112,58 @@ for the mirror:
   </servers>
 </settings>
 ```
+
+## possible problems
+
+warning like this might pop up but let the build pass.
+
+```
+[WARNING] Failure to transfer com.github.jnr:jffi:1.3.0-SNAPSHOT/maven-metadata.xml from mavengem:https://rubygems.org was cached in the local repository, resolution will not be reattempted until the update interval of mavengems has elapsed or updates are forced. Original error: Could not transfer metadata com.github.jnr:jffi:1.3.0-SNAPSHOT/maven-metadata.xml from/to mavengems (mavengem:https://rubygems.org): Cannot access mavengem:https://rubygems.org with type default using the available connector factories: BasicRepositoryConnectorFactory
+[WARNING] Could not transfer metadata com.github.jnr:jnr-x86asm/maven-metadata.xml from/to mavengems (mavengem:https://rubygems.org): Cannot access mavengem:https://rubygems.org with type default using the available connector factories: BasicRepositoryConnectorFactory
+```
+
+the only way to avoid such warning or in case the build fails, is to use maven-3.3.x and add .mvn/extensions.xml to your project with:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<extensions>
+  <extension>
+    <groupId>org.torquebox.mojo</groupId>
+    <artifactId>mavengem-wagon</artifactId>
+    <version>0.2.0</version>
+  </extension>
+</extensions>
+```
+
+or
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<extensions>
+  <extension>
+    <groupId>io.takari.polyglot</groupId>
+    <artifactId>polyglot-ruby</artifactId>
+    <version>0.1.16</version>
+  </extension>
+</extensions>
+```
+
+using any of the jruby-maven-plugins like
+```
+<plugin>
+  <groupId>de.saumya.mojo</groupId>
+  <artifactId>gem-maven-plugin</artifactId>
+  <version>1.0.10</version>
+  <extensions>true</extensions>
+  ...
+  <dependencies>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>compass</artifactId>
+      <version>1.0.3</version>
+      <type>gem</type>
+    </dependency>
+  </dependencies>
+</plugin>
+```
+
+the extensions config set to ```true``` means that the gems get resolved before the ```mavengem``` gets registered, i.e. the ```mavengem``` protocol does not yet work. the .mvn/extensions.xml is the only way to fix this. maybe the extensions config of the gem-maven-plugin can be set to false. the resolution of the gems will work.
