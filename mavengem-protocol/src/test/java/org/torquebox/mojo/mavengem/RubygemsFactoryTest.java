@@ -1,22 +1,15 @@
 package org.torquebox.mojo.mavengem;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.Map;
 import java.util.HashMap;
 import java.net.URL;
-import java.net.URLConnection;
 
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.startsWith;
 
 public class RubygemsFactoryTest {
 
@@ -104,26 +97,26 @@ public class RubygemsFactoryTest {
     @Test(expected = IllegalArgumentException.class)
     public void cachedirAndMirrorsPrecondition() throws Exception {
 	Map<URL,URL> mirrors = new HashMap<URL,URL>();
-	RubygemsFactory factory = new RubygemsFactory(null, mirrors);
+	new RubygemsFactory(null, mirrors);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void cachedirPrecondition() throws Exception {
-	RubygemsFactory factory = new RubygemsFactory((File)null);
+	new RubygemsFactory((File)null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void mirrorPrecondition() throws Exception {
-	RubygemsFactory factory = new RubygemsFactory((URL)null);
+	new RubygemsFactory((URL)null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void cachedirAndMirrorPreconditionFile() throws Exception {
-	RubygemsFactory factory = new RubygemsFactory((File)null, new URL("https://example.com"));
+	new RubygemsFactory(null, new URL("https://example.com"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void cachedirAndMirrorPreconditionURL() throws Exception {
-	RubygemsFactory factory = new RubygemsFactory(new File("some/thing"), (URL)null);
+	new RubygemsFactory(new File("some/thing"), (URL)null);
     }
 }

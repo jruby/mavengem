@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Map;
 import java.net.URL;
 
 import static org.junit.Assert.assertThat;
