@@ -25,6 +25,8 @@ public class MavenGemURLConnection extends URLConnection {
     private InputStream in;
     private long timestamp = -1;
 
+    private int counter = 12; // seconds
+
     // package private for testing
     final URL baseurl;
     final String path;
@@ -83,14 +85,19 @@ public class MavenGemURLConnection extends URLConnection {
         return in;
     }
 
-    synchronized public long getModified() throws IOException {
+    @Override
+    synchronized public long getLastModified() {
         if (timestamp == -1) {
-            connect();
+            try {
+                connect();
+            }
+            catch (IOException e) {
+                // ignore
+            }
         }
         return timestamp;
     }
 
-    private int counter = 12; // seconds
     @Override
     synchronized public void connect() throws IOException {
         connect(factory.getOrCreate(baseurl));
