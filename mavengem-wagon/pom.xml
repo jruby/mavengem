@@ -4,7 +4,7 @@
   <parent>
     <artifactId>mavengem</artifactId>
     <groupId>org.torquebox.mojo</groupId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.1</version>
   </parent>
   <artifactId>mavengem-wagon</artifactId>
   <name>Mavengem Protocol Wagon</name>
