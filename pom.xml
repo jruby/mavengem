@@ -8,9 +8,9 @@
   </parent>
   <groupId>org.torquebox.mojo</groupId>
   <artifactId>mavengem</artifactId>
-  <version>0.2.3-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Mavengem protocol and mavengem wagon</name>
+  <name>Mavengem Protocol and Mavengem Wagon</name>
 
   <description>
     mavengem protocol converts a rubygems repository on the fly to a
@@ -40,9 +40,14 @@
   </developers>
 
   <modules>
+    <module>rubygems-tools</module>
     <module>mavengem-protocol</module>
     <module>mavengem-wagon</module>
   </modules>
+
+  <properties>
+    <jruby.version>9.1.13.0</jruby.version>
+  </properties>
 
   <build>
     <pluginManagement>
