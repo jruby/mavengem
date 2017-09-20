@@ -13,7 +13,7 @@
 
 require 'nexus/rubygems_helper'
 
-java_import org.sonatype.nexus.ruby.DependencyHelper
+java_import org.torquebox.mojo.rubygems.DependencyHelper
 
 # this class can collect dependency data (which are an array of hashes).
 # the collected data can be added as either marshaled stream of dependency

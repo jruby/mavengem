@@ -15,7 +15,7 @@ require 'nexus/rubygems_helper'
 require 'maven/tools/pom'
 require 'rubygems/package'
 
-java_import org.sonatype.nexus.ruby.GemspecHelper
+java_import org.torquebox.mojo.rubygems.GemspecHelper
 
 # wrapper around a Gem::Specification object with some extra
 # helper methods and only delegate a few needed methods to

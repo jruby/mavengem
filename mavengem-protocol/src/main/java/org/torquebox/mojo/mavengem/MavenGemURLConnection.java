@@ -10,8 +10,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.NoSuchFileException;
 
-import org.sonatype.nexus.ruby.GemArtifactFile;
-import org.sonatype.nexus.ruby.RubygemsFile;
+import org.torquebox.mojo.rubygems.GemArtifactFile;
+import org.torquebox.mojo.rubygems.RubygemsFile;
 
 public class MavenGemURLConnection extends URLConnection {
 

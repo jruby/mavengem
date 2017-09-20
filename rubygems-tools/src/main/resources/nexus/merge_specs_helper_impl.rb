@@ -13,7 +13,7 @@
 
 require 'nexus/rubygems_helper'
 
-java_import org.sonatype.nexus.ruby.MergeSpecsHelper
+java_import org.torquebox.mojo.rubygems.MergeSpecsHelper
 
 # this class can collect specs-index data (which are an array of arrays).
 # there are no duplicates in the merged data and the output can be

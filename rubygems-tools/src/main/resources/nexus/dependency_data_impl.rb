@@ -13,7 +13,7 @@
 
 require 'nexus/rubygems_helper'
 
-java_import org.sonatype.nexus.ruby.DependencyData
+java_import org.torquebox.mojo.rubygems.DependencyData
 
 # parsed dependency data and restructure to retrieve the platform for
 # given version or give the list of all version.

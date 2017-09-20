@@ -11,16 +11,16 @@ import java.util.Map;
 
 import org.jruby.embed.IsolatedScriptingContainer;
 import org.jruby.embed.ScriptingContainer;
-import org.sonatype.nexus.ruby.DefaultRubygemsGateway;
-import org.sonatype.nexus.ruby.RubygemsGateway;
-import org.sonatype.nexus.ruby.FileType;
-import org.sonatype.nexus.ruby.GemArtifactFile;
-import org.sonatype.nexus.ruby.IOUtil;
-import org.sonatype.nexus.ruby.RubygemsFile;
-import org.sonatype.nexus.ruby.cuba.RubygemsFileSystem;
-import org.sonatype.nexus.ruby.layout.CachingProxyStorage;
-import org.sonatype.nexus.ruby.layout.ProxiedRubygemsFileSystem;
-import org.sonatype.nexus.ruby.layout.ProxyStorage;
+import org.torquebox.mojo.rubygems.DefaultRubygemsGateway;
+import org.torquebox.mojo.rubygems.RubygemsGateway;
+import org.torquebox.mojo.rubygems.FileType;
+import org.torquebox.mojo.rubygems.GemArtifactFile;
+import org.torquebox.mojo.rubygems.IOUtil;
+import org.torquebox.mojo.rubygems.RubygemsFile;
+import org.torquebox.mojo.rubygems.cuba.RubygemsFileSystem;
+import org.torquebox.mojo.rubygems.layout.CachingProxyStorage;
+import org.torquebox.mojo.rubygems.layout.ProxiedRubygemsFileSystem;
+import org.torquebox.mojo.rubygems.layout.ProxyStorage;
 
 public class Rubygems {
 
