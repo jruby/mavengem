@@ -122,12 +122,7 @@
   </build>
   <profiles>
     <profile>
-      <id>rubygems-proxy.torquebox.org</id>
-      <activation>
-        <file>
-          <exists>Is_SOURCE</exists>
-        </file>
-      </activation>
+      <id>torquebox</id>
       <repositories>
         <repository>
           <id>rubygems-proxy</id>
