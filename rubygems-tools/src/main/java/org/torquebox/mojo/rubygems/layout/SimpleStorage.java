@@ -180,7 +180,9 @@ public class SimpleStorage
     if (zipped.hasException()) {
       file.setException(zipped.getException());
     }
-    file.set(new URLGzipStreamLocation((StreamLocation) zipped.get()));
+    else {
+      file.set(new URLGzipStreamLocation((StreamLocation) zipped.get()));
+    }
   }
 
   @Override
