@@ -27,6 +27,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.11</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.jruby</groupId>
       <artifactId>jruby</artifactId>
       <version>${jruby.version}</version>
@@ -56,61 +62,61 @@
   <build>
     <resources>
       <resource>
-        <directory>target/rubygems-provided</directory>
+	<directory>target/rubygems-provided</directory>
 	<includes>
 	  <include>gems/**</include>
 	  <include>specifications/*</include>
 	</includes>
       </resource>
       <resource>
-        <directory>${basedir}/src/main/resources</directory>
+	<directory>${basedir}/src/main/resources</directory>
       </resource>
     </resources>
 
     <plugins>
       <plugin>
-        <groupId>de.saumya.mojo</groupId>
-        <artifactId>gem-maven-plugin</artifactId>
-        <version>${jruby-plugins.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>sets</goal>
-            </goals>
-            <configuration>
-              <scope>compile</scope>
-              <gems>
-                <maven-tools>1.0.5</maven-tools>
-                <virtus>1.0.5</virtus>
-                <descendants_tracker>0.0.4</descendants_tracker>
-                <thread_safe>0.3.6</thread_safe>
-                <equalizer>0.0.11</equalizer>
-                <coercible>1.0.0</coercible>
-                <axiom-types>0.1.1</axiom-types>
-                <ice_nine>0.11.2</ice_nine>
-              </gems>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <includeRubygemsInResources>true</includeRubygemsInResources>
-        </configuration>
+	<groupId>de.saumya.mojo</groupId>
+	<artifactId>gem-maven-plugin</artifactId>
+	<version>${jruby-plugins.version}</version>
+	<executions>
+	  <execution>
+	    <goals>
+	      <goal>sets</goal>
+	    </goals>
+	    <configuration>
+	      <scope>compile</scope>
+	      <gems>
+		<maven-tools>1.0.5</maven-tools>
+		<virtus>1.0.5</virtus>
+		<descendants_tracker>0.0.4</descendants_tracker>
+		<thread_safe>0.3.6</thread_safe>
+		<equalizer>0.0.11</equalizer>
+		<coercible>1.0.0</coercible>
+		<axiom-types>0.1.1</axiom-types>
+		<ice_nine>0.11.2</ice_nine>
+	      </gems>
+	    </configuration>
+	  </execution>
+	</executions>
+	<configuration>
+	  <includeRubygemsInResources>true</includeRubygemsInResources>
+	</configuration>
       </plugin>
 
       <plugin>
-        <groupId>de.saumya.mojo</groupId>
-        <artifactId>minitest-maven-plugin</artifactId>
-        <version>${jruby-plugins.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>spec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <minispecDirectory>${project.basedir}/src/test/minispecs/*rb</minispecDirectory>
-        </configuration>
+	<groupId>de.saumya.mojo</groupId>
+	<artifactId>minitest-maven-plugin</artifactId>
+	<version>${jruby-plugins.version}</version>
+	<executions>
+	  <execution>
+	    <goals>
+	      <goal>spec</goal>
+	    </goals>
+	  </execution>
+	</executions>
+	<configuration>
+	  <minispecDirectory>${project.basedir}/src/test/minispecs/*rb</minispecDirectory>
+	</configuration>
       </plugin>
     </plugins>
   </build>

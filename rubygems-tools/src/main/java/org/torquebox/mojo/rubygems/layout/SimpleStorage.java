@@ -12,6 +12,8 @@
  */
 package org.torquebox.mojo.rubygems.layout;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +29,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.util.zip.GZIPInputStream;
-import javax.xml.bind.DatatypeConverter;
 
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.Directory;
@@ -51,6 +52,7 @@ public class SimpleStorage
 
   static class URLStreamLocation implements StreamLocation {
     private URL url;
+    private Base64 base64 = new Base64();
 
     URLStreamLocation(URL url) {
       this.url = url;
@@ -60,7 +62,7 @@ public class SimpleStorage
         URLConnection con = url.openConnection();
         String userinfo = this.url.getUserInfo();
         if(userinfo != null) {
-            String basicAuth = "Basic " + DatatypeConverter.printBase64Binary(URLDecoder.decode(userinfo, "UTF-8").getBytes(StandardCharsets.UTF_8));
+            String basicAuth = "Basic " + base64.encodeBase64String(URLDecoder.decode(userinfo, "UTF-8").getBytes(StandardCharsets.UTF_8));
             con.setRequestProperty ("Authorization", basicAuth);
         }
         return con;
@@ -97,8 +99,8 @@ public class SimpleStorage
       return new GZIPInputStream(stream.openStream());
     }
   }
-  
-  
+
+
   private final SecureRandom random = new SecureRandom();
 
   private final File basedir;
@@ -269,7 +271,7 @@ public class SimpleStorage
   public String[] listDirectory(Directory dir) {
     String[] list = toPath(dir).toFile().list();
     if (list == null) {
-        list = new String[0];
+      list = new String[0];
     }
     return list;
   }
