@@ -2,6 +2,19 @@
   <servers>
     <server>
       <id>mavengems-without-mirror</id>
+      <configuration>
+        <cachedir>${user.dir}/target/cachedir</cachedir>
+      </configuration>
+    </server>
+    <server>
+      <id>mavengems-with-mirror</id>
+      <configuration>
+        <cachedir>${user.dir}/target/cachedir</cachedir>
+        <mirror>https://rubygems.org</mirror>
+      </configuration>
+    </server>
+    <server>
+      <id>mavengems-without-mirror-with-auth</id>
       <username>my_login</username>
       <password>my_password</password>
       <configuration>
@@ -9,12 +22,12 @@
       </configuration>
     </server>
     <server>
-      <id>mavengems-with-mirror</id>
+      <id>mavengems-with-mirror-with-auth</id>
       <username>my_login</username>
       <password>my_password</password>
       <configuration>
         <cachedir>${user.dir}/target/cachedir</cachedir>
-	<mirror>https://rubygems.org</mirror>
+        <mirror>https://rubygems.org</mirror>
       </configuration>
     </server>
   </servers>
@@ -22,10 +35,10 @@
     <profile>
       <id>it-repo</id>
       <activation>
-	<activeByDefault>true</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <pluginRepositories>
-	<pluginRepository>
+        <pluginRepository>
           <id>local.central</id>
           <url>@localRepositoryUrl@</url>
           <releases>
@@ -34,7 +47,7 @@
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
-	</pluginRepository>
+        </pluginRepository>
       </pluginRepositories>
     </profile>
   </profiles>
