@@ -46,7 +46,7 @@
   </modules>
 
   <properties>
-    <jruby.version>9.1.14.0-SNAPSHOT</jruby.version>
+    <jruby.version>9.1.14.0</jruby.version>
   </properties>
 
   <build>
