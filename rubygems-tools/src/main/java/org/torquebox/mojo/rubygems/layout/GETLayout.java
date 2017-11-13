@@ -43,12 +43,14 @@ import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
 /**
  * a base layout for HTTP GET requests.
  *
+ * <ul>
  * <li>ensure the zipped specs.4.8 are in place before retrieving the specs.4.8 itself</li>
  * <li>generate the pom.xml from the associated gemspec file</li>
  * <li>attach the gem with the right platform the <code>GemArtifactFile</code>s</li>
  * <li>collect all <code>DependencyFile</code>s and merge them for the <code>BundlerApiFile</code> payload</li>
- * <li>generate the <code>Sha1File<code>s and <code>MavenMetadataFile</code>s on the fly</li>
+ * <li>generate the <code>Sha1File</code>s and <code>MavenMetadataFile</code>s on the fly</li>
  * <li>generate directory listing for some "virtual" directories</li>
+ * </ul>
  *
  * @author christian
  */
@@ -95,7 +97,7 @@ public class GETLayout
    * a proxy might want to load only the missing or expired dependency files.
    *
    * @param file with the list of gem-names
-   * @param deps the result set of <code>InputStream<code>s to all the <code>DependencyFile</code> of the
+   * @param deps the result set of <code>InputStream</code>s to all the <code>DependencyFile</code> of the
    *             given list of gem-names
    */
   protected void retrieveAll(BundlerApiFile file, DependencyHelper deps) throws IOException {

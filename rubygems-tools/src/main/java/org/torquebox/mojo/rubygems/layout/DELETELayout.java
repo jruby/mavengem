@@ -21,15 +21,17 @@ import org.torquebox.mojo.rubygems.SpecsIndexFile;
 import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
 
 /**
- * layout for HTTP DELETE request. allows to delete
+ * layout for HTTP DELETE request. allows to delete <ul>
  * <li><code>SpecsIndexZippedFile</code></li>
  * <li><code>GemFile</code></li>
  * <li><code>GemspecFile</code></li>
  * <li><code>DependencyFile</code></li>
+ * </ul>
  *
- * and disallows
+ * and disallows <ul>
  * <li><code>SpecsIndexFile</code></li>
  * <li><code>ApiV1File</code></li>
+ * </ul>
  *
  * @author christian
  */

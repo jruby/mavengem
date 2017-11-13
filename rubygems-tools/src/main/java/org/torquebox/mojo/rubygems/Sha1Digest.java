@@ -35,7 +35,7 @@ public class Sha1Digest {
 
   /**
    * update the underlying digest
-   * @param byte to be updated
+   * @param b byte to be updated
    */
   public void update(byte b) {
     digest.update(b);
@@ -43,7 +43,7 @@ public class Sha1Digest {
 
   /**
    * update the underlying digest
-   * @param byte[] to be updated
+   * @param bytes to be updated
    */
   public void update(byte[] bytes) {
     digest.update(bytes);

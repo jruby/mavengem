@@ -36,9 +36,9 @@ import org.jruby.runtime.builtin.IRubyObject;
  * dependency file as well deleting the gemspec file of the gem.
  *
  * note: to restrict deleting to gem file is more precaution then a necessity.
- * <li>it is possible to regenerate the gemspec file from the gem</li>
+ * <ul><li>it is possible to regenerate the gemspec file from the gem</li>
  * <li>to generate the dependencies file from the stored gems of the same name</li>
- * <li>even the specs.4.8 can be regenerated from the stored gems</li>
+ * <li>even the specs.4.8 can be regenerated from the stored gems</li></ul>
  *
  * @author christian
  * @see HostedGETLayout

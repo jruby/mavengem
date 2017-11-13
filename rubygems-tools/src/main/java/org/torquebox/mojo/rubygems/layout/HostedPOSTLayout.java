@@ -34,9 +34,9 @@ import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
 import org.jruby.runtime.builtin.IRubyObject;
 
 /**
- * to make a HTTP POST to hosted repository allows only two path:
+ * to make a HTTP POST to hosted repository allows only two path: <ul>
  * <li>/api/v1/gem</li>
- * <li>/gems/{name-version(-platform)}.gem</li>
+ * <li>/gems/{name-version(-platform)}.gem</li></ul>
  *
  * all other paths are forbidden.
  *

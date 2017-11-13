@@ -76,7 +76,7 @@ public interface Storage
   void memory(ByteArrayInputStream data, RubygemsFile file);
 
   /**
-   * use the <code>String</code> can converts it with to <code>byte</code array
+   * use the <code>String</code> can converts it with to <code>byte</code> array
    * for the the payload of the <code>RubygemsFile</code> instance.
    */
   void memory(String data, RubygemsFile file);

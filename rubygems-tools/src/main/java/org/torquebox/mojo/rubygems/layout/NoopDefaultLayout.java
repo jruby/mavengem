@@ -29,9 +29,9 @@ import org.torquebox.mojo.rubygems.SpecsIndexType;
 import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
 
 /**
- * adds default behavior for all <code>RubygemsFile</code>:
+ * adds default behavior for all <code>RubygemsFile</code>:<ul>
  * <li>all the generated files are marked as forbidden</li>
- * <li>all other files get passed to the <code>DefaultLayout</code>
+ * <li>all other files get passed to the <code>DefaultLayout</code></li></ul>
  *
  * it adds a few helper methods for sub classes.
  *
