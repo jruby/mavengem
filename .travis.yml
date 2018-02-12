@@ -4,4 +4,4 @@ before_install:
   - rm ~/.m2/settings.xml
   - export MAVEN_SKIP_RC=true
 install: mvn install -Dmaven.test.skip -Dinvoker.skip -Ptorquebox
-script: mvn verify -Ptorquebox
+script: mvn verify -Ptorquebox -Dinvoker.skip
