@@ -31,6 +31,7 @@ public class DefaultRubygemsGateway
    */
   public DefaultRubygemsGateway(final ScriptingContainer container) {
     this.container = container;
+    System.err.println("===========" + container.runScriptlet("JRUBY_VERSION"));
     dependencyHelperImplClass = container.runScriptlet("require 'nexus/dependency_helper_impl';"
         + "Nexus::DependencyHelperImpl");
     gemspecHelperImplClass = container.runScriptlet("require 'nexus/gemspec_helper_impl';"
