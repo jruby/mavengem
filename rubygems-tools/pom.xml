@@ -19,7 +19,7 @@
   <parent>
     <artifactId>mavengem</artifactId>
     <groupId>org.torquebox.mojo</groupId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>rubygems-tools</artifactId>
