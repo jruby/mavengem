@@ -14,7 +14,7 @@
 require 'nexus/rubygems_helper'
 require 'maven/tools/pom'
 # we do not need openssl, so let rubygems find the dummy
-$LOAD_PATH.insert(0, '.')
+$LOAD_PATH.insert(0, File.expand_path(File.dirname(__FILE__)))
 require 'rubygems/package'
 
 java_import org.torquebox.mojo.rubygems.GemspecHelper
