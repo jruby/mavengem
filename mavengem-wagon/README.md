@@ -21,7 +21,7 @@ pom.xml setup
       <extension>
         <groupId>org.torquebox.mojo</groupId>
         <artifactId>mavengem-wagon</artifactId>
-        <version>0.2.0</version>
+        <version>1.0.3</version>
       </extension>
     </extensions>
   </build>
@@ -34,7 +34,7 @@ the same with POM using ruby-DSL
 ```
 repository :id => :mavengems, :url => 'mavengem:https://rubygems.org'
 
-extension 'org.torquebox.mojo:mavengem-wagon:0.2.0'
+extension 'org.torquebox.mojo:mavengem-wagon:1.0.3'
 ```
 
 the wagon extension allos the use of the **mavengem:** protocol in the
@@ -130,7 +130,7 @@ the only way to avoid such warning or in case the build fails, is to use maven-3
   <extension>
     <groupId>org.torquebox.mojo</groupId>
     <artifactId>mavengem-wagon</artifactId>
-    <version>0.2.0</version>
+    <version>1.0.3</version>
   </extension>
 </extensions>
 ```
