@@ -127,7 +127,7 @@
         <repository>
           <id>rubygems-proxy</id>
           <name>Rubygems Proxy</name>
-          <url>http://rubygems-proxy.torquebox.org/releases</url>
+          <url>http://mavengems.jruby.org/releases</url>
           <layout>default</layout>
           <releases>
             <enabled>true</enabled>
