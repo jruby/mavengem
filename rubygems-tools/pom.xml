@@ -53,13 +53,92 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>maven-tools</artifactId>
+      <version>1.0.5</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>virtus</artifactId>
+      <version>1.0.5</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>descendants_tracker</artifactId>
+      <version>0.0.4</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>thread_safe</artifactId>
+      <version>0.3.6</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>equalizer</artifactId>
+      <version>0.0.11</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>coercible</artifactId>
+      <version>1.0.0</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>axiom-types</artifactId>
+      <version>0.1.1</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ice_nine</artifactId>
+      <version>0.11.2</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>mavengems</id>
+      <url>mavengem:https://rubygems.org</url>
+    </repository>
+  </repositories>
+
   <properties>
-    <jruby-plugins.version>1.1.5</jruby-plugins.version>
+    <jruby-plugins.version>2.0.1</jruby-plugins.version>
   </properties>
 
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.torquebox.mojo</groupId>
+        <artifactId>mavengem-wagon</artifactId>
+        <version>1.0.3</version>
+      </extension>
+    </extensions>
+
     <resources>
       <resource>
         <directory>target/rubygems-provided</directory>
@@ -81,21 +160,8 @@
         <executions>
           <execution>
             <goals>
-              <goal>sets</goal>
+              <goal>initialize</goal>
             </goals>
-            <configuration>
-              <scope>compile</scope>
-              <gems>
-                <maven-tools>1.0.5</maven-tools>
-                <virtus>1.0.5</virtus>
-                <descendants_tracker>0.0.4</descendants_tracker>
-                <thread_safe>0.3.6</thread_safe>
-                <equalizer>0.0.11</equalizer>
-                <coercible>1.0.0</coercible>
-                <axiom-types>0.1.1</axiom-types>
-                <ice_nine>0.11.2</ice_nine>
-              </gems>
-            </configuration>
           </execution>
         </executions>
         <configuration>
@@ -120,24 +186,4 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>torquebox</id>
-      <repositories>
-        <repository>
-          <id>rubygems-proxy</id>
-          <name>Rubygems Proxy</name>
-          <url>http://rubygems-proxy.torquebox.org/releases</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
-        </repository>
-      </repositories>
-    </profile>
-  </profiles>
 </project>
