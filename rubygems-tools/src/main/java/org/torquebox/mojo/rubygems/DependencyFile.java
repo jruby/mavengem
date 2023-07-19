@@ -20,9 +20,8 @@ package org.torquebox.mojo.rubygems;
  * @author christian
  */
 public class DependencyFile
-    extends RubygemsFile
-{
-  DependencyFile(RubygemsFileFactory factory, String storage, String remote, String name) {
-    super(factory, FileType.DEPENDENCY, storage, remote, name);
-  }
+        extends RubygemsFile {
+    DependencyFile(RubygemsFileFactory factory, String storage, String remote, String name) {
+        super(factory, FileType.DEPENDENCY, storage, remote, name);
+    }
 }

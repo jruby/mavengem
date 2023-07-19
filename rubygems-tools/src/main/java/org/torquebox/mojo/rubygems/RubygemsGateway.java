@@ -17,56 +17,60 @@ import java.io.InputStream;
 /**
  * factory for all the ruby classes. all those ruby classes come with java interface
  * so they can be used easily from java.
- * 
- * @author christian
  *
+ * @author christian
  */
-public interface RubygemsGateway
-{
-  /**
-   * Cleans up resources used by gateway and terminates it along with the underlying scripting container.
-   */
-  void terminate();
+public interface RubygemsGateway {
+    /**
+     * Cleans up resources used by gateway and terminates it along with the underlying scripting container.
+     */
+    void terminate();
 
-  /**
-   * create a new instance of <code>GemspecHelper</code>
-   * @param gemspec the stream to the rzipped marshalled Gem::Specification ruby-object
-   * @return an empty GemspecHelper
-   */
-  GemspecHelper newGemspecHelper(InputStream gemspec);
+    /**
+     * create a new instance of <code>GemspecHelper</code>
+     *
+     * @param gemspec the stream to the rzipped marshalled Gem::Specification ruby-object
+     * @return an empty GemspecHelper
+     */
+    GemspecHelper newGemspecHelper(InputStream gemspec);
 
-  /**
-   * create a new instance of <code>GemspecHelper</code>
-   * @param gem the stream to the from which the gemspec gets extracted
-   * @return an empty GemspecHelper
-   */
-  GemspecHelper newGemspecHelperFromGem(InputStream gem);
+    /**
+     * create a new instance of <code>GemspecHelper</code>
+     *
+     * @param gem the stream to the from which the gemspec gets extracted
+     * @return an empty GemspecHelper
+     */
+    GemspecHelper newGemspecHelperFromGem(InputStream gem);
 
-  /**
-   * create a new instance of <code>DependencyHelper</code>
-   * @return an empty DependencyHelper
-   */
-  DependencyHelper newDependencyHelper();
+    /**
+     * create a new instance of <code>DependencyHelper</code>
+     *
+     * @return an empty DependencyHelper
+     */
+    DependencyHelper newDependencyHelper();
 
-  /**
-   * create a new instance of <code>SpecsHelper</code>
-   * @return an empty SpecsHelper
-   */
-  SpecsHelper newSpecsHelper();
+    /**
+     * create a new instance of <code>SpecsHelper</code>
+     *
+     * @return an empty SpecsHelper
+     */
+    SpecsHelper newSpecsHelper();
 
-  /**
-   * create a new instance of <code>MergeSpecsHelper</code>
-   * @return an empty MergeSpecsHelper
-   */
-  MergeSpecsHelper newMergeSpecsHelper();
+    /**
+     * create a new instance of <code>MergeSpecsHelper</code>
+     *
+     * @return an empty MergeSpecsHelper
+     */
+    MergeSpecsHelper newMergeSpecsHelper();
 
-  /**
-   * create a new instance of <code>DependencyData</code> and parse
-   * the given dependency data
-   * @param dependency the input-stream with the dependency data
-   * @param name of gem of the dependency data
-   * @param modified when the dependency data were last modified
-   * @return dependency data
-   */
-  DependencyData newDependencyData(InputStream dependency, String name, long modified);
+    /**
+     * create a new instance of <code>DependencyData</code> and parse
+     * the given dependency data
+     *
+     * @param dependency the input-stream with the dependency data
+     * @param name       of gem of the dependency data
+     * @param modified   when the dependency data were last modified
+     * @return dependency data
+     */
+    DependencyData newDependencyData(InputStream dependency, String name, long modified);
 }

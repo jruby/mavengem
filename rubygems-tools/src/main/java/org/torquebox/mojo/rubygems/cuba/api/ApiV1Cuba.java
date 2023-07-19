@@ -22,35 +22,31 @@ import org.torquebox.mojo.rubygems.cuba.State;
  * @author christian
  */
 public class ApiV1Cuba
-    implements Cuba
-{
-  private static final String GEMS = "gems";
+        implements Cuba {
+    public static final String DEPENDENCIES = "dependencies";
+    private static final String GEMS = "gems";
+    private static final String API_KEY = "api_key";
+    private final Cuba apiV1Dependencies;
 
-  private static final String API_KEY = "api_key";
-
-  public static final String DEPENDENCIES = "dependencies";
-
-  private final Cuba apiV1Dependencies;
-
-  public ApiV1Cuba(Cuba cuba) {
-    this.apiV1Dependencies = cuba;
-  }
-
-  /**
-   * directory [dependencies], files [api_key,gems]
-   */
-  @Override
-  public RubygemsFile on(State state) {
-    switch (state.name) {
-      case DEPENDENCIES:
-        return state.nested(apiV1Dependencies);
-      case GEMS:
-      case API_KEY:
-        return state.context.factory.apiV1File(state.name);
-      case "":
-        return state.context.factory.directory(state.context.original, API_KEY, DEPENDENCIES);
-      default:
-        return state.context.factory.notFound(state.context.original);
+    public ApiV1Cuba(Cuba cuba) {
+        this.apiV1Dependencies = cuba;
     }
-  }
+
+    /**
+     * directory [dependencies], files [api_key,gems]
+     */
+    @Override
+    public RubygemsFile on(State state) {
+        switch (state.name) {
+            case DEPENDENCIES:
+                return state.nested(apiV1Dependencies);
+            case GEMS:
+            case API_KEY:
+                return state.context.factory.apiV1File(state.name);
+            case "":
+                return state.context.factory.directory(state.context.original, API_KEY, DEPENDENCIES);
+            default:
+                return state.context.factory.notFound(state.context.original);
+        }
+    }
 }

@@ -20,31 +20,30 @@ import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class IOUtil
-{
+public class IOUtil {
 
-  /**
-   * Copy bytes from an <code>InputStream</code> to an <code>OutputStream</code>.
-   */
-  public static void copy(final InputStream input, final OutputStream output) throws IOException {
-    final byte[] buffer = new byte[4096];
-    int n = 0;
-    while (-1 != (n = input.read(buffer))) {
-      output.write(buffer, 0, n);
+    /**
+     * Copy bytes from an <code>InputStream</code> to an <code>OutputStream</code>.
+     */
+    public static void copy(final InputStream input, final OutputStream output) throws IOException {
+        final byte[] buffer = new byte[4096];
+        int n = 0;
+        while (-1 != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+        }
     }
-  }
 
-  public static ByteArrayInputStream toGzipped(final InputStream input) throws IOException {
-    ByteArrayOutputStream gzipped = new ByteArrayOutputStream();
-    try (GZIPOutputStream out = new GZIPOutputStream(gzipped)) {
-      copy(input, out);
+    public static ByteArrayInputStream toGzipped(final InputStream input) throws IOException {
+        ByteArrayOutputStream gzipped = new ByteArrayOutputStream();
+        try (GZIPOutputStream out = new GZIPOutputStream(gzipped)) {
+            copy(input, out);
+        }
+        return new ByteArrayInputStream(gzipped.toByteArray());
     }
-    return new ByteArrayInputStream(gzipped.toByteArray());
-  }
 
-  public static ByteArrayInputStream toGunzipped(final InputStream input) throws IOException {
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    copy(new GZIPInputStream(input), out);
-    return new ByteArrayInputStream(out.toByteArray());
-  }
+    public static ByteArrayInputStream toGunzipped(final InputStream input) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        copy(new GZIPInputStream(input), out);
+        return new ByteArrayInputStream(out.toByteArray());
+    }
 }

@@ -12,75 +12,74 @@
  */
 package org.torquebox.mojo.rubygems;
 
-import java.io.InputStream;
-
 import org.jruby.embed.ScriptingContainer;
 
+import java.io.InputStream;
+
 public class DefaultRubygemsGateway
-    implements RubygemsGateway
-{
-  private final ScriptingContainer container;
-  private Object dependencyHelperImplClass;
-  private Object gemspecHelperImplClass;
-  private Object specsHelperImplClass;
-  private Object mergeSpecsHelperImplClass;
-  private Object dependencyDataImplClass;
+        implements RubygemsGateway {
+    private final ScriptingContainer container;
+    private Object dependencyHelperImplClass;
+    private Object gemspecHelperImplClass;
+    private Object specsHelperImplClass;
+    private Object mergeSpecsHelperImplClass;
+    private Object dependencyDataImplClass;
 
-  /**
-   * Ctor that accepts prepared non-null scripting container.
-   */
-  public DefaultRubygemsGateway(final ScriptingContainer container) {
-    this.container = container;
-    dependencyHelperImplClass = container.runScriptlet("require 'nexus/dependency_helper_impl';"
-        + "Nexus::DependencyHelperImpl");
-    gemspecHelperImplClass = container.runScriptlet("require 'nexus/gemspec_helper_impl';"
-        + "Nexus::GemspecHelperImpl");
-    specsHelperImplClass = container.runScriptlet("require 'nexus/specs_helper_impl';"
-        + "Nexus::SpecsHelperImpl");
-    mergeSpecsHelperImplClass = container.runScriptlet("require 'nexus/merge_specs_helper_impl';"
-        + "Nexus::MergeSpecsHelperImpl");
-    dependencyDataImplClass = container.runScriptlet("require 'nexus/dependency_data_impl';"
-        + "Nexus::DependencyDataImpl");
-  }
+    /**
+     * Ctor that accepts prepared non-null scripting container.
+     */
+    public DefaultRubygemsGateway(final ScriptingContainer container) {
+        this.container = container;
+        dependencyHelperImplClass = container.runScriptlet("require 'nexus/dependency_helper_impl';"
+                + "Nexus::DependencyHelperImpl");
+        gemspecHelperImplClass = container.runScriptlet("require 'nexus/gemspec_helper_impl';"
+                + "Nexus::GemspecHelperImpl");
+        specsHelperImplClass = container.runScriptlet("require 'nexus/specs_helper_impl';"
+                + "Nexus::SpecsHelperImpl");
+        mergeSpecsHelperImplClass = container.runScriptlet("require 'nexus/merge_specs_helper_impl';"
+                + "Nexus::MergeSpecsHelperImpl");
+        dependencyDataImplClass = container.runScriptlet("require 'nexus/dependency_data_impl';"
+                + "Nexus::DependencyDataImpl");
+    }
 
-  @Override
-  public void terminate() {
-    dependencyHelperImplClass = null;
-    gemspecHelperImplClass = null;
-    specsHelperImplClass = null;
-    mergeSpecsHelperImplClass = null;
-    dependencyDataImplClass = null;
-    container.terminate();
-  }
+    @Override
+    public void terminate() {
+        dependencyHelperImplClass = null;
+        gemspecHelperImplClass = null;
+        specsHelperImplClass = null;
+        mergeSpecsHelperImplClass = null;
+        dependencyDataImplClass = null;
+        container.terminate();
+    }
 
-  @Override
-  public SpecsHelper newSpecsHelper() {
-    return container.callMethod(specsHelperImplClass, "new", SpecsHelper.class);
-  }
+    @Override
+    public SpecsHelper newSpecsHelper() {
+        return container.callMethod(specsHelperImplClass, "new", SpecsHelper.class);
+    }
 
-  @Override
-  public MergeSpecsHelper newMergeSpecsHelper() {
-    return container.callMethod(mergeSpecsHelperImplClass, "new", MergeSpecsHelper.class);
-  }
+    @Override
+    public MergeSpecsHelper newMergeSpecsHelper() {
+        return container.callMethod(mergeSpecsHelperImplClass, "new", MergeSpecsHelper.class);
+    }
 
-  @Override
-  public DependencyHelper newDependencyHelper() {
-    return container.callMethod(dependencyHelperImplClass, "new", DependencyHelper.class);
-  }
+    @Override
+    public DependencyHelper newDependencyHelper() {
+        return container.callMethod(dependencyHelperImplClass, "new", DependencyHelper.class);
+    }
 
-  @Override
-  public GemspecHelper newGemspecHelper(InputStream gemspec) {
-    return container.callMethod(gemspecHelperImplClass, "from_gemspec_rz", gemspec, GemspecHelper.class);
-  }
+    @Override
+    public GemspecHelper newGemspecHelper(InputStream gemspec) {
+        return container.callMethod(gemspecHelperImplClass, "from_gemspec_rz", gemspec, GemspecHelper.class);
+    }
 
-  @Override
-  public GemspecHelper newGemspecHelperFromGem(InputStream gem) {
-    return container.callMethod(gemspecHelperImplClass, "from_gem", gem, GemspecHelper.class);
-  }
+    @Override
+    public GemspecHelper newGemspecHelperFromGem(InputStream gem) {
+        return container.callMethod(gemspecHelperImplClass, "from_gem", gem, GemspecHelper.class);
+    }
 
-  @Override
-  public DependencyData newDependencyData(InputStream dependency, String name, long modified) {
-    return container.callMethod(dependencyDataImplClass, "new", new Object[]{dependency, name, modified},
-        DependencyData.class);
-  }
+    @Override
+    public DependencyData newDependencyData(InputStream dependency, String name, long modified) {
+        return container.callMethod(dependencyDataImplClass, "new", new Object[]{dependency, name, modified},
+                DependencyData.class);
+    }
 }

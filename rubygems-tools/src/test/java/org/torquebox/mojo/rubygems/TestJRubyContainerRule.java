@@ -20,25 +20,26 @@ import org.junit.rules.ExternalResource;
  * ie. ctor and so, take a look at {@link RubyScriptingTestSupport}.
  */
 public class TestJRubyContainerRule
-    extends ExternalResource
-{
-  private TestJRubyContainer testScriptingContainer = new TestJRubyContainer();
+        extends ExternalResource {
+    private TestJRubyContainer testScriptingContainer = new TestJRubyContainer();
 
-  @Override
-  protected void before() throws Throwable {
-    super.before();
-    testScriptingContainer.start();
-  }
+    @Override
+    protected void before() throws Throwable {
+        super.before();
+        testScriptingContainer.start();
+    }
 
-  @Override
-  protected void after() {
-    super.after();
-    testScriptingContainer.stop();
-  }
+    @Override
+    protected void after() {
+        super.after();
+        testScriptingContainer.stop();
+    }
 
-  public ScriptingContainer getScriptingContainer() {
-    return testScriptingContainer.getScriptingContainer();
-  }
+    public ScriptingContainer getScriptingContainer() {
+        return testScriptingContainer.getScriptingContainer();
+    }
 
-  public RubygemsGateway getRubygemsGateway() { return testScriptingContainer.getRubygemsGateway(); }
+    public RubygemsGateway getRubygemsGateway() {
+        return testScriptingContainer.getRubygemsGateway();
+    }
 }

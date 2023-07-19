@@ -12,10 +12,10 @@
  */
 package org.torquebox.mojo.rubygems.layout;
 
-import java.io.InputStream;
-
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.RubygemsFileFactory;
+
+import java.io.InputStream;
 
 /**
  * it adds a single extra method to the <code>RubygemsFileFactory</code>
@@ -23,13 +23,12 @@ import org.torquebox.mojo.rubygems.RubygemsFileFactory;
  * @author christian
  */
 public interface Layout
-    extends RubygemsFileFactory
-{
-  /**
-   * some layout needs to be able to "upload" gem-files
-   *
-   * @param is   the <code>InputStream</code> which is used to store the given file
-   * @param file which can be <code>GemFile</code> or <code>ApiV1File</code> with name "gem"
-   */
-  void addGem(InputStream is, RubygemsFile file);
+        extends RubygemsFileFactory {
+    /**
+     * some layout needs to be able to "upload" gem-files
+     *
+     * @param is   the <code>InputStream</code> which is used to store the given file
+     * @param file which can be <code>GemFile</code> or <code>ApiV1File</code> with name "gem"
+     */
+    void addGem(InputStream is, RubygemsFile file);
 }

@@ -13,6 +13,11 @@
 package org.torquebox.mojo.rubygems.layout;
 
 import org.apache.commons.codec.binary.Base64;
+import org.torquebox.mojo.rubygems.DependencyFile;
+import org.torquebox.mojo.rubygems.Directory;
+import org.torquebox.mojo.rubygems.RubygemsFile;
+import org.torquebox.mojo.rubygems.SpecsIndexFile;
+import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -30,12 +35,6 @@ import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.util.zip.GZIPInputStream;
 
-import org.torquebox.mojo.rubygems.DependencyFile;
-import org.torquebox.mojo.rubygems.Directory;
-import org.torquebox.mojo.rubygems.RubygemsFile;
-import org.torquebox.mojo.rubygems.SpecsIndexFile;
-import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
-
 /**
  * simple storage implementation using the system's filesystem.
  * it uses <code>InputStream</code>s as payload.
@@ -43,238 +42,226 @@ import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
  * @author christian
  */
 public class SimpleStorage
-    implements Storage
-{
+        implements Storage {
 
-  static interface StreamLocation {
-    InputStream openStream() throws IOException;
-  }
+    private final SecureRandom random = new SecureRandom();
+    private final File basedir;
 
-  static class URLStreamLocation implements StreamLocation {
-    private URL url;
-    private Base64 base64 = new Base64();
-
-    URLStreamLocation(URL url) {
-      this.url = url;
+    /**
+     * create the storage with given base-directory.
+     */
+    public SimpleStorage(File basedir) {
+        this.basedir = basedir;
+        this.random.setSeed(System.currentTimeMillis());
     }
 
-    public URLConnection openConnection() throws IOException {
-        URLConnection con = url.openConnection();
-        String userinfo = this.url.getUserInfo();
-        if(userinfo != null) {
-            String basicAuth = "Basic " + base64.encodeBase64String(URLDecoder.decode(userinfo, "UTF-8").getBytes(StandardCharsets.UTF_8));
-            con.setRequestProperty ("Authorization", basicAuth);
+    @Override
+    public InputStream getInputStream(RubygemsFile file) throws IOException {
+        if (file.hasException()) {
+            throw new IOException(file.getException());
         }
-        return con;
+        InputStream is;
+        if (file.get() == null) {
+            is = Files.newInputStream(toPath(file));
+        } else {
+            is = ((StreamLocation) file.get()).openStream();
+        }
+        // reset state since we have a payload and no exceptions
+        file.resetState();
+        return is;
+    }
+
+    /**
+     * convert <code>RubygemsFile</code> into a <code>Path</code>.
+     */
+    protected Path toPath(RubygemsFile file) {
+        return new File(basedir, file.storagePath()).toPath();
     }
 
     @Override
-    public InputStream openStream() throws IOException {
-      return openConnection().getInputStream();
-    }
-  }
-
-  static class BytesStreamLocation implements StreamLocation {
-    private ByteArrayInputStream stream;
-
-    BytesStreamLocation(ByteArrayInputStream stream) {
-      this.stream = stream;
+    public long getModified(RubygemsFile file) {
+        return toPath(file).toFile().lastModified();
     }
 
     @Override
-    public InputStream openStream() throws IOException {
-      return stream;
-    }
-  }
+    public void retrieve(RubygemsFile file) {
+        file.resetState();
 
-  static class URLGzipStreamLocation implements StreamLocation {
-    private StreamLocation stream;
-
-    URLGzipStreamLocation(StreamLocation stream) {
-      this.stream = stream;
+        Path path = toPath(file);
+        if (Files.notExists(path)) {
+            file.markAsNotExists();
+        } else {
+            try {
+                set(file, path);
+            } catch (IOException e) {
+                file.setException(e);
+            }
+        }
     }
 
     @Override
-    public InputStream openStream() throws IOException {
-      return new GZIPInputStream(stream.openStream());
+    public void retrieve(DependencyFile file) {
+        retrieve((RubygemsFile) file);
     }
-  }
 
-
-  private final SecureRandom random = new SecureRandom();
-
-  private final File basedir;
-
-  /**
-   * create the storage with given base-directory.
-   */
-  public SimpleStorage(File basedir) {
-    this.basedir = basedir;
-    this.random.setSeed(System.currentTimeMillis());
-  }
-
-  @Override
-  public InputStream getInputStream(RubygemsFile file) throws IOException {
-    if (file.hasException()) {
-      throw new IOException(file.getException());
+    @Override
+    public void retrieve(SpecsIndexZippedFile file) {
+        retrieve((RubygemsFile) file);
     }
-    InputStream is;
-    if (file.get() == null) {
-      is = Files.newInputStream(toPath(file));
-    }
-    else {
-      is = ((StreamLocation) file.get()).openStream();
-    }
-    // reset state since we have a payload and no exceptions
-    file.resetState();
-    return is;
-  }
 
-  /**
-   * convert <code>RubygemsFile</code> into a <code>Path</code>.
-   */
-  protected Path toPath(RubygemsFile file) {
-    return new File(basedir, file.storagePath()).toPath();
-  }
+    @Override
+    public void retrieve(SpecsIndexFile file) {
+        SpecsIndexZippedFile zipped = file.zippedSpecsIndexFile();
+        retrieve(zipped);
+        if (zipped.notExists()) {
+            file.markAsNotExists();
+        }
+        if (zipped.hasException()) {
+            file.setException(zipped.getException());
+        } else {
+            file.set(new URLGzipStreamLocation((StreamLocation) zipped.get()));
+        }
+    }
 
-  @Override
-  public long getModified(RubygemsFile file) {
-    return toPath(file).toFile().lastModified();
-  }
+    @Override
+    public void create(InputStream is, RubygemsFile file) {
+        Path target = toPath(file);
+        Path mutex = target.resolveSibling(target.getFileName() + ".lock");
+        Path source = target.resolveSibling("tmp." + Math.abs(random.nextLong()));
+        try {
+            createDirectory(source.getParent());
+            Files.createFile(mutex);
+            Files.copy(is, source);
+            Files.move(source, target, StandardCopyOption.ATOMIC_MOVE);
+            set(file, target);
+        } catch (FileAlreadyExistsException e) {
+            mutex = null;
+            file.markAsTempUnavailable();
+        } catch (IOException e) {
+            file.setException(e);
+        } finally {
+            if (mutex != null) {
+                mutex.toFile().delete();
+            }
+            source.toFile().delete();
+        }
+    }
 
-  @Override
-  public void retrieve(RubygemsFile file) {
-    file.resetState();
+    /**
+     * set the payload
+     *
+     * @param file which gets the payload
+     * @param path the path to the payload
+     * @throws MalformedURLException
+     */
+    private void set(RubygemsFile file, Path path) throws MalformedURLException {
+        file.set(new URLStreamLocation(path.toUri().toURL()));
+    }
 
-    Path path = toPath(file);
-    if (Files.notExists(path)) {
-      file.markAsNotExists();
+    @Override
+    public void update(InputStream is, RubygemsFile file) {
+        Path target = toPath(file);
+        Path source = target.resolveSibling("tmp." + Math.abs(random.nextLong()));
+        try {
+            createDirectory(source.getParent());
+            Files.copy(is, source);
+            Files.move(source, target, StandardCopyOption.ATOMIC_MOVE);
+            set(file, target);
+        } catch (IOException e) {
+            file.setException(e);
+        } finally {
+            source.toFile().delete();
+        }
     }
-    else {
-      try {
-        set(file, path);
-      }
-      catch (IOException e) {
-        file.setException(e);
-      }
-    }
-  }
 
-  @Override
-  public void retrieve(DependencyFile file) {
-    retrieve((RubygemsFile) file);
-  }
+    /**
+     * create a directory if it is not existing
+     */
+    protected void createDirectory(Path parent) throws IOException {
+        if (!Files.exists(parent)) {
+            Files.createDirectories(parent);
+        }
+    }
 
-  @Override
-  public void retrieve(SpecsIndexZippedFile file) {
-    retrieve((RubygemsFile) file);
-  }
+    @Override
+    public void delete(RubygemsFile file) {
+        try {
+            Files.deleteIfExists(toPath(file));
+        } catch (IOException e) {
+            file.setException(e);
+        }
+    }
 
-  @Override
-  public void retrieve(SpecsIndexFile file) {
-    SpecsIndexZippedFile zipped = file.zippedSpecsIndexFile();
-    retrieve(zipped);
-    if (zipped.notExists()) {
-      file.markAsNotExists();
+    @Override
+    public void memory(ByteArrayInputStream data, RubygemsFile file) {
+        file.set(new BytesStreamLocation(data));
     }
-    if (zipped.hasException()) {
-      file.setException(zipped.getException());
-    }
-    else {
-      file.set(new URLGzipStreamLocation((StreamLocation) zipped.get()));
-    }
-  }
 
-  @Override
-  public void create(InputStream is, RubygemsFile file) {
-    Path target = toPath(file);
-    Path mutex = target.resolveSibling(target.getFileName() + ".lock");
-    Path source = target.resolveSibling("tmp." + Math.abs(random.nextLong()));
-    try {
-      createDirectory(source.getParent());
-      Files.createFile(mutex);
-      Files.copy(is, source);
-      Files.move(source, target, StandardCopyOption.ATOMIC_MOVE);
-      set(file, target);
+    @Override
+    public void memory(String data, RubygemsFile file) {
+        memory(new ByteArrayInputStream(data.getBytes()), file);
     }
-    catch (FileAlreadyExistsException e) {
-      mutex = null;
-      file.markAsTempUnavailable();
-    }
-    catch (IOException e) {
-      file.setException(e);
-    }
-    finally {
-      if (mutex != null) {
-        mutex.toFile().delete();
-      }
-      source.toFile().delete();
-    }
-  }
 
-  /**
-   * set the payload
-   * @param file which gets the payload
-   * @param path the path to the payload
-   * @throws MalformedURLException
-   */
-  private void set(RubygemsFile file, Path path) throws MalformedURLException{
-    file.set(new URLStreamLocation(path.toUri().toURL()));
-  }
+    @Override
+    public String[] listDirectory(Directory dir) {
+        String[] list = toPath(dir).toFile().list();
+        if (list == null) {
+            list = new String[0];
+        }
+        return list;
+    }
 
-  @Override
-  public void update(InputStream is, RubygemsFile file) {
-    Path target = toPath(file);
-    Path source = target.resolveSibling("tmp." + Math.abs(random.nextLong()));
-    try {
-      createDirectory(source.getParent());
-      Files.copy(is, source);
-      Files.move(source, target, StandardCopyOption.ATOMIC_MOVE);
-      set(file, target);
+    static interface StreamLocation {
+        InputStream openStream() throws IOException;
     }
-    catch (IOException e) {
-      file.setException(e);
-    }
-    finally {
-      source.toFile().delete();
-    }
-  }
 
-  /**
-   * create a directory if it is not existing
-   */
-  protected void createDirectory(Path parent) throws IOException {
-    if (!Files.exists(parent)) {
-      Files.createDirectories(parent);
-    }
-  }
+    static class URLStreamLocation implements StreamLocation {
+        private URL url;
+        private Base64 base64 = new Base64();
 
-  @Override
-  public void delete(RubygemsFile file) {
-    try {
-      Files.deleteIfExists(toPath(file));
-    }
-    catch (IOException e) {
-      file.setException(e);
-    }
-  }
+        URLStreamLocation(URL url) {
+            this.url = url;
+        }
 
-  @Override
-  public void memory(ByteArrayInputStream data, RubygemsFile file) {
-    file.set(new BytesStreamLocation(data));
-  }
+        public URLConnection openConnection() throws IOException {
+            URLConnection con = url.openConnection();
+            String userinfo = this.url.getUserInfo();
+            if (userinfo != null) {
+                String basicAuth = "Basic " + base64.encodeBase64String(URLDecoder.decode(userinfo, "UTF-8").getBytes(StandardCharsets.UTF_8));
+                con.setRequestProperty("Authorization", basicAuth);
+            }
+            return con;
+        }
 
-  @Override
-  public void memory(String data, RubygemsFile file) {
-    memory(new ByteArrayInputStream(data.getBytes()), file);
-  }
-
-  @Override
-  public String[] listDirectory(Directory dir) {
-    String[] list = toPath(dir).toFile().list();
-    if (list == null) {
-      list = new String[0];
+        @Override
+        public InputStream openStream() throws IOException {
+            return openConnection().getInputStream();
+        }
     }
-    return list;
-  }
+
+    static class BytesStreamLocation implements StreamLocation {
+        private ByteArrayInputStream stream;
+
+        BytesStreamLocation(ByteArrayInputStream stream) {
+            this.stream = stream;
+        }
+
+        @Override
+        public InputStream openStream() throws IOException {
+            return stream;
+        }
+    }
+
+    static class URLGzipStreamLocation implements StreamLocation {
+        private StreamLocation stream;
+
+        URLGzipStreamLocation(StreamLocation stream) {
+            this.stream = stream;
+        }
+
+        @Override
+        public InputStream openStream() throws IOException {
+            return new GZIPInputStream(stream.openStream());
+        }
+    }
 }

@@ -12,12 +12,12 @@
  */
 package org.torquebox.mojo.rubygems.cuba.api;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.cuba.Cuba;
 import org.torquebox.mojo.rubygems.cuba.State;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * cuba for /api/v1/dependencies
@@ -25,54 +25,50 @@ import org.torquebox.mojo.rubygems.cuba.State;
  * @author christian
  */
 public class ApiV1DependenciesCuba
-    implements Cuba
-{
-  public static final String RUBY = ".ruby";
+        implements Cuba {
+    public static final String RUBY = ".ruby";
 
-  private static final Pattern FILE = Pattern.compile("^([^/]+)[.]" + RUBY.substring(1) + "$");
+    private static final Pattern FILE = Pattern.compile("^([^/]+)[.]" + RUBY.substring(1) + "$");
 
-  /**
-   * no sub-directories
-   *
-   * if there is query string with "gems" parameter then <code>BundlerApiFile</code> or
-   * <code>DependencyFile</code> gets created.
-   *
-   * otherwise all {name}.ruby will be created as <code>DependencyFile</code>
-   *
-   * the directory itself does not produce the directory listing - only the empty <code>Directory</code>
-   * object.
-   */
-  @Override
-  public RubygemsFile on(State state) {
-    if (state.name.isEmpty()) {
-      if (state.context.query.startsWith("gems=")) {
-        if (state.context.query.contains(",") || state.context.query.contains("%2C")) {
-          return state.context.factory.bundlerApiFile(state.context.query.substring(5));
+    /**
+     * no sub-directories
+     * <p>
+     * if there is query string with "gems" parameter then <code>BundlerApiFile</code> or
+     * <code>DependencyFile</code> gets created.
+     * <p>
+     * otherwise all {name}.ruby will be created as <code>DependencyFile</code>
+     * <p>
+     * the directory itself does not produce the directory listing - only the empty <code>Directory</code>
+     * object.
+     */
+    @Override
+    public RubygemsFile on(State state) {
+        if (state.name.isEmpty()) {
+            if (state.context.query.startsWith("gems=")) {
+                if (state.context.query.contains(",") || state.context.query.contains("%2C")) {
+                    return state.context.factory.bundlerApiFile(state.context.query.substring(5));
+                } else if (state.context.query.length() > 5) {
+                    return state.context.factory.dependencyFile(state.context.query.substring(5));
+                }
+            }
+            if (state.context.original.endsWith("/")) {
+                return state.context.factory.directory(state.context.original);
+            } else {
+                return state.context.factory.noContent(state.context.original);
+            }
         }
-        else if (state.context.query.length() > 5) {
-          return state.context.factory.dependencyFile(state.context.query.substring(5));
+        Matcher m;
+        if (state.name.length() == 1) {
+            if (state.path.length() < 2) {
+                return state.context.factory.directory(state.context.original);
+            }
+            m = FILE.matcher(state.path.substring(1));
+        } else {
+            m = FILE.matcher(state.name);
         }
-      }
-      if (state.context.original.endsWith("/")) {
-        return state.context.factory.directory(state.context.original);
-      }
-      else {
-        return state.context.factory.noContent(state.context.original);
-      }
+        if (m.matches()) {
+            return state.context.factory.dependencyFile(m.group(1));
+        }
+        return state.context.factory.notFound(state.context.original);
     }
-    Matcher m;
-    if (state.name.length() == 1) {
-      if (state.path.length() < 2) {
-        return state.context.factory.directory(state.context.original);
-      }
-      m = FILE.matcher(state.path.substring(1));
-    }
-    else {
-      m = FILE.matcher(state.name);
-    }
-    if (m.matches()) {
-      return state.context.factory.dependencyFile(m.group(1));
-    }
-    return state.context.factory.notFound(state.context.original);
-  }
 }

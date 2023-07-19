@@ -16,22 +16,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public abstract class AbstractMetadataBuilder
-{
-  private static final SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
-  static {
-    formater.setTimeZone(TimeZone.getTimeZone("UTC"));
-  }
+public abstract class AbstractMetadataBuilder {
+    private static final SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
 
-  private static String formatTimestamp(final long modified) {
-    synchronized (formater) {
-      return formater.format(new Date(modified));
+    static {
+        formater.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
-  }
 
-  protected final String timestamp;
+    protected final String timestamp;
 
-  public AbstractMetadataBuilder(long modified) {
-    timestamp = formatTimestamp(modified);
-  }
+    public AbstractMetadataBuilder(long modified) {
+        timestamp = formatTimestamp(modified);
+    }
+
+    private static String formatTimestamp(final long modified) {
+        synchronized (formater) {
+            return formater.format(new Date(modified));
+        }
+    }
 }

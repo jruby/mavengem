@@ -8,116 +8,110 @@ import java.util.Map;
 
 public class RubygemsFactory {
 
-    private static final Map<URL, Rubygems> facades = new HashMap<>();
-    static final URL NO_MIRROR;
-    static {
-	try {
-	    NO_MIRROR = new URL("http://example.com/no_mirror");
-	}
-	catch (MalformedURLException e) {
-	    throw new RuntimeException( "can not happen", e);
-	}
-    }
-    public static File DEFAULT_CACHEDIR = new File(System.getProperty("user.home"), ".mavengem");
-
     public static final String MAVENGEM_MIRROR = "mavengem.mirror";
     public static final String MAVENGEM_CACHEDIR = "mavengem.cachedir";
+    static final URL NO_MIRROR;
+    private static final Map<URL, Rubygems> facades = new HashMap<>();
+    public static File DEFAULT_CACHEDIR = new File(System.getProperty("user.home"), ".mavengem");
+    static RubygemsFactory factory;
+
+    static {
+        try {
+            NO_MIRROR = new URL("http://example.com/no_mirror");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("can not happen", e);
+        }
+    }
 
     // keep package access for testing
     final File cacheDir;
     final Map<URL, URL> mirrors;
     final URL catchAllMirror;
 
-    static RubygemsFactory factory;
-    public static synchronized RubygemsFactory defaultFactory()
-	    throws MalformedURLException {
-	if (factory == null) {
-	    factory = new RubygemsFactory(null, null, null, false);
-	}
-	return factory;
-    }
-
     public RubygemsFactory() throws MalformedURLException {
-	this(DEFAULT_CACHEDIR, NO_MIRROR, null);
+        this(DEFAULT_CACHEDIR, NO_MIRROR, null);
     }
 
     public RubygemsFactory(URL mirror) throws MalformedURLException {
-	this(DEFAULT_CACHEDIR, mirror, null);
+        this(DEFAULT_CACHEDIR, mirror, null);
     }
 
     public RubygemsFactory(Map<URL, URL> mirrors) throws MalformedURLException {
-	this(DEFAULT_CACHEDIR, NO_MIRROR, mirrors);
+        this(DEFAULT_CACHEDIR, NO_MIRROR, mirrors);
     }
 
     public RubygemsFactory(File cacheDir) throws MalformedURLException {
-	this(cacheDir, NO_MIRROR, null);
+        this(cacheDir, NO_MIRROR, null);
     }
 
     public RubygemsFactory(File cacheDir, URL mirror) throws MalformedURLException {
-	this(cacheDir, mirror, null);
+        this(cacheDir, mirror, null);
     }
 
     public RubygemsFactory(File cacheDir, Map<URL, URL> mirrors) throws MalformedURLException {
-	this(cacheDir, NO_MIRROR, mirrors);
+        this(cacheDir, NO_MIRROR, mirrors);
     }
 
     private RubygemsFactory(File cacheDir, URL mirror, Map<URL, URL> mirrors)
-	    throws MalformedURLException {
-	this(cacheDir, mirror, mirrors, true);
+            throws MalformedURLException {
+        this(cacheDir, mirror, mirrors, true);
     }
 
     private RubygemsFactory(File cacheDir, URL mirror, Map<URL, URL> mirrors, boolean check)
-	    throws MalformedURLException {
-	if (check) {
-	    if (cacheDir == null) {
-		throw new IllegalArgumentException("cache directory can not be null");
-	    }
-	    if (mirror == null) {
-		throw new IllegalArgumentException("mirror can not be null");
-	    }
-	}
-	if (mirror != null) {
-	    this.catchAllMirror = mirror;
-	}
-	else {
-	    if (System.getProperty(MAVENGEM_MIRROR) != null) {
-		this.catchAllMirror = new URL(System.getProperty(MAVENGEM_MIRROR));
-	    }
-	    else {
-		this.catchAllMirror = NO_MIRROR;
-	    }
-	}
-	this.mirrors = mirrors == null ? null : new HashMap<>(mirrors);
-	if (cacheDir != null) {
-	    this.cacheDir = cacheDir;
-	}
-	else if (System.getProperty(MAVENGEM_CACHEDIR) != null) {
-	    this.cacheDir = new File(System.getProperty(MAVENGEM_CACHEDIR));
-	}
-	else {
-	    this.cacheDir = DEFAULT_CACHEDIR;
-	}
+            throws MalformedURLException {
+        if (check) {
+            if (cacheDir == null) {
+                throw new IllegalArgumentException("cache directory can not be null");
+            }
+            if (mirror == null) {
+                throw new IllegalArgumentException("mirror can not be null");
+            }
+        }
+        if (mirror != null) {
+            this.catchAllMirror = mirror;
+        } else {
+            if (System.getProperty(MAVENGEM_MIRROR) != null) {
+                this.catchAllMirror = new URL(System.getProperty(MAVENGEM_MIRROR));
+            } else {
+                this.catchAllMirror = NO_MIRROR;
+            }
+        }
+        this.mirrors = mirrors == null ? null : new HashMap<>(mirrors);
+        if (cacheDir != null) {
+            this.cacheDir = cacheDir;
+        } else if (System.getProperty(MAVENGEM_CACHEDIR) != null) {
+            this.cacheDir = new File(System.getProperty(MAVENGEM_CACHEDIR));
+        } else {
+            this.cacheDir = DEFAULT_CACHEDIR;
+        }
+    }
+
+    public static synchronized RubygemsFactory defaultFactory()
+            throws MalformedURLException {
+        if (factory == null) {
+            factory = new RubygemsFactory(null, null, null, false);
+        }
+        return factory;
     }
 
     public Rubygems getOrCreate(URL url)
             throws MalformedURLException {
-	if (this.catchAllMirror != NO_MIRROR) {
-	    url = this.catchAllMirror;
-	}
-	else if (this.mirrors != null && this.mirrors.containsKey(url)) {
-	    url = mirrors.get(url);
-	}
+        if (this.catchAllMirror != NO_MIRROR) {
+            url = this.catchAllMirror;
+        } else if (this.mirrors != null && this.mirrors.containsKey(url)) {
+            url = mirrors.get(url);
+        }
 
-	// FIXME the cachedir when coming from the facades map
-	// FIXME can be different as map get shared between factories
-	synchronized(facades) {
-	    Rubygems result = facades.get(url);
-	    if (result == null) {
-		result = new Rubygems(url, this.cacheDir);
-		facades.put(url, result);
-	    }
-	    return result;
-	}
+        // FIXME the cachedir when coming from the facades map
+        // FIXME can be different as map get shared between factories
+        synchronized (facades) {
+            Rubygems result = facades.get(url);
+            if (result == null) {
+                result = new Rubygems(url, this.cacheDir);
+                facades.put(url, result);
+            }
+            return result;
+        }
     }
 }
 

@@ -19,20 +19,19 @@ package org.torquebox.mojo.rubygems;
  * @author christian
  */
 public class ApiV1File
-    extends RubygemsFile
-{
-  ApiV1File(RubygemsFileFactory factory, String storage, String remote, String name) {
-    super(factory, FileType.API_V1, storage, remote, name);
-    set(null);// no payload
-  }
+        extends RubygemsFile {
+    ApiV1File(RubygemsFileFactory factory, String storage, String remote, String name) {
+        super(factory, FileType.API_V1, storage, remote, name);
+        set(null);// no payload
+    }
 
-  /**
-   * convenient method to convert a gem-filename into <code>GemFile</code>
-   *
-   * @param filename of the gem
-   * @return GemFile
-   */
-  public GemFile gem(String filename) {
-    return factory.gemFile(filename.replaceFirst(".gem$", ""));
-  }
+    /**
+     * convenient method to convert a gem-filename into <code>GemFile</code>
+     *
+     * @param filename of the gem
+     * @return GemFile
+     */
+    public GemFile gem(String filename) {
+        return factory.gemFile(filename.replaceFirst(".gem$", ""));
+    }
 }

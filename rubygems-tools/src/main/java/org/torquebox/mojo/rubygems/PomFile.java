@@ -13,39 +13,37 @@
 package org.torquebox.mojo.rubygems;
 
 public class PomFile
-    extends RubygemsFile
-{
-  private final String version;
+        extends RubygemsFile {
+    private final String version;
 
-  private final boolean snapshot;
+    private final boolean snapshot;
 
-  PomFile(RubygemsFileFactory factory, String path,
-          String name, String version, boolean snapshot)
-  {
-    super(factory, FileType.POM, path, path, name);
-    this.version = version;
-    this.snapshot = snapshot;
-  }
+    PomFile(RubygemsFileFactory factory, String path,
+            String name, String version, boolean snapshot) {
+        super(factory, FileType.POM, path, path, name);
+        this.version = version;
+        this.snapshot = snapshot;
+    }
 
-  public String version() {
-    return version;
-  }
+    public String version() {
+        return version;
+    }
 
-  public boolean isSnapshot() {
-    return snapshot;
-  }
+    public boolean isSnapshot() {
+        return snapshot;
+    }
 
-  public GemspecFile gemspec(DependencyData dependencies) {
-    String platform = dependencies.platform(version());
-    return factory.gemspecFile(name(), version(), platform);
-  }
+    public GemspecFile gemspec(DependencyData dependencies) {
+        String platform = dependencies.platform(version());
+        return factory.gemspecFile(name(), version(), platform);
+    }
 
-  public GemFile gem(DependencyData dependencies) {
-    String platform = dependencies.platform(version());
-    return factory.gemFile(name(), version(), platform);
-  }
+    public GemFile gem(DependencyData dependencies) {
+        String platform = dependencies.platform(version());
+        return factory.gemFile(name(), version(), platform);
+    }
 
-  public DependencyFile dependency() {
-    return factory.dependencyFile(name());
-  }
+    public DependencyFile dependency() {
+        return factory.dependencyFile(name());
+    }
 }

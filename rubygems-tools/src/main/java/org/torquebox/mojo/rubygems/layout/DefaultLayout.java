@@ -12,10 +12,10 @@
  */
 package org.torquebox.mojo.rubygems.layout;
 
-import java.io.InputStream;
-
 import org.torquebox.mojo.rubygems.DefaultRubygemsFileFactory;
 import org.torquebox.mojo.rubygems.RubygemsFile;
+
+import java.io.InputStream;
 
 /**
  * adds dummy implementation for {@link Layout#addGem(InputStream, RubygemsFile)}
@@ -23,11 +23,10 @@ import org.torquebox.mojo.rubygems.RubygemsFile;
  * @author christian
  */
 public class DefaultLayout
-    extends DefaultRubygemsFileFactory
-    implements Layout
-{
-  @Override
-  public void addGem(InputStream is, RubygemsFile file) {
-    throw new RuntimeException("not implemented !");
-  }
+        extends DefaultRubygemsFileFactory
+        implements Layout {
+    @Override
+    public void addGem(InputStream is, RubygemsFile file) {
+        throw new RuntimeException("not implemented !");
+    }
 }

@@ -17,23 +17,22 @@ import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.RubygemsFile;
 
 public interface ProxyStorage
-    extends Storage
-{
-  /**
-   * retrieve the payload of the given file.
-   */
-  void retrieve(BundlerApiFile file);
+        extends Storage {
+    /**
+     * retrieve the payload of the given file.
+     */
+    void retrieve(BundlerApiFile file);
 
-  /**
-   * checks whether the underlying file on the storage is expired.
-   *
-   * note: dependency files are volatile can be cached only for a short periods
-   * (when they come from https://rubygems.org).
-   */
-  boolean isExpired(DependencyFile file);
+    /**
+     * checks whether the underlying file on the storage is expired.
+     * <p>
+     * note: dependency files are volatile can be cached only for a short periods
+     * (when they come from https://rubygems.org).
+     */
+    boolean isExpired(DependencyFile file);
 
-  /**
-   * expire the given file now, i.e. set the last modified timestamp to 0
-   */
-  void expireNow(RubygemsFile file);
+    /**
+     * expire the given file now, i.e. set the last modified timestamp to 0
+     */
+    void expireNow(RubygemsFile file);
 }

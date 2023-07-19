@@ -12,55 +12,54 @@
  */
 package org.torquebox.mojo.rubygems;
 
+import org.jruby.embed.ScriptingContainer;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.jruby.embed.ScriptingContainer;
 
 /**
  * Encapsulates all JRuby related containers and helpers into one class and manages their lifecycle. Hence,
  * this helper is reusable as in test rules, but also in other constructs.
  */
-class TestJRubyContainer
-{
-  private ScriptingContainer scriptingContainer;
+class TestJRubyContainer {
+    private ScriptingContainer scriptingContainer;
 
-  private RubygemsGateway rubygemsGateway;
+    private RubygemsGateway rubygemsGateway;
 
-  public void start() {
-    scriptingContainer = createScriptingContainer();
-    rubygemsGateway = new DefaultRubygemsGateway(scriptingContainer);
-  }
-
-  public void stop() {
-    if (rubygemsGateway != null) {
-      rubygemsGateway.terminate();
+    public void start() {
+        scriptingContainer = createScriptingContainer();
+        rubygemsGateway = new DefaultRubygemsGateway(scriptingContainer);
     }
-    rubygemsGateway = null;
-    scriptingContainer = null;
-  }
 
-  public ScriptingContainer getScriptingContainer() {
-    return scriptingContainer;
-  }
+    public void stop() {
+        if (rubygemsGateway != null) {
+            rubygemsGateway.terminate();
+        }
+        rubygemsGateway = null;
+        scriptingContainer = null;
+    }
 
-  public RubygemsGateway getRubygemsGateway() {
-    return rubygemsGateway;
-  }
+    public ScriptingContainer getScriptingContainer() {
+        return scriptingContainer;
+    }
 
-  private ScriptingContainer createScriptingContainer() {
-    final String rubygems = new File("target/test-classes/rubygems").getAbsolutePath();
-    final String gemfile = new File("target/test-classes/it/Gemfile").getAbsolutePath();
-    final Map<String, String> env = new HashMap<String, String>();
-    env.put("GEM_HOME", rubygems);
-    env.put("GEM_PATH", rubygems);
-    env.put("BUNDLE_GEMFILE", gemfile);
-    env.put("PATH", ""); // bundler needs a PATH set
-    env.put("DEBUG", "true");
+    public RubygemsGateway getRubygemsGateway() {
+        return rubygemsGateway;
+    }
 
-    final ScriptingContainer scriptingContainer = new ScriptingContainer();
-    scriptingContainer.setEnvironment(env);
-    return scriptingContainer;
-  }
+    private ScriptingContainer createScriptingContainer() {
+        final String rubygems = new File("target/test-classes/rubygems").getAbsolutePath();
+        final String gemfile = new File("target/test-classes/it/Gemfile").getAbsolutePath();
+        final Map<String, String> env = new HashMap<String, String>();
+        env.put("GEM_HOME", rubygems);
+        env.put("GEM_PATH", rubygems);
+        env.put("BUNDLE_GEMFILE", gemfile);
+        env.put("PATH", ""); // bundler needs a PATH set
+        env.put("DEBUG", "true");
+
+        final ScriptingContainer scriptingContainer = new ScriptingContainer();
+        scriptingContainer.setEnvironment(env);
+        return scriptingContainer;
+    }
 }

@@ -14,12 +14,11 @@ package org.torquebox.mojo.rubygems.cuba;
 
 import org.torquebox.mojo.rubygems.RubygemsFile;
 
-public interface Cuba
-{
-  /**
-   * create the RubygemsFile for the given <code>State</code>
-   *
-   * @return RubygemsFile
-   */
-  RubygemsFile on(State state);
+public interface Cuba {
+    /**
+     * create the RubygemsFile for the given <code>State</code>
+     *
+     * @return RubygemsFile
+     */
+    RubygemsFile on(State state);
 }

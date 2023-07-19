@@ -17,23 +17,24 @@ import java.io.InputStream;
 
 /**
  * helper to merge several specs-index files into one
- * 
- * @author christian
  *
+ * @author christian
  */
 public interface MergeSpecsHelper {
-  
-  /**
-   * add the specs data to the MergeSpecsHelper object
-   * @param specsData as <code>InputStream</code>
-   */
-  void add(InputStream specsData);
 
-  /**
-   * marshal ruby object with 
-   * @param latest whether of not
-   * @return ByteArrayInputStream of binary data
-   */
-  ByteArrayInputStream getInputStream(boolean latest);
+    /**
+     * add the specs data to the MergeSpecsHelper object
+     *
+     * @param specsData as <code>InputStream</code>
+     */
+    void add(InputStream specsData);
+
+    /**
+     * marshal ruby object with
+     *
+     * @param latest whether of not
+     * @return ByteArrayInputStream of binary data
+     */
+    ByteArrayInputStream getInputStream(boolean latest);
 
 }

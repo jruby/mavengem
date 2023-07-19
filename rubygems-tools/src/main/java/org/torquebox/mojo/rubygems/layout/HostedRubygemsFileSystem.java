@@ -21,12 +21,11 @@ import org.torquebox.mojo.rubygems.cuba.DefaultRubygemsFileSystem;
  * @author christian
  */
 public class HostedRubygemsFileSystem
-    extends DefaultRubygemsFileSystem
-{
-  public HostedRubygemsFileSystem(RubygemsGateway gateway, Storage store) {
-    super(new DefaultLayout(),
-        new HostedGETLayout(gateway, store),
-        new HostedPOSTLayout(gateway, store),
-        new HostedDELETELayout(gateway, store));
-  }
+        extends DefaultRubygemsFileSystem {
+    public HostedRubygemsFileSystem(RubygemsGateway gateway, Storage store) {
+        super(new DefaultLayout(),
+                new HostedGETLayout(gateway, store),
+                new HostedPOSTLayout(gateway, store),
+                new HostedDELETELayout(gateway, store));
+    }
 }

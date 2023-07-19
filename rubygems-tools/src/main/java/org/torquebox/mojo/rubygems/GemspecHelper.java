@@ -12,55 +12,57 @@
  */
 package org.torquebox.mojo.rubygems;
 
-import java.io.ByteArrayInputStream;
-
 import org.jruby.runtime.builtin.IRubyObject;
+
+import java.io.ByteArrayInputStream;
 
 /**
  * wrapper around a Gem::Specification ruby object with some extra
  * helper methods and only delegate a few needed methods to the underlying object.
- * 
- * @author christian
  *
+ * @author christian
  */
-public interface GemspecHelper
-{
+public interface GemspecHelper {
 
-  /**
-   * the filename of associated gem
-   * @return filename
-   */
-  String filename();
-  
-  /**
-   * get name of gem
-   * @return name of the gem
-   */
-  String name();
-  
-  /**
-   * get gemspec object
-   * @return the wrapped Gem::Specification object
-   */
-  IRubyObject gemspec();
-  
-  /**
-   * create pom XML out of the gemspec used for gem-artifacts.
-   * gem versions with alphabets are "prereleased" versions and
-   * the closet to them are snapshot versions in maven. but some
-   * released gems do have depdendencies to prereleased version, so
-   * both SNAPSHOT and non-SNAPSHOT version of prereleased gem-artifacts
-   * need to be provided. 
-   * 
-   * @param snapshot whether to use snapshot version
-   * @return pom XML
-   */
-  String pom(boolean snapshot);
-  
-  /**
-   * marshals the gemspec and deflate it and turns it into a ByteArrayInputStream.
-   * that is the format XYZ.gemspec.rz of a rubygems repo.
-   * @return the stream to binray data
-   */
-  ByteArrayInputStream getRzInputStream();
+    /**
+     * the filename of associated gem
+     *
+     * @return filename
+     */
+    String filename();
+
+    /**
+     * get name of gem
+     *
+     * @return name of the gem
+     */
+    String name();
+
+    /**
+     * get gemspec object
+     *
+     * @return the wrapped Gem::Specification object
+     */
+    IRubyObject gemspec();
+
+    /**
+     * create pom XML out of the gemspec used for gem-artifacts.
+     * gem versions with alphabets are "prereleased" versions and
+     * the closet to them are snapshot versions in maven. but some
+     * released gems do have depdendencies to prereleased version, so
+     * both SNAPSHOT and non-SNAPSHOT version of prereleased gem-artifacts
+     * need to be provided.
+     *
+     * @param snapshot whether to use snapshot version
+     * @return pom XML
+     */
+    String pom(boolean snapshot);
+
+    /**
+     * marshals the gemspec and deflate it and turns it into a ByteArrayInputStream.
+     * that is the format XYZ.gemspec.rz of a rubygems repo.
+     *
+     * @return the stream to binray data
+     */
+    ByteArrayInputStream getRzInputStream();
 }

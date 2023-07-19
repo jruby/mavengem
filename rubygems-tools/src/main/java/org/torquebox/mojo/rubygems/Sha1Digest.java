@@ -20,50 +20,53 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Sha1Digest {
 
-  private final MessageDigest digest;
+    private final MessageDigest digest;
 
-  /**
-   * new Sha1Digest
-   */
-  public Sha1Digest() {
-    try {
-      digest = MessageDigest.getInstance("SHA1");
-    } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException("no SHA1 digest on system");
+    /**
+     * new Sha1Digest
+     */
+    public Sha1Digest() {
+        try {
+            digest = MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("no SHA1 digest on system");
+        }
     }
-  }
 
-  /**
-   * update the underlying digest
-   * @param b byte to be updated
-   */
-  public void update(byte b) {
-    digest.update(b);
-  }
-
-  /**
-   * update the underlying digest
-   * @param bytes to be updated
-   */
-  public void update(byte[] bytes) {
-    digest.update(bytes);
-  }
-
-  /**
-   * finalized the digest and produces a hex-dump
-   * @return hex dump of the digest
-   */
-  public String hexDigest() {
-    StringBuilder dig = new StringBuilder();
-    for (byte b : digest.digest()) {
-      if (b < 0) {
-        dig.append(Integer.toHexString(256 + b));
-      } else if (b < 16) {
-        dig.append("0").append(Integer.toHexString(b));
-      } else {
-        dig.append(Integer.toHexString(b));
-      }
+    /**
+     * update the underlying digest
+     *
+     * @param b byte to be updated
+     */
+    public void update(byte b) {
+        digest.update(b);
     }
-    return dig.toString();
-  }
+
+    /**
+     * update the underlying digest
+     *
+     * @param bytes to be updated
+     */
+    public void update(byte[] bytes) {
+        digest.update(bytes);
+    }
+
+    /**
+     * finalized the digest and produces a hex-dump
+     *
+     * @return hex dump of the digest
+     */
+    public String hexDigest() {
+        StringBuilder dig = new StringBuilder();
+        for (byte b : digest.digest()) {
+            if (b < 0) {
+                dig.append(Integer.toHexString(256 + b));
+            } else if (b < 16) {
+                dig.append("0").append(Integer.toHexString(b));
+            } else {
+                dig.append(Integer.toHexString(b));
+            }
+        }
+        return dig.toString();
+    }
 }

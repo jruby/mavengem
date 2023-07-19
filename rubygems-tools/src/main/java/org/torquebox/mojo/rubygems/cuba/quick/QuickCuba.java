@@ -22,29 +22,28 @@ import org.torquebox.mojo.rubygems.cuba.State;
  * @author christian
  */
 public class QuickCuba
-    implements Cuba
-{
-  public static final String MARSHAL_4_8 = "Marshal.4.8";
+        implements Cuba {
+    public static final String MARSHAL_4_8 = "Marshal.4.8";
 
-  private final Cuba quickMarshal;
+    private final Cuba quickMarshal;
 
-  public QuickCuba(Cuba cuba) {
-    this.quickMarshal = cuba;
-  }
-
-  /**
-   * directory [Marshal.4.8]
-   */
-  @Override
-  public RubygemsFile on(State state) {
-    switch (state.name) {
-      case MARSHAL_4_8:
-        return state.nested(quickMarshal);
-      case "":
-        return state.context.factory.directory(state.context.original,
-            MARSHAL_4_8);
-      default:
-        return state.context.factory.notFound(state.context.original);
+    public QuickCuba(Cuba cuba) {
+        this.quickMarshal = cuba;
     }
-  }
+
+    /**
+     * directory [Marshal.4.8]
+     */
+    @Override
+    public RubygemsFile on(State state) {
+        switch (state.name) {
+            case MARSHAL_4_8:
+                return state.nested(quickMarshal);
+            case "":
+                return state.context.factory.directory(state.context.original,
+                        MARSHAL_4_8);
+            default:
+                return state.context.factory.notFound(state.context.original);
+        }
+    }
 }

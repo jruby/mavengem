@@ -12,45 +12,42 @@
  */
 package org.torquebox.mojo.rubygems;
 
-import java.io.IOException;
-
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
-
 import org.apache.commons.io.IOUtils;
-
 import org.jruby.embed.ScriptingContainer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
+
+import java.io.IOException;
 
 /**
  * Support class that needs heavy-weight {@link TestJRubyContainer} to have available in places like constructor.
  * The container is manager "per-class" of the test.
  */
 public abstract class RubyScriptingTestSupport
-    extends TestSupport
-{
-  private static TestJRubyContainer testScriptingContainer = new TestJRubyContainer();
+        extends TestSupport {
+    private static TestJRubyContainer testScriptingContainer = new TestJRubyContainer();
 
-  @BeforeClass
-  public static void createContainer() {
-    testScriptingContainer.start();
-  }
+    @BeforeClass
+    public static void createContainer() {
+        testScriptingContainer.start();
+    }
 
-  @AfterClass
-  public static void terminateContainer() {
-    testScriptingContainer.stop();
-  }
+    @AfterClass
+    public static void terminateContainer() {
+        testScriptingContainer.stop();
+    }
 
-  protected ScriptingContainer scriptingContainer() {
-    return testScriptingContainer.getScriptingContainer();
-  }
+    protected ScriptingContainer scriptingContainer() {
+        return testScriptingContainer.getScriptingContainer();
+    }
 
-  protected RubygemsGateway rubygemsGateway() {
-    return testScriptingContainer.getRubygemsGateway();
-  }
+    protected RubygemsGateway rubygemsGateway() {
+        return testScriptingContainer.getRubygemsGateway();
+    }
 
-  protected String loadPomResource(String name) throws IOException {
-    return IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(name))
-        .replaceFirst("(?s)^.*<project>", "<project>");
-  }
+    protected String loadPomResource(String name) throws IOException {
+        return IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(name))
+                .replaceFirst("(?s)^.*<project>", "<project>");
+    }
 }

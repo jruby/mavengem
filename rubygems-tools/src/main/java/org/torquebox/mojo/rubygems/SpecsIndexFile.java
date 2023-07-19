@@ -18,26 +18,25 @@ package org.torquebox.mojo.rubygems;
  * @author christian
  */
 public class SpecsIndexFile
-    extends RubygemsFile
-{
-  private final SpecsIndexType specsType;
+        extends RubygemsFile {
+    private final SpecsIndexType specsType;
 
-  SpecsIndexFile(RubygemsFileFactory factory, String path, String name) {
-    super(factory, FileType.SPECS_INDEX, path, path, name);
-    specsType = SpecsIndexType.fromFilename(path);
-  }
+    SpecsIndexFile(RubygemsFileFactory factory, String path, String name) {
+        super(factory, FileType.SPECS_INDEX, path, path, name);
+        specsType = SpecsIndexType.fromFilename(path);
+    }
 
-  /**
-   * retrieve the SpecsIndexType
-   */
-  public SpecsIndexType specsType() {
-    return specsType;
-  }
+    /**
+     * retrieve the SpecsIndexType
+     */
+    public SpecsIndexType specsType() {
+        return specsType;
+    }
 
-  /**
-   * get the gzipped version of this file
-   */
-  public SpecsIndexZippedFile zippedSpecsIndexFile() {
-    return factory.specsIndexZippedFile(name());
-  }
+    /**
+     * get the gzipped version of this file
+     */
+    public SpecsIndexZippedFile zippedSpecsIndexFile() {
+        return factory.specsIndexZippedFile(name());
+    }
 }

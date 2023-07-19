@@ -12,12 +12,12 @@
  */
 package org.torquebox.mojo.rubygems.cuba.gems;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.cuba.Cuba;
 import org.torquebox.mojo.rubygems.cuba.State;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * cuba for /gems
@@ -25,38 +25,36 @@ import org.torquebox.mojo.rubygems.cuba.State;
  * @author christian
  */
 public class GemsCuba
-    implements Cuba
-{
-  public static final String GEM = ".gem";
+        implements Cuba {
+    public static final String GEM = ".gem";
 
-  private static final Pattern FILE = Pattern.compile("^([^/]/)?([^/]+)" + GEM + "$");
+    private static final Pattern FILE = Pattern.compile("^([^/]/)?([^/]+)" + GEM + "$");
 
-  /**
-   * no sub-directories
-   *
-   * create <code>GemFile</code>s for {name}-{version}.gem or {first-char-of-name}/{name}-{version}.gem
-   *
-   * the directory itself does not produce the directory listing - only the empty <code>Directory</code>
-   * object.
-   */
-  @Override
-  public RubygemsFile on(State state) {
-    Matcher m;
-    if (state.name.length() == 1) {
-      if (state.path.length() < 2) {
-        return state.context.factory.directory(state.context.original);
-      }
-      m = FILE.matcher(state.path.substring(1));
+    /**
+     * no sub-directories
+     * <p>
+     * create <code>GemFile</code>s for {name}-{version}.gem or {first-char-of-name}/{name}-{version}.gem
+     * <p>
+     * the directory itself does not produce the directory listing - only the empty <code>Directory</code>
+     * object.
+     */
+    @Override
+    public RubygemsFile on(State state) {
+        Matcher m;
+        if (state.name.length() == 1) {
+            if (state.path.length() < 2) {
+                return state.context.factory.directory(state.context.original);
+            }
+            m = FILE.matcher(state.path.substring(1));
+        } else {
+            m = FILE.matcher(state.name);
+        }
+        if (m.matches()) {
+            return state.context.factory.gemFile(m.group(2));
+        }
+        if (state.name.isEmpty()) {
+            return state.context.factory.directory(state.context.original);
+        }
+        return state.context.factory.notFound(state.context.original);
     }
-    else {
-      m = FILE.matcher(state.name);
-    }
-    if (m.matches()) {
-      return state.context.factory.gemFile(m.group(2));
-    }
-    if (state.name.isEmpty()) {
-      return state.context.factory.directory(state.context.original);
-    }
-    return state.context.factory.notFound(state.context.original);
-  }
 }

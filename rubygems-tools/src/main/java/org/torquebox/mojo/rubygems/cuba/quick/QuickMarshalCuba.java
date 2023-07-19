@@ -12,12 +12,12 @@
  */
 package org.torquebox.mojo.rubygems.cuba.quick;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.cuba.Cuba;
 import org.torquebox.mojo.rubygems.cuba.State;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * cuba for /quick/Marshal.4.8
@@ -25,38 +25,36 @@ import org.torquebox.mojo.rubygems.cuba.State;
  * @author christian
  */
 public class QuickMarshalCuba
-    implements Cuba
-{
-  public static final String GEMSPEC_RZ = ".gemspec.rz";
+        implements Cuba {
+    public static final String GEMSPEC_RZ = ".gemspec.rz";
 
-  private static Pattern FILE = Pattern.compile("^([^/]/)?([^/]+)" + GEMSPEC_RZ + "$");
+    private static Pattern FILE = Pattern.compile("^([^/]/)?([^/]+)" + GEMSPEC_RZ + "$");
 
-  /**
-   * no sub-directories
-   *
-   * create <code>GemspecFile</code>s for {name}-{version}.gemspec.rz or {first-char-of-name}/{name}-{version}.gemspec.rz
-   *
-   * the directory itself does not produce the directory listing - only the empty <code>Directory</code>
-   * object.
-   */
-  @Override
-  public RubygemsFile on(State state) {
-    Matcher m;
-    if (state.name.length() == 1) {
-      if (state.path.length() < 2) {
-        return state.context.factory.directory(state.context.original);
-      }
-      m = FILE.matcher(state.path.substring(1));
+    /**
+     * no sub-directories
+     * <p>
+     * create <code>GemspecFile</code>s for {name}-{version}.gemspec.rz or {first-char-of-name}/{name}-{version}.gemspec.rz
+     * <p>
+     * the directory itself does not produce the directory listing - only the empty <code>Directory</code>
+     * object.
+     */
+    @Override
+    public RubygemsFile on(State state) {
+        Matcher m;
+        if (state.name.length() == 1) {
+            if (state.path.length() < 2) {
+                return state.context.factory.directory(state.context.original);
+            }
+            m = FILE.matcher(state.path.substring(1));
+        } else {
+            m = FILE.matcher(state.name);
+        }
+        if (m.matches()) {
+            return state.context.factory.gemspecFile(m.group(2));
+        }
+        if (state.name.isEmpty()) {
+            return state.context.factory.directory(state.context.original);
+        }
+        return state.context.factory.notFound(state.context.original);
     }
-    else {
-      m = FILE.matcher(state.name);
-    }
-    if (m.matches()) {
-      return state.context.factory.gemspecFile(m.group(2));
-    }
-    if (state.name.isEmpty()) {
-      return state.context.factory.directory(state.context.original);
-    }
-    return state.context.factory.notFound(state.context.original);
-  }
 }

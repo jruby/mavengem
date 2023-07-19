@@ -16,12 +16,11 @@ import org.torquebox.mojo.rubygems.RubygemsGateway;
 import org.torquebox.mojo.rubygems.cuba.DefaultRubygemsFileSystem;
 
 public class ProxiedRubygemsFileSystem
-    extends DefaultRubygemsFileSystem
-{
-  public ProxiedRubygemsFileSystem(RubygemsGateway gateway, ProxyStorage store) {
-    super(new DefaultLayout(),
-        new ProxiedGETLayout(gateway, store),
-        null, // no POST allowed
-        new DELETELayout(gateway, store));
-  }
+        extends DefaultRubygemsFileSystem {
+    public ProxiedRubygemsFileSystem(RubygemsGateway gateway, ProxyStorage store) {
+        super(new DefaultLayout(),
+                new ProxiedGETLayout(gateway, store),
+                null, // no POST allowed
+                new DELETELayout(gateway, store));
+    }
 }

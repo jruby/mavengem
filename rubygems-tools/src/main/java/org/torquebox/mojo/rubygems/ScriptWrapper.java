@@ -14,34 +14,33 @@ package org.torquebox.mojo.rubygems;
 
 import org.jruby.embed.ScriptingContainer;
 
-public abstract class ScriptWrapper
-{
-  protected final ScriptingContainer scriptingContainer;
+public abstract class ScriptWrapper {
+    protected final ScriptingContainer scriptingContainer;
 
-  private final Object object;
+    private final Object object;
 
-  public ScriptWrapper(ScriptingContainer scriptingContainer, Object object) {
-    this.scriptingContainer = scriptingContainer;
-    this.object = object;
-  }
+    public ScriptWrapper(ScriptingContainer scriptingContainer, Object object) {
+        this.scriptingContainer = scriptingContainer;
+        this.object = object;
+    }
 
-  protected void callMethod(String methodName, Object singleArg) {
-    scriptingContainer.callMethod(object, methodName, singleArg);
-  }
+    protected void callMethod(String methodName, Object singleArg) {
+        scriptingContainer.callMethod(object, methodName, singleArg);
+    }
 
-  protected <T> T callMethod(String methodName, Object singleArg, Class<T> returnType) {
-    return scriptingContainer.callMethod(object, methodName, singleArg, returnType);
-  }
+    protected <T> T callMethod(String methodName, Object singleArg, Class<T> returnType) {
+        return scriptingContainer.callMethod(object, methodName, singleArg, returnType);
+    }
 
-  protected <T> T callMethod(String methodName, Object[] args, Class<T> returnType) {
-    return scriptingContainer.callMethod(object, methodName, args, returnType);
-  }
+    protected <T> T callMethod(String methodName, Object[] args, Class<T> returnType) {
+        return scriptingContainer.callMethod(object, methodName, args, returnType);
+    }
 
-  protected <T> T callMethod(String methodName, Class<T> returnType) {
-    return scriptingContainer.callMethod(object, methodName, returnType);
-  }
+    protected <T> T callMethod(String methodName, Class<T> returnType) {
+        return scriptingContainer.callMethod(object, methodName, returnType);
+    }
 
-  protected void callMethod(String methodName) {
-    scriptingContainer.callMethod(object, methodName);
-  }
+    protected void callMethod(String methodName) {
+        scriptingContainer.callMethod(object, methodName);
+    }
 }

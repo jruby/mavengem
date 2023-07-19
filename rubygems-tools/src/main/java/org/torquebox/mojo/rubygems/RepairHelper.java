@@ -14,32 +14,32 @@ package org.torquebox.mojo.rubygems;
 
 
 /**
- * helper  to purge broken files or to recreate the complete specs index 
+ * helper  to purge broken files or to recreate the complete specs index
  * of hosted rubygems repository.
- * 
+ *
  * @author christian
  */
 public interface RepairHelper {
-  
-  /**
-   * recreate the complete rubygems specs index
-   * 
-   * @param directory where the repository is located
-   */
-  void recreateRubygemsIndex( String directory );
-  
-  /**
-   * purge broken dependency files
-   *
-   * @param directory where the repository is located
-   */
-  void purgeBrokenDepencencyFiles( String directory );
-  
-  /**
-   *  purge broken gemspec files
-   *  
-   * @param directory where the repository is located
-   */
-  void purgeBrokenGemspecFiles( String directory );
-  
+
+    /**
+     * recreate the complete rubygems specs index
+     *
+     * @param directory where the repository is located
+     */
+    void recreateRubygemsIndex(String directory);
+
+    /**
+     * purge broken dependency files
+     *
+     * @param directory where the repository is located
+     */
+    void purgeBrokenDepencencyFiles(String directory);
+
+    /**
+     * purge broken gemspec files
+     *
+     * @param directory where the repository is located
+     */
+    void purgeBrokenGemspecFiles(String directory);
+
 }

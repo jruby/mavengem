@@ -22,16 +22,15 @@ import org.torquebox.mojo.rubygems.cuba.State;
  * @author christian
  */
 public class MavenReleasesRubygemsCuba
-    implements Cuba
-{
-  /**
-   * directories one for each gem (name without version)
-   */
-  @Override
-  public RubygemsFile on(State state) {
-    if (state.name.isEmpty()) {
-      return state.context.factory.rubygemsDirectory(state.context.original);
+        implements Cuba {
+    /**
+     * directories one for each gem (name without version)
+     */
+    @Override
+    public RubygemsFile on(State state) {
+        if (state.name.isEmpty()) {
+            return state.context.factory.rubygemsDirectory(state.context.original);
+        }
+        return state.nested(new MavenReleasesRubygemsArtifactIdCuba(state.name));
     }
-    return state.nested(new MavenReleasesRubygemsArtifactIdCuba(state.name));
-  }
 }

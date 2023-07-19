@@ -18,27 +18,26 @@ package org.torquebox.mojo.rubygems;
  * @author christian
  */
 public class BundlerApiFile
-    extends RubygemsFile
-{
+        extends RubygemsFile {
 
-  private final String[] names;
+    private final String[] names;
 
-  private static String storageName(String remote) {
-    Sha1Digest digest = new Sha1Digest();
-    digest.update(remote.getBytes());
-    // assume no digest collision happens
-    return remote.replaceFirst("\\?gems=.*$", "/" + digest.hexDigest() + ".gems");
-  }
+    BundlerApiFile(RubygemsFileFactory factory, String remote, String... names) {
+        super(factory, FileType.BUNDLER_API, storageName(remote), remote, null);
+        this.names = names;
+    }
 
-  BundlerApiFile(RubygemsFileFactory factory, String remote, String... names) {
-    super(factory, FileType.BUNDLER_API, storageName(remote), remote, null);
-    this.names = names;
-  }
+    private static String storageName(String remote) {
+        Sha1Digest digest = new Sha1Digest();
+        digest.update(remote.getBytes());
+        // assume no digest collision happens
+        return remote.replaceFirst("\\?gems=.*$", "/" + digest.hexDigest() + ".gems");
+    }
 
-  /**
-   * names of gems from the query parameter 'gems'
-   */
-  public String[] gemnames() {
-    return names;
-  }
+    /**
+     * names of gems from the query parameter 'gems'
+     */
+    public String[] gemnames() {
+        return names;
+    }
 }

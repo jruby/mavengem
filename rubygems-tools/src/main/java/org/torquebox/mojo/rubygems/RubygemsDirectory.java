@@ -15,17 +15,16 @@ package org.torquebox.mojo.rubygems;
 import org.torquebox.mojo.rubygems.cuba.api.ApiV1DependenciesCuba;
 
 public class RubygemsDirectory
-    extends Directory
-{
-  RubygemsDirectory(RubygemsFileFactory factory, String path) {
-    super(factory, path, "rubygems");
-  }
-
-  public void setItems(String... items) {
-    for (String item : items) {
-      if (item.endsWith(ApiV1DependenciesCuba.RUBY)) {
-        this.items.add(item.replace(ApiV1DependenciesCuba.RUBY, ""));
-      }
+        extends Directory {
+    RubygemsDirectory(RubygemsFileFactory factory, String path) {
+        super(factory, path, "rubygems");
     }
-  }
+
+    public void setItems(String... items) {
+        for (String item : items) {
+            if (item.endsWith(ApiV1DependenciesCuba.RUBY)) {
+                this.items.add(item.replace(ApiV1DependenciesCuba.RUBY, ""));
+            }
+        }
+    }
 }

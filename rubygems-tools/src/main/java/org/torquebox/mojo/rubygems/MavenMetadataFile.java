@@ -18,27 +18,26 @@ package org.torquebox.mojo.rubygems;
  * @author christian
  */
 public class MavenMetadataFile
-    extends RubygemsFile
-{
+        extends RubygemsFile {
 
-  private final boolean prereleased;
+    private final boolean prereleased;
 
-  MavenMetadataFile(RubygemsFileFactory factory, String path, String name, boolean prereleased) {
-    super(factory, FileType.MAVEN_METADATA, path, path, name);
-    this.prereleased = prereleased;
-  }
+    MavenMetadataFile(RubygemsFileFactory factory, String path, String name, boolean prereleased) {
+        super(factory, FileType.MAVEN_METADATA, path, path, name);
+        this.prereleased = prereleased;
+    }
 
-  /**
-   * whether it is a prerelease or not
-   */
-  public boolean isPrerelease() {
-    return prereleased;
-  }
+    /**
+     * whether it is a prerelease or not
+     */
+    public boolean isPrerelease() {
+        return prereleased;
+    }
 
-  /**
-   * retrieve the associated DependencyFile
-   */
-  public DependencyFile dependency() {
-    return factory.dependencyFile(name());
-  }
+    /**
+     * retrieve the associated DependencyFile
+     */
+    public DependencyFile dependency() {
+        return factory.dependencyFile(name());
+    }
 }

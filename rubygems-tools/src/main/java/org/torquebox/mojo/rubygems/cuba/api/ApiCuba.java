@@ -22,40 +22,38 @@ import org.torquebox.mojo.rubygems.cuba.State;
  *
  * @author christian
  */
-public class ApiCuba
-    implements Cuba
-{
-  public static final String V1 = "v1";
+public class ApiCuba implements Cuba {
+    public static final String V1 = "v1";
 
-  private final Cuba v1;
+    private final Cuba v1;
 
-  private final Cuba quick;
-  
-  private final Cuba gems;
+    private final Cuba quick;
 
-  public ApiCuba(Cuba v1, Cuba quick, Cuba gems) {
-    this.v1 = v1;
-    this.quick = quick;
-    this.gems = gems;
-  }
+    private final Cuba gems;
 
-  /**
-   * directory [v1,quick]
-   */
-  @Override
-  public RubygemsFile on(State state) {
-    switch (state.name) {
-      case V1:
-        return state.nested(v1);
-      case RootCuba.QUICK:
-        return state.nested(quick);
-      case RootCuba.GEMS:
-        return state.nested(gems);
-      case "":
-        String[] items = {V1, RootCuba.QUICK, RootCuba.GEMS};
-        return state.context.factory.directory(state.context.original, items);
-      default:
-        return state.context.factory.notFound(state.context.original);
+    public ApiCuba(Cuba v1, Cuba quick, Cuba gems) {
+        this.v1 = v1;
+        this.quick = quick;
+        this.gems = gems;
     }
-  }
+
+    /**
+     * directory [v1,quick]
+     */
+    @Override
+    public RubygemsFile on(State state) {
+        switch (state.name) {
+            case V1:
+                return state.nested(v1);
+            case RootCuba.QUICK:
+                return state.nested(quick);
+            case RootCuba.GEMS:
+                return state.nested(gems);
+            case "":
+                String[] items = {V1, RootCuba.QUICK, RootCuba.GEMS};
+                return state.context.factory.directory(state.context.original, items);
+            default:
+                return state.context.factory.notFound(state.context.original);
+        }
+    }
 }

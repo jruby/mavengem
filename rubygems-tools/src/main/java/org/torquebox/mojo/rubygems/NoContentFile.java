@@ -18,11 +18,10 @@ package org.torquebox.mojo.rubygems;
  * @since 2.14
  */
 public class NoContentFile
-    extends RubygemsFile
-{
-  public NoContentFile(RubygemsFileFactory factory, String path) {
-    super(factory, FileType.NO_CONTENT, path, path, null);
-    // no payload
-    set(null);
-  }
+        extends RubygemsFile {
+    public NoContentFile(RubygemsFileFactory factory, String path) {
+        super(factory, FileType.NO_CONTENT, path, path, null);
+        // no payload
+        set(null);
+    }
 }

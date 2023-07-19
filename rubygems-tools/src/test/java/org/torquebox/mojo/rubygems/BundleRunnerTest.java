@@ -12,10 +12,9 @@
  */
 package org.torquebox.mojo.rubygems;
 
-import org.sonatype.sisu.litmus.testsupport.TestSupport;
-
 import org.junit.Rule;
 import org.junit.Test;
+import org.sonatype.sisu.litmus.testsupport.TestSupport;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -26,39 +25,38 @@ import static org.torquebox.mojo.rubygems.TestUtils.lastLine;
 import static org.torquebox.mojo.rubygems.TestUtils.numberOfLines;
 
 public class BundleRunnerTest
-  extends TestSupport
-{
-  @Rule
-  public TestJRubyContainerRule testJRubyContainerRule = new TestJRubyContainerRule();
+        extends TestSupport {
+    @Rule
+    public TestJRubyContainerRule testJRubyContainerRule = new TestJRubyContainerRule();
 
-  @Test
-  public void testInstall() throws Exception {
-    final BundleRunner runner = new BundleRunner(testJRubyContainerRule.getScriptingContainer());
-    String output = runner.install();
-    System.err.println( "bundler output:" + output );
-    assertThat(numberOfLines(output), is(10));
-    assertThat(lastLine(output),
-        startsWith("Use `bundle show [gemname]` to see where a bundled gem is installed."));
-  }
+    @Test
+    public void testInstall() throws Exception {
+        final BundleRunner runner = new BundleRunner(testJRubyContainerRule.getScriptingContainer());
+        String output = runner.install();
+        System.err.println("bundler output:" + output);
+        assertThat(numberOfLines(output), is(10));
+        assertThat(lastLine(output),
+                startsWith("Use `bundle show [gemname]` to see where a bundled gem is installed."));
+    }
 
-  @Test
-  public void testShowAll() throws Exception {
-    final BundleRunner runner = new BundleRunner(testJRubyContainerRule.getScriptingContainer());
-    final String output = runner.show();
-    System.err.println( "bundler output:" + output );
-    assertThat(numberOfLines(output), is(5));
-  }
+    @Test
+    public void testShowAll() throws Exception {
+        final BundleRunner runner = new BundleRunner(testJRubyContainerRule.getScriptingContainer());
+        final String output = runner.show();
+        System.err.println("bundler output:" + output);
+        assertThat(numberOfLines(output), is(5));
+    }
 
-  @Test
-  public void testShow() throws Exception {
-    final BundleRunner runner = new BundleRunner(testJRubyContainerRule.getScriptingContainer());
-    assertThat(numberOfLines(runner.show("zip")), is(1));
-    assertThat(lastLine(runner.show("zip")), endsWith("zip-2.0.2"));
-  }
+    @Test
+    public void testShow() throws Exception {
+        final BundleRunner runner = new BundleRunner(testJRubyContainerRule.getScriptingContainer());
+        assertThat(numberOfLines(runner.show("zip")), is(1));
+        assertThat(lastLine(runner.show("zip")), endsWith("zip-2.0.2"));
+    }
 
-  @Test
-  public void testConfig() throws Exception {
-    final BundleRunner runner = new BundleRunner(testJRubyContainerRule.getScriptingContainer());
-    assertThat(runner.config(), containsString("mirror.http://rubygems.org"));
-  }
+    @Test
+    public void testConfig() throws Exception {
+        final BundleRunner runner = new BundleRunner(testJRubyContainerRule.getScriptingContainer());
+        assertThat(runner.config(), containsString("mirror.http://rubygems.org"));
+    }
 }

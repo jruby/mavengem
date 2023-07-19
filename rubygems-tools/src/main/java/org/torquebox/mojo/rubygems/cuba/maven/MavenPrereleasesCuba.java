@@ -22,26 +22,25 @@ import org.torquebox.mojo.rubygems.cuba.State;
  * @author christian
  */
 public class MavenPrereleasesCuba
-    implements Cuba
-{
-  private final Cuba mavenPrereleasesRubygems;
+        implements Cuba {
+    private final Cuba mavenPrereleasesRubygems;
 
-  public MavenPrereleasesCuba(Cuba cuba) {
-    mavenPrereleasesRubygems = cuba;
-  }
-
-  /**
-   * directory [rubygems]
-   */
-  @Override
-  public RubygemsFile on(State state) {
-    switch (state.name) {
-      case MavenReleasesCuba.RUBYGEMS:
-        return state.nested(mavenPrereleasesRubygems);
-      case "":
-        return state.context.factory.directory(state.context.original, MavenReleasesCuba.RUBYGEMS);
-      default:
-        return state.context.factory.notFound(state.context.original);
+    public MavenPrereleasesCuba(Cuba cuba) {
+        mavenPrereleasesRubygems = cuba;
     }
-  }
+
+    /**
+     * directory [rubygems]
+     */
+    @Override
+    public RubygemsFile on(State state) {
+        switch (state.name) {
+            case MavenReleasesCuba.RUBYGEMS:
+                return state.nested(mavenPrereleasesRubygems);
+            case "":
+                return state.context.factory.directory(state.context.original, MavenReleasesCuba.RUBYGEMS);
+            default:
+                return state.context.factory.notFound(state.context.original);
+        }
+    }
 }
