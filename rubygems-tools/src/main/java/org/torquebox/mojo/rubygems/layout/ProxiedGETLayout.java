@@ -25,7 +25,8 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ProxiedGETLayout extends GETLayout {
+public class ProxiedGETLayout
+        extends GETLayout {
     private final ProxyStorage store;
 
     public ProxiedGETLayout(RubygemsGateway gateway, ProxyStorage store) {
@@ -70,6 +71,13 @@ public class ProxiedGETLayout extends GETLayout {
     @Override
     public DependencyFile dependencyFile(String name) {
         DependencyFile file = super.dependencyFile(name);
+        store.retrieve(file);
+        return file;
+    }
+
+    @Override
+    public DependencyFile rubygemsInfoV2(String name, String version) {
+        DependencyFile file = super.rubygemsInfoV2(name, version);
         store.retrieve(file);
         return file;
     }

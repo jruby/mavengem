@@ -77,6 +77,13 @@ public class HostedDELETELayout extends NoopDefaultLayout {
     }
 
     @Override
+    public DependencyFile rubygemsInfoV2(String name, String version) {
+        DependencyFile file = super.rubygemsInfoV2(name, version);
+        file.markAsForbidden();
+        return file;
+    }
+
+    @Override
     public ApiV1File apiV1File(String name) {
         ApiV1File file = super.apiV1File(name);
         file.markAsForbidden();

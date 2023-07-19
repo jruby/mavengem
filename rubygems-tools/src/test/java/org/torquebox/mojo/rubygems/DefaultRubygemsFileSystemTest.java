@@ -99,6 +99,13 @@ public class DefaultRubygemsFileSystemTest
         assertFiletype(pathes, FileType.BUNDLER_API);
     }
 
+    @Test
+    public void testApiV2() throws Exception {
+        String[] paths = {
+                "/api/v2/rubygems/rails/versions/7.0.1.json"
+        };
+        assertFiletype(paths, FileType.DEPENDENCY);
+    }
 
     @Test
     public void testApiV1() throws Exception {

@@ -111,6 +111,17 @@ public class HostedGETLayout extends GETLayout {
         return file;
     }
 
+    @Override
+    public DependencyFile rubygemsInfoV2(String name, String version) {
+        DependencyFile file = super.rubygemsInfoV2(name, version);
+        store.retrieve(file);
+        if (file.notExists()) {
+            createDependency(file);
+        }
+
+        return file;
+    }
+
     /**
      * create the <code>DependencyFile</code> for the given gem name
      */

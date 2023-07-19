@@ -65,6 +65,13 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
                     return file;
                 }
 
+                @Override
+                public DependencyFile rubygemsInfoV2(String name, String version) {
+                    DependencyFile file = super.rubygemsInfoV2(name, version);
+                    store.retrieve(file);
+                    return file;
+                }
+
             }, null, null);
             isProxy = false;
         }

@@ -88,6 +88,8 @@ public interface RubygemsFileFactory {
      */
     DependencyFile dependencyFile(String name);
 
+    DependencyFile rubygemsInfoV2(String name, String version);
+
     /**
      * create <code>BundlerApiFile</code> /api/v1/dependencies?gems=name1,name2,etc
      *

@@ -14,53 +14,31 @@ package org.torquebox.mojo.rubygems.cuba.api;
 
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.cuba.Cuba;
-import org.torquebox.mojo.rubygems.cuba.RootCuba;
 import org.torquebox.mojo.rubygems.cuba.State;
 
 /**
- * cuba for /api/
+ * cuba for /api/v2 to fetch gem details
  *
  * @author christian
  */
-public class ApiCuba implements Cuba {
-    public static final String V1 = "v1";
+public class ApiV2Cuba
+        implements Cuba {
+    public static final String RUBYGEMS = "rubygems";
 
-    public static final String V2 = "v2";
+    private final Cuba apiV2Rubygems;
 
-    private final Cuba v1;
-
-    private final Cuba v2;
-
-    private final Cuba quick;
-
-    private final Cuba gems;
-
-    public ApiCuba(Cuba v1, Cuba v2, Cuba quick, Cuba gems) {
-        this.v1 = v1;
-        this.v2 = v2;
-        this.quick = quick;
-        this.gems = gems;
+    public ApiV2Cuba(Cuba apiV2Rubygems) {
+        this.apiV2Rubygems = apiV2Rubygems;
     }
 
     /**
-     * directory [v1,quick]
+     * directory [dependencies], files [api_key,gems]
      */
     @Override
     public RubygemsFile on(State state) {
-        switch (state.name) {
-            case V1:
-                return state.nested(v1);
-            case V2:
-                return state.nested(v2);
-            case RootCuba.QUICK:
-                return state.nested(quick);
-            case RootCuba.GEMS:
-                return state.nested(gems);
-            case "":
-                String[] items = {V1, RootCuba.QUICK, RootCuba.GEMS};
-                return state.context.factory.directory(state.context.original, items);
-            default:
-                return state.context.factory.notFound(state.context.original);
+        if (state.name.equals(ApiV2Cuba.RUBYGEMS)) {
+            return state.nested(apiV2Rubygems);
         }
+        return state.context.factory.notFound(state.context.original);
     }
 }

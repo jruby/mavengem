@@ -179,4 +179,11 @@ public class HostedPOSTLayout extends NoopDefaultLayout {
         file.markAsForbidden();
         return file;
     }
+
+    @Override
+    public DependencyFile rubygemsInfoV2(String name, String version) {
+        DependencyFile file = super.rubygemsInfoV2(name, version);
+        file.markAsForbidden();
+        return file;
+    }
 }

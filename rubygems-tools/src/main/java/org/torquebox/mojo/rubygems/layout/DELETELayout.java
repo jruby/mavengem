@@ -95,4 +95,11 @@ public class DELETELayout extends NoopDefaultLayout {
         store.delete(file);
         return file;
     }
+
+    @Override
+    public DependencyFile rubygemsInfoV2(String name, String version) {
+        DependencyFile file = super.rubygemsInfoV2(name, version);
+        store.delete(file);
+        return file;
+    }
 }
