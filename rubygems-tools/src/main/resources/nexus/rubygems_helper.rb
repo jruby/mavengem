@@ -11,6 +11,8 @@
 # Eclipse Foundation. All other trademarks are the property of their respective owners.
 #
 
+require 'zlib'
+
 java_import java.io.ByteArrayInputStream
 
 # this module just has a bunch of helper method dealing
@@ -41,7 +43,7 @@ module Nexus
     # @param io [IO, String] stream or filename
     # @return [Object] unmarshalled object
     def runzip( io )
-      Marshal.load( Gem.inflate( read_binary( io ) ) )
+      Marshal.load( Zlib::Inflate.inflate( read_binary( io ) ) )
     end
 
     # marshal a given object and turn it into a ruby-zip stream.

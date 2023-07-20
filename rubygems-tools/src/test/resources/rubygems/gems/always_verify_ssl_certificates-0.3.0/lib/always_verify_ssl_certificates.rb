@@ -8,7 +8,7 @@ module Net
     private
       def connect
         D "opening connection to #{conn_address()}..."
-        s = timeout(@open_timeout) { TCPSocket.open(conn_address(), conn_port()) }
+        s = Timeout.timeout(@open_timeout) { TCPSocket.open(conn_address(), conn_port()) }
         D "opened"
         if use_ssl?
           if self.verify_mode != OpenSSL::SSL::VERIFY_PEER

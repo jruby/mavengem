@@ -39,11 +39,11 @@ module Nexus
     rescue SystemExit => e
       raise err.string if e.exit_code != 0
 
-      out.string
+      _out.string
 
     rescue Exception => e
-      STDOUT.puts out.string
-      STDERR.puts err.string
+      STDOUT.puts _out.string
+      STDERR.puts _err.string
       trace = e.backtrace.join("\n\t")
       raise "#{e.message}\n\t#{trace}"
 
