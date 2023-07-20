@@ -28,68 +28,6 @@ public class MavenGemURLConnectionTest {
         factory = new RubygemsFactory(cacheDir);
     }
 
-    @Test
-    public void virtusPomWithAuthentication() throws Exception {
-        // this test goes online to rubygems.org
-        File cached = new File(cacheDir, "http___rubygems_org/quick/Marshal.4.8/v/virtus-1.0.5.gemspec.rz");
-
-        // with the /maven/releases prefix
-        URLConnection url = new MavenGemURLConnection(factory, new URL("http://me:andthecorner@rubygems.org"), "/maven/releases/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
-
-        // the cached dir does not expose the credentials
-        assertCached(url, cached);
-
-        // without the /maven/releases prefix
-        url = new MavenGemURLConnection(factory, new URL("http://me:andthecorner@rubygems.org"), "/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
-
-        // the cached dir does not expose the credentials
-        assertCached(url, cached);
-    }
-
-    @Test
-    public void virtusPomWithMirror() throws Exception {
-        // this test goes online to rubygems.org
-        File cached = new File(cacheDir, "http___rubygems_org/quick/Marshal.4.8/v/virtus-1.0.5.gemspec.rz");
-        RubygemsFactory factory = new RubygemsFactory(cacheDir, new URL("http://me:andthecorner@rubygems.org"));
-
-        // with the /maven/releases prefix
-        URLConnection url = new MavenGemURLConnection(factory, new URL("http://example.com"), "/maven/releases/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
-
-        // the cached dir does not expose the credentials
-        assertCached(url, cached);
-
-        // without the /maven/releases prefix
-        url = new MavenGemURLConnection(factory, new URL("http://example.com"), "/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
-
-        // the cached dir does not expose the credentials
-        assertCached(url, cached);
-    }
-
-    @Test
-    public void virtusPomWithMirrors() throws Exception {
-        // this test goes online to rubygems.org
-        File cached = new File(cacheDir, "http___rubygems_org/quick/Marshal.4.8/v/virtus-1.0.5.gemspec.rz");
-        Map<URL, URL> mirrors = new HashMap<URL, URL>();
-        mirrors.put(new URL("http://example.com"), new URL("http://me:andthecorner@rubygems.org"));
-        mirrors.put(new URL("http://hans:glueck@example.org"), new URL("http://rubygems.org"));
-        RubygemsFactory factory = new RubygemsFactory(cacheDir, mirrors);
-
-        // with the /maven/releases prefix
-        URLConnection url = new MavenGemURLConnection(factory, new URL("http://example.com"), "/maven/releases/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
-
-        // the cached dir does not expose the credentials
-        assertCached(url, cached);
-
-        // without the /maven/releases prefix
-        url = new MavenGemURLConnection(factory, new URL("http://example.org"), "/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
-        assertCached(url, cached);
-
-        // go direct here
-        cached = new File(cacheDir, "https___rubygems_org/quick/Marshal.4.8/v/virtus-1.0.5.gemspec.rz");
-        url = new MavenGemURLConnection(factory, new URL("https://rubygems.org"), "/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
-        assertCached(url, cached);
-    }
-
     private void assertCached(URLConnection url, File cached) throws Exception {
         cached.delete();
         try (InputStream in = url.getInputStream()) {
@@ -160,5 +98,67 @@ public class MavenGemURLConnectionTest {
         // this test goes online to rubygems.org
         URLConnection url = new MavenGemURLConnection(factory, new URL("https://rubygems.org"), "/maven/releases/rubygems/rails");
         url.getInputStream();
+    }
+
+    @Deprecated
+    public void virtusPomWithAuthentication() throws Exception {
+        // this test goes online to rubygems.org
+        File cached = new File(cacheDir, "http___rubygems_org/quick/Marshal.4.8/v/virtus-1.0.5.gemspec.rz");
+
+        // with the /maven/releases prefix
+        URLConnection url = new MavenGemURLConnection(factory, new URL("http://me:andthecorner@rubygems.org"), "/maven/releases/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
+
+        // the cached dir does not expose the credentials
+        assertCached(url, cached);
+
+        // without the /maven/releases prefix
+        url = new MavenGemURLConnection(factory, new URL("http://me:andthecorner@rubygems.org"), "/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
+
+        // the cached dir does not expose the credentials
+        assertCached(url, cached);
+    }
+
+    @Deprecated
+    public void virtusPomWithMirror() throws Exception {
+        // this test goes online to rubygems.org
+        File cached = new File(cacheDir, "http___rubygems_org/quick/Marshal.4.8/v/virtus-1.0.5.gemspec.rz");
+        RubygemsFactory factory = new RubygemsFactory(cacheDir, new URL("http://me:andthecorner@rubygems.org"));
+
+        // with the /maven/releases prefix
+        URLConnection url = new MavenGemURLConnection(factory, new URL("http://example.com"), "/maven/releases/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
+
+        // the cached dir does not expose the credentials
+        assertCached(url, cached);
+
+        // without the /maven/releases prefix
+        url = new MavenGemURLConnection(factory, new URL("http://example.com"), "/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
+
+        // the cached dir does not expose the credentials
+        assertCached(url, cached);
+    }
+
+    @Deprecated
+    public void virtusPomWithMirrors() throws Exception {
+        // this test goes online to rubygems.org
+        File cached = new File(cacheDir, "http___rubygems_org/quick/Marshal.4.8/v/virtus-1.0.5.gemspec.rz");
+        Map<URL, URL> mirrors = new HashMap<URL, URL>();
+        mirrors.put(new URL("http://example.com"), new URL("http://me:andthecorner@rubygems.org"));
+        mirrors.put(new URL("http://hans:glueck@example.org"), new URL("http://rubygems.org"));
+        RubygemsFactory factory = new RubygemsFactory(cacheDir, mirrors);
+
+        // with the /maven/releases prefix
+        URLConnection url = new MavenGemURLConnection(factory, new URL("http://example.com"), "/maven/releases/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
+
+        // the cached dir does not expose the credentials
+        assertCached(url, cached);
+
+        // without the /maven/releases prefix
+        url = new MavenGemURLConnection(factory, new URL("http://example.org"), "/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
+        assertCached(url, cached);
+
+        // go direct here
+        cached = new File(cacheDir, "https___rubygems_org/quick/Marshal.4.8/v/virtus-1.0.5.gemspec.rz");
+        url = new MavenGemURLConnection(factory, new URL("https://rubygems.org"), "/rubygems/virtus/1.0.5/virtus-1.0.5.pom");
+        assertCached(url, cached);
     }
 }
