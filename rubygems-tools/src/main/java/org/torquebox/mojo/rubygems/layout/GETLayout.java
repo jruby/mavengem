@@ -174,35 +174,35 @@ public class GETLayout
      */
     protected void setPomPayload(PomFile file, boolean snapshot) {
         try {
-            DependencyData dependencies = newDependencyData(file.dependency());
-            if ("java".equals(dependencies.platform(file.version()))) {
-                pomFromGem(file, snapshot, dependencies);
+            RubygemsV2GemInfo rubygemsV2GemInfo = newRubygemsV2GemInfo(file.dependency());
+            if ("java".equals(rubygemsV2GemInfo.platform())) {
+                pomFromGem(file, snapshot, rubygemsV2GemInfo);
             } else {
-                pomFromGemspec(file, snapshot, dependencies);
+                pomFromGemspec(file, snapshot, rubygemsV2GemInfo);
             }
         } catch (IOException e) {
             file.setException(e);
         }
     }
 
-    private void pomFromGemspec(PomFile file, boolean snapshot, DependencyData dependencies) throws IOException {
-        GemspecFile gemspec = file.gemspec(dependencies);
+    private void pomFromGemspec(PomFile file, boolean snapshot, RubygemsV2GemInfo rubygemsV2GemInfo) throws IOException {
+        GemspecFile gemspec = file.gemspec(rubygemsV2GemInfo);
         if (gemspec.notExists()) {
             file.markAsNotExists();
         } else {
             try (InputStream is = store.getInputStream(gemspec)) {
-                store.memory(gateway.newGemspecHelper(is).pom(snapshot), file);
+                store.memory(gateway.newGemspecHelperFromV2GemInfo(is).pom(snapshot), file);
             }
         }
     }
 
-    private void pomFromGem(PomFile file, boolean snapshot, DependencyData dependencies) throws IOException {
-        GemFile gem = file.gem(dependencies);
+    private void pomFromGem(PomFile file, boolean snapshot, RubygemsV2GemInfo rubygemsV2GemInfo) throws IOException {
+        GemFile gem = file.gem(rubygemsV2GemInfo);
         if (gem.notExists()) {
             file.markAsNotExists();
         } else {
             try (InputStream is = store.getInputStream(gem)) {
-                store.memory(gateway.newGemspecHelperFromGem(is).pom(snapshot), file);
+                store.memory(gateway.newGemspecHelperFromV2GemInfo(is).pom(snapshot), file);
             }
         }
     }
@@ -214,7 +214,7 @@ public class GETLayout
         try {
             // the dependency-data is needed to find out
             // whether the gem has the default platform or the java platform
-            GemFile gem = file.gem(newDependencyData(file.dependency()));
+            GemFile gem = file.gem(newRubygemsV2GemInfo(file.dependency()));
             if (gem == null) {
                 file.markAsNotExists();
             } else {

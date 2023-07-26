@@ -81,6 +81,11 @@ public class DefaultRubygemsGateway
     }
 
     @Override
+    public GemspecHelper newGemspecHelperFromV2GemInfo(InputStream gem) {
+        return container.callMethod(gemspecHelperImplClass, "from_rubygems_v2_gem_info", gem, GemspecHelper.class);
+    }
+
+    @Override
     public DependencyData newDependencyData(InputStream dependency, String name, long modified) {
         return container.callMethod(dependencyDataImplClass, "new", new Object[]{dependency, name, modified},
                 DependencyData.class);

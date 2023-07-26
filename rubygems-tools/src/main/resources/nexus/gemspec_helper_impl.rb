@@ -39,15 +39,22 @@ module Nexus
     # getter for the wrapped Gem::Specification object
     attr_reader :gemspec
 
+    GEM_TYPE = :gem
+    GEMSPEC_TYPE = :gemspec
+    RUBYGEMS_V2_INFO = :rubygems_v2_info
+
     # contructor for GemspecHelperImpl
     # @param io [IO, String] stream or filename
-    # @param is_gem [boolean] whether io belongs to gemspec.rz file
+    # @param data_type [boolean] whether io belongs to gemspec.rz file
     #        or gem file
-    def initialize( io, is_gem )
-      if is_gem
+    def initialize( io, data_type )
+      case data_type
+      when GEM_TYPE
         @gemspec = load_spec( io )
-      else
+      when GEMSPEC_TYPE
         @gemspec = runzip( io )
+      when RUBYGEMS_V2_INFO
+        @gemspec = rubygems_v2_info_gemspec( io )
       end
     end
 
@@ -55,14 +62,18 @@ module Nexus
     # @param gem [IO,String] stream or filename
     # @return [GemspecHelperImpl] wrapper around the gemspec
     def self.from_gem( gem )
-      new( gem, true )
+      new( gem, GEM_TYPE )
     end
 
     # extract the gemspec from the given gemspec.rz file
     # @param gem [IO,String] stream or filename
     # @return [GemspecHelperImpl] wrapper around the gemspec
     def self.from_gemspec_rz( gemspec_rz )
-      new( gemspec_rz, false )
+      new( gemspec_rz, GEMSPEC_TYPE )
+    end
+
+    def self.from_rubygems_v2_gem_info( rg_v2_info )
+      new(rg_v2_info, RUBYGEMS_V2_INFO)
     end
 
     # filename of the associated gem file
@@ -128,6 +139,23 @@ module Nexus
           end
         end
         raise "failed to load spec from #{gemfile}"
+      end
+    end
+
+    def rubygems_v2_info_gemspec( io )
+      info = json_load(io)
+      Gem::Specification.new(info["name"], info["version"]) do |spec|
+        spec.summary = info["summary"]
+        spec.homepage = info["homepage_uri"]
+        spec.description = info["description"]
+        spec.licenses = info["licenses"]
+        spec.authors = info["authors"].split(', ')
+        # v2 API does not appear to provide emails
+        # spec.emails = info["emails"]
+        spec.metadata["source_code_uri"] = info["source_code_uri"]
+        info["dependencies"]["runtime"].each do |dep|
+          spec.add_dependency(dep["name"], dep["requirements"])
+        end
       end
     end
   end

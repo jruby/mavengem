@@ -43,6 +43,14 @@ public interface RubygemsGateway {
     GemspecHelper newGemspecHelperFromGem(InputStream gem);
 
     /**
+     * create a new instance of <code>GemspecHelper</code>
+     *
+     * @param v2GemInfo the stream to the v2 API gem info
+     * @return an empty GemspecHelper
+     */
+    GemspecHelper newGemspecHelperFromV2GemInfo(InputStream v2GemInfo);
+
+    /**
      * create a new instance of <code>DependencyHelper</code>
      *
      * @return an empty DependencyHelper

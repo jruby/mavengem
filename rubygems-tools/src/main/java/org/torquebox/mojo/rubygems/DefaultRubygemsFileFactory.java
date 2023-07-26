@@ -152,8 +152,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
 
     @Override
     public GemFile gemFile(String name, String version, String platform) {
-        String filename = BaseGemFile.toFilename(name, version, platform);
-        return new GemFile(this, join(GEMS, SEPARATOR, name.substring(0, 1), SEPARATOR, filename, GemsCuba.GEM), join(GEMS, SEPARATOR, filename, GemsCuba.GEM), name, version, platform);
+        return new GemFile(this, join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, name, "-", version, ".gem"), join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), name, version, platform);
     }
 
     @Override
@@ -163,8 +162,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
 
     @Override
     public GemspecFile gemspecFile(String name, String version, String platform) {
-        String filename = BaseGemFile.toFilename(name, version, platform);
-        return new GemspecFile(this, join(QUICK_MARSHAL, SEPARATOR, name.substring(0, 1), SEPARATOR, filename, QuickMarshalCuba.GEMSPEC_RZ), join(QUICK_MARSHAL, SEPARATOR, filename, QuickMarshalCuba.GEMSPEC_RZ), name, version, platform);
+        return new GemspecFile(this, join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), name, version, platform);
     }
 
     @Override
