@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.Directory;
 import org.torquebox.mojo.rubygems.FileType;
@@ -66,8 +67,8 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
                 }
 
                 @Override
-                public DependencyFile rubygemsInfoV2(String name, String version) {
-                    DependencyFile file = super.rubygemsInfoV2(name, version);
+                public ApiV2File rubygemsInfoV2(String name, String version) {
+                    ApiV2File file = super.rubygemsInfoV2(name, version);
                     store.retrieve(file);
                     return file;
                 }

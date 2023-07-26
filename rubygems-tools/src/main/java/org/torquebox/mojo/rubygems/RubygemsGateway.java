@@ -73,4 +73,16 @@ public interface RubygemsGateway {
      * @return dependency data
      */
     DependencyData newDependencyData(InputStream dependency, String name, long modified);
+
+    /**
+     * create a new instance of <code>RubygemsV2GemInfo</code> and parse
+     * the given v2 API endpoint
+     *
+     * @param dependency the input-stream with the gem info data
+     * @param name       of gem of the gem info data
+     * @param version    of gem of the gem info data
+     * @param modified   when the gem info data were last modified
+     * @return gem info data
+     */
+    RubygemsV2GemInfo newRubygemsV2GemInfo(InputStream dependency, String name, String version, long modified);
 }

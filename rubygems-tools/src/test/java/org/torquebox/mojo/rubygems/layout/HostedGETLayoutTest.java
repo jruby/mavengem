@@ -268,6 +268,13 @@ public class HostedGETLayoutTest
         assertFiletypeWithNullPayload(pathes, FileType.API_V1);
     }
 
+    @Test
+    public void testApiV2() throws Exception {
+        String[] paths = {
+                "/api/v2/rubygems/rails/versions/7.0.1.json"
+        };
+        assertFiletypeWithPayload(paths, FileType.JSON_API, URLStreamLocation.class);
+    }
 
     @Test
     public void testDependency() throws Exception {

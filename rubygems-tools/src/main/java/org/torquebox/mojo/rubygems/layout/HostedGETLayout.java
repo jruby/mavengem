@@ -12,6 +12,7 @@
  */
 package org.torquebox.mojo.rubygems.layout;
 
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.DependencyHelper;
 import org.torquebox.mojo.rubygems.GemFile;
@@ -112,11 +113,11 @@ public class HostedGETLayout extends GETLayout {
     }
 
     @Override
-    public DependencyFile rubygemsInfoV2(String name, String version) {
-        DependencyFile file = super.rubygemsInfoV2(name, version);
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        ApiV2File file = super.rubygemsInfoV2(name, version);
         store.retrieve(file);
         if (file.notExists()) {
-            createDependency(file);
+            throw new RuntimeException("not found: " + file);
         }
 
         return file;

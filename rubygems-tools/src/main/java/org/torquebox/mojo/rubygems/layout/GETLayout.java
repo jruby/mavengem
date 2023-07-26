@@ -13,6 +13,7 @@
 package org.torquebox.mojo.rubygems.layout;
 
 import org.torquebox.mojo.rubygems.ApiV1File;
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.BundlerApiFile;
 import org.torquebox.mojo.rubygems.DependencyData;
 import org.torquebox.mojo.rubygems.DependencyFile;
@@ -30,6 +31,7 @@ import org.torquebox.mojo.rubygems.PomFile;
 import org.torquebox.mojo.rubygems.RubygemsDirectory;
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.RubygemsGateway;
+import org.torquebox.mojo.rubygems.RubygemsV2GemInfo;
 import org.torquebox.mojo.rubygems.Sha1Digest;
 import org.torquebox.mojo.rubygems.Sha1File;
 import org.torquebox.mojo.rubygems.SpecsIndexFile;
@@ -279,6 +281,12 @@ public class GETLayout
     protected DependencyData newDependencyData(DependencyFile file) throws IOException {
         try (InputStream is = store.getInputStream(file)) {
             return gateway.newDependencyData(is, file.name(), store.getModified(file));
+        }
+    }
+
+    protected RubygemsV2GemInfo newRubygemsV2GemInfo(ApiV2File file) throws IOException {
+        try (InputStream is = store.getInputStream(file)) {
+            return gateway.newRubygemsV2GemInfo(is, file.name(), file.version(), store.getModified(file));
         }
     }
 

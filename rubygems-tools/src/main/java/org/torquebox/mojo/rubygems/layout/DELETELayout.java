@@ -13,6 +13,7 @@
 package org.torquebox.mojo.rubygems.layout;
 
 import org.torquebox.mojo.rubygems.ApiV1File;
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.GemFile;
 import org.torquebox.mojo.rubygems.GemspecFile;
@@ -97,8 +98,8 @@ public class DELETELayout extends NoopDefaultLayout {
     }
 
     @Override
-    public DependencyFile rubygemsInfoV2(String name, String version) {
-        DependencyFile file = super.rubygemsInfoV2(name, version);
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        ApiV2File file = super.rubygemsInfoV2(name, version);
         store.delete(file);
         return file;
     }

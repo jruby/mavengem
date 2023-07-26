@@ -12,6 +12,7 @@
 #
 
 require 'zlib'
+require 'json'
 
 java_import java.io.ByteArrayInputStream
 
@@ -65,6 +66,13 @@ module Nexus
     # @return [IO] stream of the marshalled object
     def marshal_dump( obj)
       ByteArrayInputStream.new( Marshal.dump( obj ).to_java_bytes )
+    end
+
+    # load json object from stream or file
+    # @param io [IO, String] stream or filename
+    # @return [Object] json result in Ruby object
+    def json_load( io )
+      JSON.load( read_binary( io ) )
     end
 
     def load_specs( io )

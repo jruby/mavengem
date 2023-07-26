@@ -25,6 +25,7 @@ import org.torquebox.mojo.rubygems.MavenMetadataFile;
 import org.torquebox.mojo.rubygems.MavenMetadataSnapshotFile;
 import org.torquebox.mojo.rubygems.PomFile;
 import org.torquebox.mojo.rubygems.RubygemsFile;
+import org.torquebox.mojo.rubygems.RubygemsV2GemInfo;
 import org.torquebox.mojo.rubygems.SpecsIndexFile;
 import org.torquebox.mojo.rubygems.SpecsIndexType;
 import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
@@ -61,7 +62,7 @@ public class DefaultLayoutTest
 
         GemArtifactFile file3 = (GemArtifactFile) file;
 
-        DependencyData deps = new DependenciesMock();
+        RubygemsV2GemInfoMock deps = new RubygemsV2GemInfoMock();
         assertThat(file3.version(), equalTo("1.2.3"));
         assertThat(file3.gem(deps).name(), equalTo("jbundler"));
         assertThat(file3.gem(deps).version(), equalTo("1.2.3"));
@@ -82,7 +83,7 @@ public class DefaultLayoutTest
 
         GemArtifactFile file3 = (GemArtifactFile) file;
 
-        DependencyData deps = new DependenciesMock();
+        RubygemsV2GemInfoMock deps = new RubygemsV2GemInfoMock();
         assertThat(file3.version(), equalTo("1.2.3"));
         assertThat(file3.gem(deps).name(), equalTo("jbundler"));
         assertThat(file3.gem(deps).version(), equalTo("1.2.3"));
@@ -103,7 +104,7 @@ public class DefaultLayoutTest
 
         PomFile file3 = (PomFile) file;
 
-        DependencyData deps = new DependenciesMock();
+        RubygemsV2GemInfoMock deps = new RubygemsV2GemInfoMock();
         assertThat(file3.version(), equalTo("1.2.3"));
         assertThat(file3.gemspec(deps).name(), equalTo("jbundler"));
         assertThat(file3.gemspec(deps).version(), equalTo("1.2.3"));
@@ -211,8 +212,8 @@ public class DefaultLayoutTest
         assertThat(file, notNullValue());
         RubygemsFile file2 = layout.gemFile("jbundler", "9.2.1", "java");
         assertThat(file, equalTo(file2));
-        assertThat(file.storagePath(), equalTo("/gems/j/jbundler-9.2.1-java.gem"));
-        assertThat(file.remotePath(), equalTo("/gems/jbundler-9.2.1-java.gem"));
+        assertThat(file.storagePath(), equalTo("/api/v2/rubygems/jbundler/versions/jbundler-9.2.1.gem"));
+        assertThat(file.remotePath(), equalTo("/api/v2/rubygems/jbundler/versions/9.2.1.json"));
         assertThat(file.name(), equalTo("jbundler"));
         assertThat(file.type(), equalTo(FileType.GEM));
 
@@ -252,8 +253,8 @@ public class DefaultLayoutTest
         assertThat(file, notNullValue());
         RubygemsFile file2 = layout.gemspecFile("jbundler", "9.2.1", "java");
         assertThat(file, equalTo(file2));
-        assertThat(file.storagePath(), equalTo("/quick/Marshal.4.8/j/jbundler-9.2.1-java.gemspec.rz"));
-        assertThat(file.remotePath(), equalTo("/quick/Marshal.4.8/jbundler-9.2.1-java.gemspec.rz"));
+        assertThat(file.storagePath(), equalTo("/api/v2/rubygems/jbundler/versions/9.2.1.json"));
+        assertThat(file.remotePath(), equalTo("/api/v2/rubygems/jbundler/versions/9.2.1.json"));
         assertThat(file.name(), equalTo("jbundler"));
         assertThat(file.type(), equalTo(FileType.GEMSPEC));
 
@@ -506,6 +507,39 @@ public class DefaultLayoutTest
 
         @Override
         public String platform(String version) {
+            return platform;
+        }
+
+        @Override
+        public String name() {
+            return null;
+        }
+
+        @Override
+        public long modified() {
+            return 0;
+        }
+    }
+
+    static class RubygemsV2GemInfoMock
+            implements RubygemsV2GemInfo {
+        private final String platform;
+
+        RubygemsV2GemInfoMock() {
+            this("ruby");
+        }
+
+        RubygemsV2GemInfoMock(String platform) {
+            this.platform = platform;
+        }
+
+        @Override
+        public String version() {
+            return null;
+        }
+
+        @Override
+        public String platform() {
             return platform;
         }
 

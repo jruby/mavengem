@@ -12,6 +12,7 @@
  */
 package org.torquebox.mojo.rubygems.layout;
 
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.BundlerApiFile;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.DependencyHelper;
@@ -76,8 +77,8 @@ public class ProxiedGETLayout
     }
 
     @Override
-    public DependencyFile rubygemsInfoV2(String name, String version) {
-        DependencyFile file = super.rubygemsInfoV2(name, version);
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        ApiV2File file = super.rubygemsInfoV2(name, version);
         store.retrieve(file);
         return file;
     }

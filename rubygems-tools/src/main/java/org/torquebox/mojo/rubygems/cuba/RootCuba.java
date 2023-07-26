@@ -29,8 +29,6 @@ public class RootCuba implements Cuba {
 
     public static final String API = "api";
 
-    public static final String API2 = "api2";
-
     public static final String QUICK = "quick";
 
     public static final String GEMS = "gems";

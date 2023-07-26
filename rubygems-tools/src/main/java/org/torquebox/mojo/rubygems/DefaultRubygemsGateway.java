@@ -24,6 +24,7 @@ public class DefaultRubygemsGateway
     private Object specsHelperImplClass;
     private Object mergeSpecsHelperImplClass;
     private Object dependencyDataImplClass;
+    private Object rubygemsV2GemInfoImplClass;
 
     /**
      * Ctor that accepts prepared non-null scripting container.
@@ -40,6 +41,8 @@ public class DefaultRubygemsGateway
                 + "Nexus::MergeSpecsHelperImpl");
         dependencyDataImplClass = container.runScriptlet("require 'nexus/dependency_data_impl';"
                 + "Nexus::DependencyDataImpl");
+        rubygemsV2GemInfoImplClass = container.runScriptlet("require 'nexus/rubygems_v2_gem_info_impl';"
+                + "Nexus::RubygemsV2GemInfoImpl");
     }
 
     @Override
@@ -81,5 +84,11 @@ public class DefaultRubygemsGateway
     public DependencyData newDependencyData(InputStream dependency, String name, long modified) {
         return container.callMethod(dependencyDataImplClass, "new", new Object[]{dependency, name, modified},
                 DependencyData.class);
+    }
+
+    @Override
+    public RubygemsV2GemInfo newRubygemsV2GemInfo(InputStream apiV2FileIS, String name, String version, long modified) {
+        return container.callMethod(rubygemsV2GemInfoImplClass, "new", new Object[]{apiV2FileIS, name, version, modified},
+                RubygemsV2GemInfo.class);
     }
 }

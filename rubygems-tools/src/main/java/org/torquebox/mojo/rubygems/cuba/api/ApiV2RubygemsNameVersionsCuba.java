@@ -35,6 +35,11 @@ public class ApiV2RubygemsNameVersionsCuba implements Cuba {
         if (state.name.isEmpty()) {
             return state.context.factory.notFound(state.context.original);
         }
-        return state.nested(new ApiV2RubygemsNameVersionsNumberCuba(name, state.name));
+        String version = state.name;
+        int jsonExt = version.indexOf(".json");
+        if (jsonExt != -1) {
+            version = version.substring(0, jsonExt);
+        }
+        return state.nested(new ApiV2RubygemsNameVersionsNumberCuba(name, version));
     }
 }

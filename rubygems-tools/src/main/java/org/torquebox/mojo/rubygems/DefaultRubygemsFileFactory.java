@@ -178,8 +178,8 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
     }
 
     @Override
-    public DependencyFile rubygemsInfoV2(String name, String version) {
-        return new DependencyFile(this, join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), name);
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        return new ApiV2File(this, join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), name, version);
     }
 
     @Override

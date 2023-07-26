@@ -104,7 +104,7 @@ public class DefaultRubygemsFileSystemTest
         String[] paths = {
                 "/api/v2/rubygems/rails/versions/7.0.1.json"
         };
-        assertFiletype(paths, FileType.DEPENDENCY);
+        assertFiletype(paths, FileType.JSON_API);
     }
 
     @Test
