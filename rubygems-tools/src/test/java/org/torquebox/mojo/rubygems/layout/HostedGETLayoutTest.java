@@ -275,6 +275,14 @@ public class HostedGETLayoutTest
     }
 
     @Test
+    public void testGemInfo() throws Exception {
+        String[] paths = {
+                "/info/hashdb.compact"
+        };
+        assertFiletypeWithPayload(paths, FileType.COMPACT, URLStreamLocation.class);
+    }
+
+    @Test
     public void testDependency() throws Exception {
         String[] pathes = {
                 "/api/v1/dependencies?gems=zip", "/api/v1/dependencies/pre.ruby", "/api/v1/dependencies/z/zip.ruby"

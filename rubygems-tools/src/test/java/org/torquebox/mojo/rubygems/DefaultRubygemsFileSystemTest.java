@@ -108,6 +108,14 @@ public class DefaultRubygemsFileSystemTest
     }
 
     @Test
+    public void testGemInfo() throws Exception {
+        String[] paths = {
+                "/info/hashdb"
+        };
+        assertFiletype(paths, FileType.COMPACT);
+    }
+
+    @Test
     public void testApiV1() throws Exception {
         String[] pathes = {"/api/v1/gems", "/api/v1/api_key"};
         assertFiletype(pathes, FileType.API_V1);

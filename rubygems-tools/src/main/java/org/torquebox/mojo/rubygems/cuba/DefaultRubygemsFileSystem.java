@@ -18,6 +18,7 @@ import org.torquebox.mojo.rubygems.cuba.api.ApiV1Cuba;
 import org.torquebox.mojo.rubygems.cuba.api.ApiV1DependenciesCuba;
 import org.torquebox.mojo.rubygems.cuba.api.ApiV2Cuba;
 import org.torquebox.mojo.rubygems.cuba.api.ApiV2RubygemsCuba;
+import org.torquebox.mojo.rubygems.cuba.api.CompactInfoCuba;
 import org.torquebox.mojo.rubygems.cuba.gems.GemsCuba;
 import org.torquebox.mojo.rubygems.cuba.maven.MavenCuba;
 import org.torquebox.mojo.rubygems.cuba.maven.MavenPrereleasesCuba;
@@ -33,7 +34,19 @@ public class DefaultRubygemsFileSystem extends RubygemsFileSystem {
     public DefaultRubygemsFileSystem(RubygemsFileFactory fileLayout, Layout getLayout, Layout postLayout, Layout deleteLayout) {
         super(fileLayout, getLayout, postLayout, deleteLayout,
                 // TODO move to javax.inject
-                new RootCuba(new ApiCuba(new ApiV1Cuba(new ApiV1DependenciesCuba()), new ApiV2Cuba(new ApiV2RubygemsCuba()), new QuickCuba(new QuickMarshalCuba()), new GemsCuba()), new QuickCuba(new QuickMarshalCuba()), new GemsCuba(), new MavenCuba(new MavenReleasesCuba(new MavenReleasesRubygemsCuba()), new MavenPrereleasesCuba(new MavenPrereleasesRubygemsCuba()))));
+                new RootCuba(
+                        new ApiCuba(
+                                new ApiV1Cuba(new ApiV1DependenciesCuba()),
+                                new ApiV2Cuba(new ApiV2RubygemsCuba()),
+                                new QuickCuba(new QuickMarshalCuba()),
+                                new GemsCuba()),
+                        new QuickCuba(new QuickMarshalCuba()),
+                        new GemsCuba(),
+                        new MavenCuba(
+                                new MavenReleasesCuba(new MavenReleasesRubygemsCuba()),
+                                new MavenPrereleasesCuba(new MavenPrereleasesRubygemsCuba())),
+                        new CompactInfoCuba()
+                ));
     }
 
     public DefaultRubygemsFileSystem(Layout getLayout, Layout postLayout, Layout deleteLayout) {

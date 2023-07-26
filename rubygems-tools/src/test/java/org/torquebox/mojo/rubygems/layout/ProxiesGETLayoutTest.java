@@ -22,6 +22,7 @@ import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.Directory;
 import org.torquebox.mojo.rubygems.FileType;
 import org.torquebox.mojo.rubygems.GemArtifactFile;
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.RubyScriptingTestSupport;
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.cuba.DefaultRubygemsFileSystem;
@@ -70,6 +71,13 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
                 @Override
                 public ApiV2File rubygemsInfoV2(String name, String version) {
                     ApiV2File file = super.rubygemsInfoV2(name, version);
+                    store.retrieve(file);
+                    return file;
+                }
+
+                @Override
+                public CompactInfoFile compactInfo(String name) {
+                    CompactInfoFile file = super.compactInfo(name);
                     store.retrieve(file);
                     return file;
                 }

@@ -183,6 +183,11 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
     }
 
     @Override
+    public CompactInfoFile compactInfo(String name) {
+        return new CompactInfoFile(this, join("/info", SEPARATOR, name, ".compact"), join("/info", SEPARATOR, name), name);
+    }
+
+    @Override
     public BundlerApiFile bundlerApiFile(String names) {
         // normalize query string first
         names = names.replaceAll("%2C", ",").replaceAll(",,", ",").replaceAll("\\s+", "").replaceAll(",\\s*$", "");

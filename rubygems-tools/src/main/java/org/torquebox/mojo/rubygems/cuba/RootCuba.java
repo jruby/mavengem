@@ -35,6 +35,8 @@ public class RootCuba implements Cuba {
 
     public static final String MAVEN = "maven";
 
+    public static final String INFO = "info";
+
     private static final Pattern SPECS = Pattern.compile("^((prerelease_|latest_)?specs)" + _4_8 + "(" + GZ + ")?$");
 
     private final Cuba api;
@@ -45,11 +47,14 @@ public class RootCuba implements Cuba {
 
     private final Cuba maven;
 
-    public RootCuba(Cuba api, Cuba quick, Cuba gems, Cuba maven) {
+    private final Cuba info;
+
+    public RootCuba(Cuba api, Cuba quick, Cuba gems, Cuba maven, Cuba info) {
         this.api = api;
         this.quick = quick;
         this.gems = gems;
         this.maven = maven;
+        this.info = info;
     }
 
     /**
@@ -68,6 +73,8 @@ public class RootCuba implements Cuba {
                 return state.nested(gems);
             case MAVEN:
                 return state.nested(maven);
+            case INFO:
+                return state.nested(info);
             case "":
                 return state.context.factory.directory(state.context.original, "api/", "quick/", "gems/", "maven/", "specs.4.8", "latest_specs.4.8", "prerelease_specs.4.8", "specs.4.8.gz", "latest_specs.4.8.gz", "prerelease_specs.4.8.gz");
             default:
