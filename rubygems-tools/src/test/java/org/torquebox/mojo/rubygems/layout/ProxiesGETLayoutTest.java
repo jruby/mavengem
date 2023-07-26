@@ -60,6 +60,7 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
             fileSystem = new DefaultRubygemsFileSystem(new GETLayout(rubygemsGateway(), store) {
 
                 @Override
+                @Deprecated
                 public DependencyFile dependencyFile(String name) {
                     DependencyFile file = super.dependencyFile(name);
                     store.retrieve(file);

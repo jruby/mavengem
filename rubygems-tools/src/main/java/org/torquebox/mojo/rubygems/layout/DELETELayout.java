@@ -91,6 +91,7 @@ public class DELETELayout extends NoopDefaultLayout {
     }
 
     @Override
+    @Deprecated
     public DependencyFile dependencyFile(String name) {
         DependencyFile file = super.dependencyFile(name);
         store.delete(file);

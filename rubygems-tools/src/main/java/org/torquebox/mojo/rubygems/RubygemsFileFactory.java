@@ -86,6 +86,7 @@ public interface RubygemsFileFactory {
      * @param name of the gemfile
      * @return DependencyFile
      */
+    @Deprecated
     DependencyFile dependencyFile(String name);
 
     ApiV2File rubygemsInfoV2(String name, String version);

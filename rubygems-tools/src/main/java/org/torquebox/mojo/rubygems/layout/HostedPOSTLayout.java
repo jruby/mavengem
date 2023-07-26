@@ -175,6 +175,7 @@ public class HostedPOSTLayout extends NoopDefaultLayout {
     }
 
     @Override
+    @Deprecated
     public DependencyFile dependencyFile(String name) {
         DependencyFile file = super.dependencyFile(name);
         file.markAsForbidden();

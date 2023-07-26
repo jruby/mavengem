@@ -102,6 +102,7 @@ public class HostedGETLayout extends GETLayout {
     }
 
     @Override
+    @Deprecated
     public DependencyFile dependencyFile(String name) {
         DependencyFile file = super.dependencyFile(name);
         store.retrieve(file);

@@ -39,6 +39,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
 
     private static final String API_V2 = "/" + RootCuba.API + "/" + ApiCuba.V2;
 
+    @Deprecated
     private static final String API_V1_DEPS = API_V1 + "/" + ApiV1Cuba.DEPENDENCIES;
 
     private static final String API_V2_RUBYGEMS = API_V2 + "/rubygems";
@@ -171,6 +172,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
     }
 
     @Override
+    @Deprecated
     public DependencyFile dependencyFile(String name) {
         return new DependencyFile(this, join(API_V1_DEPS, SEPARATOR, name, ApiV1DependenciesCuba.RUBY), join(API_V1_DEPS, "?gems=" + name), name);
     }
