@@ -49,13 +49,15 @@ public class GemArtifactFile
      * have the right platform for which the {@link RubygemsV2GemInfo} is needed
      * to retrieve this platform. a second call can be done without RubygemsV2GemInfo !
      *
-     * @param rubygemsV2GemInfo can be null
+     * @param dependencyData can be null
      * @return the associated GemFile - can be null if RubygemsV2GemInfo was never passed in
      */
-    public GemFile gem(RubygemsV2GemInfo rubygemsV2GemInfo) {
-        if (this.gem == null && rubygemsV2GemInfo != null) {
-            String platform = rubygemsV2GemInfo.platform();
-            this.gem = factory.gemFile(name(), version(), platform);
+    public GemFile gem(DependencyData dependencies) {
+        if (this.gem == null && dependencies != null) {
+            String platform = dependencies.platform(version());
+            if (platform != null) {
+                this.gem = factory.gemFile(name(), version(), platform);
+            }
         }
         return this.gem;
     }
@@ -63,7 +65,7 @@ public class GemArtifactFile
     /**
      * the associated DependencyFile object for the gem-artifact
      */
-    public ApiV2File dependency() {
-        return factory.rubygemsInfoV2(name(), version());
+    public CompactInfoFile dependency() {
+        return factory.compactInfo(name());
     }
 }

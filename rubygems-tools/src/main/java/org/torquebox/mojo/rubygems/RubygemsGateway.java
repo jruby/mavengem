@@ -93,4 +93,15 @@ public interface RubygemsGateway {
      * @return gem info data
      */
     RubygemsV2GemInfo newRubygemsV2GemInfo(InputStream dependency, String name, String version, long modified);
+
+    /**
+     * create a new instance of <code>DependencyData</code> and parse
+     * the given compact dependency data
+     *
+     * @param dependency the input-stream with the dependency data
+     * @param name       of gem of the dependency data
+     * @param modified   when the dependency data were last modified
+     * @return dependency data
+     */
+    DependencyData newCompactDependencyData(InputStream dependency, String name, long modified);
 }

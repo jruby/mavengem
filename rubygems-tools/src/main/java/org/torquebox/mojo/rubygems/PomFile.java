@@ -38,22 +38,12 @@ public class PomFile
         return factory.gemspecFile(name(), version(), platform);
     }
 
-    public GemspecFile gemspec(RubygemsV2GemInfo rubygemsV2GemInfo) {
-        String platform = rubygemsV2GemInfo.platform();
-        return factory.gemspecFile(name(), version(), platform);
-    }
-
     public GemFile gem(DependencyData dependencies) {
         String platform = dependencies.platform(version());
         return factory.gemFile(name(), version(), platform);
     }
 
-    public GemFile gem(RubygemsV2GemInfo rubygemsV2GemInfo) {
-        String platform = rubygemsV2GemInfo.platform();
-        return factory.gemFile(name(), version(), platform);
-    }
-
-    public ApiV2File dependency() {
-        return factory.rubygemsInfoV2(name(), version());
+    public CompactInfoFile dependency() {
+        return factory.compactInfo(name());
     }
 }

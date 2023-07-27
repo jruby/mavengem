@@ -117,29 +117,47 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
 
     @Test
     public void testSha1() throws Exception {
-        String[] pathes = { // "/maven/releases/rubygems/zip/maven-metadata.xml.sha1",
-                "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.gem.sha1", "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.pom.sha1",
-                //"/maven/prereleases/rubygems/pre/maven-metadata.xml.sha1",
-                //"/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/maven-metadata.xml.sha1",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.gem.sha1", "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.pom.sha1",
-                //"/maven/releases/rubygems/pre/maven-metadata.xml.sha1",
-                "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.gem.sha1", "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.pom.sha1"};
-        String[] shas = { //"f197a259029ab2c6a9fe72508f3567102d7fef20",
-                "6fabc32da123f7013b2db804273df428a50bc6a4", "604b091a025d1234a529517822b5db66cbec9b13",
-                //"a527265b95d6149b16dc2ce17a18e37e1083eeb2",
-                //"d1ef40d6775396c6bec855037a1ff6dcb34afdbd",
-                "b7311d2f46398dbe40fd9643f3d4e5d473574335", "054121dcccc572cdee2da2d15e1ca712a1bb77b3",
-                //"81bed0dbaef593e31578f5814304f991f55ff7d4",
-                "b7311d2f46398dbe40fd9643f3d4e5d473574335", "a83efdc872c7b453196ec3911236f6e2dbd45c60"};
+        String[] pathes = {
+                "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.gem.sha1",
+                "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.pom.sha1",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.gem.sha1",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.pom.sha1",
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.gem.sha1",
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.pom.sha1"
+        };
+        String[] shas = {
+                "6fabc32da123f7013b2db804273df428a50bc6a4",
+                "a990ef23e01c1a0a8b8364319a91b5e9f8e7e53c",
+                "edfb9b1923514277b7256b0670a388da43706d39",
+                "b30edd7dae6d79b36b03fd03a2f0af17da475b0d",
+                "edfb9b1923514277b7256b0670a388da43706d39",
+                "cf017cee279df5a255e49490bf0d5f67da260b5f"
+        };
 
         assertFiletypeWithPayload(pathes, FileType.SHA1, shas);
+
+        // these files carry a timestamp of creation of the .ruby file
+        pathes = new String[]{
+                "/maven/releases/rubygems/zip/maven-metadata.xml.sha1",
+                "/maven/prereleases/rubygems/psych/maven-metadata.xml.sha1",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1-SNAPSHOT/maven-metadata.xml.sha1",
+                "/maven/releases/rubygems/psych/maven-metadata.xml.sha1"
+        };
+        assertFiletypeWithPayload(pathes, FileType.SHA1, BytesStreamLocation.class);
     }
 
     @Test
     public void testGemArtifact() throws Exception {
-        String[] pathes = {"/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.gem", "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.gem", "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.gem"};
+        String[] pathes = {
+                "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.gem",
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.gem",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.gem"
+        };
         assertFiletypeWithPayload(pathes, FileType.GEM_ARTIFACT, URLStreamLocation.class);
-        pathes = new String[]{"/maven/releases/rubygems/hufflepuf/0.1.0/hufflepuf-0.1.0.gem", "/maven/releases/rubygems/hufflepuf/0.1.0/hufflepuf-0.2.0.gem"};
+        pathes = new String[]{
+                "/maven/releases/rubygems/hufflepuf/0.1.0/hufflepuf-0.1.0.gem",
+                "/maven/releases/rubygems/hufflepuf/0.1.0/hufflepuf-0.2.0.gem"
+        };
         RubygemsFile[] result = assertFiletypeWithPayload(pathes, FileType.GEM_ARTIFACT, URLStreamLocation.class);
         for (RubygemsFile file : result) {
             GemArtifactFile a = (GemArtifactFile) file;
@@ -149,19 +167,33 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
 
     @Test
     public void testPom() throws Exception {
-        String[] pathes = {"/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.pom", "/maven/releases/rubygems/my/0.1.0/my-0.1.0.pom", "/maven/releases/rubygems/pre/0.1.0.beta/jbundler-0.1.0.beta.pom", "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/jbundler-0.1.0.beta-123213123.pom"};
-        String[] xmls = {loadPomResource("zip.pom"), loadPomResource("my.pom"), loadPomResource("pre.pom"), loadPomResource("pre-snapshot.pom")};
+        String[] pathes = {
+                "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.pom",
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.pom",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1-SNAPSHOT/psych-5.1.0.pre1-123213123.pom"
+        };
+
+        String[] xmls = {
+                loadPomResource("zip.pom"),
+                loadPomResource("psych-release.pom"),
+                loadPomResource("psych-prerelease.pom")
+        };
+
         assertFiletypeWithPayload(pathes, FileType.POM, xmls);
     }
 
     @Test
     public void testMavenMetadata() throws Exception {
-        String[] pathes = {"/maven/releases/rubygems/zip/maven-metadata.xml", "/maven/releases/rubygems/pre/maven-metadata.xml", "/maven/prereleases/rubygems/pre/maven-metadata.xml"};
-        String[] xmls = {"<metadata>\n" + "  <groupId>rubygems</groupId>\n" + "  <artifactId>zip</artifactId>\n" + "  <versioning>\n" + "    <versions>\n" + "      <version>2.0.2</version>\n" + "    </versions>\n" + "    <lastUpdated>2014</lastUpdated>\n" + "  </versioning>\n" + "</metadata>\n",
-
-                "<metadata>\n" + "  <groupId>rubygems</groupId>\n" + "  <artifactId>pre</artifactId>\n" + "  <versioning>\n" + "    <versions>\n" + "    </versions>\n" + "    <lastUpdated>2014</lastUpdated>\n" + "  </versioning>\n" + "</metadata>\n",
-
-                "<metadata>\n" + "  <groupId>rubygems</groupId>\n" + "  <artifactId>pre</artifactId>\n" + "  <versioning>\n" + "    <versions>\n" + "      <version>0.1.0.beta-SNAPSHOT</version>\n" + "    </versions>\n" + "    <lastUpdated>2014</lastUpdated>\n" + "  </versioning>\n" + "</metadata>\n"};
+        String[] pathes = {
+                "/maven/releases/rubygems/zip/maven-metadata.xml",
+                "/maven/releases/rubygems/psych/maven-metadata.xml",
+                "/maven/prereleases/rubygems/psych/maven-metadata.xml"
+        };
+        String[] xmls = {
+                loadPomResource("zip-release-metadata.xml"),
+                loadPomResource("psych-release-metadata.xml"),
+                loadPomResource("psych-prerelease-metadata.xml")
+        };
         assertFiletypeWithPayload(pathes, FileType.MAVEN_METADATA, xmls);
     }
 
@@ -191,12 +223,6 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
     }
 
     @Test
-    public void testDependency() throws Exception {
-        String[] pathes = {"/api/v1/dependencies?gems=zip", "/api/v1/dependencies/pre.ruby", "/api/v1/dependencies/z/zip.ruby"};
-        assertFiletypeWithPayload(pathes, FileType.DEPENDENCY, URLStreamLocation.class);
-    }
-
-    @Test
     public void testGemspec() throws Exception {
         String[] pathes = {"/quick/Marshal.4.8/zip-2.0.2.gemspec.rz", "/quick/Marshal.4.8/z/zip-2.0.2.gemspec.rz"};
         assertFiletypeWithPayload(pathes, FileType.GEMSPEC, URLStreamLocation.class);
@@ -213,39 +239,46 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
 
     @Test
     public void testGem() throws Exception {
-        String[] pathes = {"/gems/pre-0.1.0.beta.gem", "/gems/p/pre-0.1.0.beta.gem"};
+        String[] pathes = {"/gems/psych-5.1.0.pre1-java.gem", "/gems/p/psych-5.1.0.pre1-java.gem"};
         assertFiletypeWithPayload(pathes, FileType.GEM, URLStreamLocation.class);
     }
 
     @Test
     public void testDirectory() throws Exception {
-        String[] pathes = {"/", "/api", "/api/", "/api/v1", "/api/v1/", "/api/v1/dependencies/", "/gems/", "/gems", "/maven/releases/rubygems/zip", "/maven/releases/rubygems/zip/2.0.2", "/maven/prereleases/rubygems/pre", "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT", "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT",};
+        String[] pathes = {
+                "/", "/api", "/api/", "/api/v1", "/api/v1/",
+                "/gems/", "/gems",
+                "/maven/releases/rubygems/zip",
+                "/maven/releases/rubygems/zip/2.0.2",
+                "/maven/prereleases/rubygems/psych",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1-SNAPSHOT",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1-SNAPSHOT",
+        };
         assertFiletypeWithNullPayload(pathes, FileType.DIRECTORY);
 
-        assertDirectory("/", "api/", "quick/", "gems/", "maven/", "specs.4.8", "latest_specs.4.8", "prerelease_specs.4.8", "specs.4.8.gz", "latest_specs.4.8.gz", "prerelease_specs.4.8.gz");
+        assertDirectory("/", "api/", "quick/", "gems/", "maven/", "specs.4.8", "latest_specs.4.8", "prerelease_specs.4.8",
+                "specs.4.8.gz", "latest_specs.4.8.gz", "prerelease_specs.4.8.gz");
         assertDirectory("/api", "v1", "quick", "gems");
         assertDirectory("/api/v1", "api_key", "dependencies");
-        assertDirectory("/api/v1/dependencies/");//"hufflepuf.ruby", "pre.ruby", "zip.ruby" );
         assertDirectory("/api/quick", "Marshal.4.8");
         assertDirectory("/api/quick/Marshal.4.8");
         assertDirectory("/api/gems");
         assertDirectory("/quick", "Marshal.4.8");
         assertDirectory("/quick/Marshal.4.8");
-        assertDirectory("/gems");//"hufflepuf.ruby", "pre.ruby", "zip.ruby" );
         assertDirectory("/maven", "prereleases", "releases");
         assertDirectory("/maven/prereleases", "rubygems");
-        // the lookup will create a hufflepuf.ruby !
-        assertDirectory("/maven/prereleases/rubygems/hufflepuf", "maven-metadata.xml", "maven-metadata.xml.sha1");
-        assertDirectory("/maven/prereleases/rubygems", "hufflepuf", "my", "pre", "zip");
+        assertDirectory("/maven/prereleases/rubygems");
         assertDirectory("/maven/releases", "rubygems");
-        assertDirectory("/maven/releases/rubygems", "hufflepuf", "my", "pre", "zip");
-        assertDirectory("/maven/releases/rubygems/hufflepuf", "0.1.0", "0.2.0", "maven-metadata.xml", "maven-metadata.xml.sha1");
-        assertDirectory("/maven/releases/rubygems/pre", "0.1.0.beta", "maven-metadata.xml", "maven-metadata.xml.sha1");
+        assertDirectory("/maven/releases/rubygems");
         assertDirectory("/maven/releases/rubygems/zip", "2.0.2", "maven-metadata.xml", "maven-metadata.xml.sha1");
-        assertDirectory("/maven/releases/rubygems/hufflepuf/0.1.0", "hufflepuf-0.1.0.pom", "hufflepuf-0.1.0.pom.sha1", "hufflepuf-0.1.0.gem", "hufflepuf-0.1.0.gem.sha1");
-        assertDirectory("/maven/releases/rubygems/hufflepuf/0.2.0", "hufflepuf-0.2.0.pom", "hufflepuf-0.2.0.pom.sha1", "hufflepuf-0.2.0.gem", "hufflepuf-0.2.0.gem.sha1");
-        assertDirectory("/maven/releases/rubygems/pre/0.1.0.beta", "pre-0.1.0.beta.pom", "pre-0.1.0.beta.pom.sha1", "pre-0.1.0.beta.gem", "pre-0.1.0.beta.gem.sha1");
-        assertDirectory("/maven/releases/rubygems/zip/2.0.2", "zip-2.0.2.pom", "zip-2.0.2.pom.sha1", "zip-2.0.2.gem", "zip-2.0.2.gem.sha1");
+        assertDirectory("/maven/releases/rubygems/hufflepuf/0.1.0",
+                "hufflepuf-0.1.0.pom", "hufflepuf-0.1.0.pom.sha1", "hufflepuf-0.1.0.gem", "hufflepuf-0.1.0.gem.sha1");
+        assertDirectory("/maven/releases/rubygems/hufflepuf/0.2.0",
+                "hufflepuf-0.2.0.pom", "hufflepuf-0.2.0.pom.sha1", "hufflepuf-0.2.0.gem", "hufflepuf-0.2.0.gem.sha1");
+        assertDirectory("/maven/releases/rubygems/pre/0.1.0.beta",
+                "pre-0.1.0.beta.pom", "pre-0.1.0.beta.pom.sha1", "pre-0.1.0.beta.gem", "pre-0.1.0.beta.gem.sha1");
+        assertDirectory("/maven/releases/rubygems/zip/2.0.2",
+                "zip-2.0.2.pom", "zip-2.0.2.pom.sha1", "zip-2.0.2.gem", "zip-2.0.2.gem.sha1");
     }
 
     private void assertDirectory(String path, String... items) {

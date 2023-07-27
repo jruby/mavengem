@@ -154,7 +154,7 @@ module Nexus
         # spec.emails = info["emails"]
         spec.metadata["source_code_uri"] = info["source_code_uri"]
         info["dependencies"]["runtime"].each do |dep|
-          spec.add_dependency(dep["name"], dep["requirements"])
+          spec.add_dependency(dep["name"], *dep["requirements"].split(", "))
         end
       end
     end

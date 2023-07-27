@@ -136,34 +136,32 @@ public class HostedPOSTLayoutTest
 
     @Test
     public void testSha1() throws Exception {
+
         String[] pathes = {
-                "/maven/releases/rubygems/second/2/second-2.gem.sha1",
-                "/maven/releases/rubygems/second/2/second-2.pom.sha1",
                 "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.gem.sha1",
                 "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.pom.sha1",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.gem.sha1",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.pom.sha1",
-                "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.gem.sha1",
-                "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.pom.sha1"
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.gem.sha1",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.pom.sha1",
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.gem.sha1",
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.pom.sha1"
         };
         String[] shas = {
-                "ccef6223599eb84674c0e3112f3157ab9ea8a776",
-                "7fa39c0e7d7352d0c047fb5c836c780496e2b04f",
                 "6fabc32da123f7013b2db804273df428a50bc6a4",
-                "604b091a025d1234a529517822b5db66cbec9b13",
-                "b7311d2f46398dbe40fd9643f3d4e5d473574335",
-                "054121dcccc572cdee2da2d15e1ca712a1bb77b3",
-                "b7311d2f46398dbe40fd9643f3d4e5d473574335",
-                "a83efdc872c7b453196ec3911236f6e2dbd45c60"
+                "a990ef23e01c1a0a8b8364319a91b5e9f8e7e53c",
+                "edfb9b1923514277b7256b0670a388da43706d39",
+                "b30edd7dae6d79b36b03fd03a2f0af17da475b0d",
+                "edfb9b1923514277b7256b0670a388da43706d39",
+                "cf017cee279df5a255e49490bf0d5f67da260b5f"
         };
 
         assertFiletypeWithPayload(pathes, FileType.SHA1, shas);
 
         // these files carry a timestamp of creation of the .ruby file
         pathes = new String[]{
-                "/maven/prereleases/rubygems/pre/maven-metadata.xml.sha1",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/maven-metadata.xml.sha1",
-                "/maven/releases/rubygems/pre/maven-metadata.xml.sha1"
+                "/maven/releases/rubygems/zip/maven-metadata.xml.sha1",
+                "/maven/prereleases/rubygems/psych/maven-metadata.xml.sha1",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1-SNAPSHOT/maven-metadata.xml.sha1",
+                "/maven/releases/rubygems/psych/maven-metadata.xml.sha1"
         };
         assertFiletypeWithPayload(pathes, FileType.SHA1, BytesStreamLocation.class);
     }
@@ -171,10 +169,9 @@ public class HostedPOSTLayoutTest
     @Test
     public void testGemArtifact() throws Exception {
         String[] pathes = {
-                "/maven/releases/rubygems/second/2/second-2.gem",
                 "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.gem",
-                "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.gem",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.gem"
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.gem",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.gem"
         };
         assertFiletypeWithPayload(pathes, FileType.GEM_ARTIFACT, URLStreamLocation.class);
     }
@@ -182,16 +179,14 @@ public class HostedPOSTLayoutTest
     @Test
     public void testPom() throws Exception {
         String[] pathes = {
-                "/maven/releases/rubygems/second/2/second-2.pom",
                 "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.pom",
-                "/maven/releases/rubygems/pre/0.1.0.beta/jbundler-0.1.0.beta.pom",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/jbundler-0.1.0.beta-123213123.pom"
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.pom",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.pom"
         };
         String[] xmls = {
-                loadPomResource("second.pom"),
                 loadPomResource("zip.pom"),
-                loadPomResource("pre.pom"),
-                loadPomResource("pre-snapshot.pom")
+                loadPomResource("psych-release.pom"),
+                loadPomResource("psych-prerelease.pom")
         };
         assertFiletypeWithPayload(pathes, FileType.POM, xmls);
     }
@@ -199,54 +194,14 @@ public class HostedPOSTLayoutTest
     @Test
     public void testMavenMetadata() throws Exception {
         String[] pathes = {
-                "/maven/releases/rubygems/second/maven-metadata.xml",
                 "/maven/releases/rubygems/zip/maven-metadata.xml",
-                "/maven/releases/rubygems/pre/maven-metadata.xml",
-                "/maven/prereleases/rubygems/pre/maven-metadata.xml"
+                "/maven/releases/rubygems/psych/maven-metadata.xml",
+                "/maven/prereleases/rubygems/psych/maven-metadata.xml"
         };
         String[] xmls = {
-                "<metadata>\n"
-                        + "  <groupId>rubygems</groupId>\n"
-                        + "  <artifactId>second</artifactId>\n"
-                        + "  <versioning>\n"
-                        + "    <versions>\n"
-                        + "      <version>2</version>\n"
-                        + "    </versions>\n"
-                        + "    <lastUpdated>2014</lastUpdated>\n"
-                        + "  </versioning>\n"
-                        + "</metadata>\n",
-
-                "<metadata>\n"
-                        + "  <groupId>rubygems</groupId>\n"
-                        + "  <artifactId>zip</artifactId>\n"
-                        + "  <versioning>\n"
-                        + "    <versions>\n"
-                        + "      <version>2.0.2</version>\n"
-                        + "    </versions>\n"
-                        + "    <lastUpdated>2014</lastUpdated>\n"
-                        + "  </versioning>\n"
-                        + "</metadata>\n",
-
-                "<metadata>\n"
-                        + "  <groupId>rubygems</groupId>\n"
-                        + "  <artifactId>pre</artifactId>\n"
-                        + "  <versioning>\n"
-                        + "    <versions>\n"
-                        + "    </versions>\n"
-                        + "    <lastUpdated>2014</lastUpdated>\n"
-                        + "  </versioning>\n"
-                        + "</metadata>\n",
-
-                "<metadata>\n"
-                        + "  <groupId>rubygems</groupId>\n"
-                        + "  <artifactId>pre</artifactId>\n"
-                        + "  <versioning>\n"
-                        + "    <versions>\n"
-                        + "      <version>0.1.0.beta-SNAPSHOT</version>\n"
-                        + "    </versions>\n"
-                        + "    <lastUpdated>2014</lastUpdated>\n"
-                        + "  </versioning>\n"
-                        + "</metadata>\n"
+                loadPomResource("zip-release-metadata.xml"),
+                loadPomResource("psych-release-metadata.xml"),
+                loadPomResource("psych-prerelease-metadata.xml")
         };
         assertFiletypeWithPayload(pathes, FileType.MAVEN_METADATA, xmls);
     }
@@ -310,8 +265,6 @@ public class HostedPOSTLayoutTest
     @Test
     public void testGemspec() throws Exception {
         String[] pathes = {
-                "/quick/Marshal.4.8/second-2.gemspec.rz",
-                "/quick/Marshal.4.8/s/second-2.gemspec.rz",
                 "/quick/Marshal.4.8/zip-2.0.2.gemspec.rz",
                 "/quick/Marshal.4.8/z/zip-2.0.2.gemspec.rz",
                 "/quick/Marshal.4.8/pre-0.1.0.beta.gemspec.rz",
@@ -325,7 +278,6 @@ public class HostedPOSTLayoutTest
         String[] pathes = {
                 "/gems/zip-2.0.2.gem", "/gems/z/zip-2.0.2.gem",
                 "/gems/second-2.gem", "/gems/s/second-2.gem",
-                "/gems/pre-0.1.0.beta.gem", "/gems/p/pre-0.1.0.beta.gem"
         };
         assertFiletypeWithPayload(pathes, FileType.GEM, URLStreamLocation.class);
     }
@@ -375,26 +327,6 @@ public class HostedPOSTLayoutTest
                 "/maven/prereleases/rubygems/jbundler/1.2.3-SNAPSHOT/jbundler-1.2.3-123213123.pom2",
         };
         assertFiletypeWithNullPayload(pathes, FileType.NOT_FOUND);
-    }
-
-    @Test
-    public void testDependency() throws Exception {
-        String[] pathes = {
-                "/api/v1/dependencies/z/zip.ruby",
-                "/api/v1/dependencies/pre.ruby",
-                "/api/v1/dependencies/s/second.ruby",
-        };
-        assertFiletypeWithPayload(pathes, FileType.DEPENDENCY, URLStreamLocation.class);
-        pathes = new String[]{
-                "/api/v1/dependencies?gems=zip",
-                "/api/v1/dependencies?gems=pre",
-                "/api/v1/dependencies?gems=second",
-        };
-        if (isHosted) {
-            assertNotExists(pathes);
-        } else {
-            assertFiletypeWithPayload(pathes, FileType.DEPENDENCY, URLStreamLocation.class);
-        }
     }
 
     protected void assertFiletype(String[] pathes, FileType type) {

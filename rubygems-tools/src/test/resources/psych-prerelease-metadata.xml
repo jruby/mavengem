@@ -1,0 +1,21 @@
+<metadata>
+  <groupId>rubygems</groupId>
+  <artifactId>psych</artifactId>
+  <versioning>
+    <versions>
+      <version>1.2.2.rc1-SNAPSHOT</version>
+      <version>2.0.14.pre1-SNAPSHOT</version>
+      <version>3.0.0.beta2-SNAPSHOT</version>
+      <version>3.0.0.beta3-SNAPSHOT</version>
+      <version>3.0.0.beta4-SNAPSHOT</version>
+      <version>3.0.3.pre1-SNAPSHOT</version>
+      <version>3.0.3.pre2-SNAPSHOT</version>
+      <version>3.0.3.pre3-SNAPSHOT</version>
+      <version>3.0.3.pre4-SNAPSHOT</version>
+      <version>3.0.3.pre5-SNAPSHOT</version>
+      <version>5.0.2.pre1-SNAPSHOT</version>
+      <version>5.1.0.pre1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>2014</lastUpdated>
+  </versioning>
+</metadata>

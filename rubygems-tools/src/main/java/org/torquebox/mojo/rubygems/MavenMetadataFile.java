@@ -37,7 +37,7 @@ public class MavenMetadataFile
     /**
      * retrieve the associated DependencyFile
      */
-    public DependencyFile dependency() {
-        return factory.dependencyFile(name());
+    public CompactInfoFile dependency() {
+        return factory.compactInfo(name());
     }
 }

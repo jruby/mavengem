@@ -57,11 +57,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
     }
 
     private String join(String... parts) {
-        StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
-            builder.append(part);
-        }
-        return builder.toString();
+        return String.join("", parts);
     }
 
     private String toPath(String name, String version, String timestamp, boolean snapshot) {
@@ -153,7 +149,8 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
 
     @Override
     public GemFile gemFile(String name, String version, String platform) {
-        return new GemFile(this, join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, name, "-", version, ".gem"), join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), name, version, platform);
+        String filename = BaseGemFile.toFilename(name, version, platform);
+        return new GemFile(this, join(GEMS, SEPARATOR, name.substring(0, 1), SEPARATOR, filename, GemsCuba.GEM), join(GEMS, SEPARATOR, filename, GemsCuba.GEM), name, version, platform);
     }
 
     @Override

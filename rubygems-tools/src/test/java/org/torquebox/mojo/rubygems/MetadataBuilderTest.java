@@ -28,8 +28,8 @@ public class MetadataBuilderTest
     public TestJRubyContainerRule testJRubyContainerRule = new TestJRubyContainerRule();
 
     private MetadataBuilder createMetadataBuilder() {
-        return new MetadataBuilder(testJRubyContainerRule.getRubygemsGateway().newDependencyData(
-                asStream("nokogiri.ruby"), "nokogiri", 1397660433050l));
+        return new MetadataBuilder(testJRubyContainerRule.getRubygemsGateway().newCompactDependencyData(
+                asStream("nokogiri.compact"), "nokogiri", 1397660433050l));
     }
 
     private InputStream asStream(String file) {

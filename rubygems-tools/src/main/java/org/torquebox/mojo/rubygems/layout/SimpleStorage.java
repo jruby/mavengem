@@ -225,6 +225,7 @@ public class SimpleStorage
 
         public URLConnection openConnection() throws IOException {
             URLConnection con = url.openConnection();
+            con.setRequestProperty("User-Agent", "mavengem");
             String userinfo = this.url.getUserInfo();
             if (userinfo != null) {
                 String basicAuth = "Basic " + base64.encodeBase64String(URLDecoder.decode(userinfo, "UTF-8").getBytes(StandardCharsets.UTF_8));
