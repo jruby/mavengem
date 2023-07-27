@@ -51,7 +51,7 @@ public class MavenGemURLConnectionTest {
     @Test
     public void railsMavenMetadata() throws Exception {
         // this test goes online to rubygems.org
-        File cached = new File(cacheDir, "https___rubygems_org/api/v1/dependencies/rails.ruby");
+        File cached = new File(cacheDir, "https___rubygems_org/info/rails.compact");
         cached.delete();
         URLConnection url = new MavenGemURLConnection(factory, new URL("https://rubygems.org"), "/maven/releases/rubygems/rails/maven-metadata.xml");
         String result = download(url);

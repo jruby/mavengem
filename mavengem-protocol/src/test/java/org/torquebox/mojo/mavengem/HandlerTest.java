@@ -45,7 +45,7 @@ public class HandlerTest {
     @Test
     public void railsMavenMetadata() throws Exception {
         // this test goes online to rubygems.org
-        File cached = new File(cacheDir, "https___rubygems_org/api/v1/dependencies/rails.ruby");
+        File cached = new File(cacheDir, "https___rubygems_org/info/rails.compact");
         cached.delete();
         URL url = new URL("mavengem:https://rubygems.org/maven/releases/rubygems/rails/maven-metadata.xml");
         try (InputStream in = url.openStream()) {
@@ -62,7 +62,7 @@ public class HandlerTest {
     @Test
     public void railsPom() throws Exception {
         // this test goes online to rubygems.org
-        File cached = new File(cacheDir, "https___rubygems_org/quick/Marshal.4.8/r/rails-4.2.5.gemspec.rz");
+        File cached = new File(cacheDir, "https___rubygems_org/api/v2/rubygems/rails/versions/4.2.5.json");
         cached.delete();
         URL url = new URL("mavengem:https://rubygems.org/maven/releases/rubygems/rails/4.2.5/rails-4.2.5.pom");
         try (InputStream in = url.openStream()) {
