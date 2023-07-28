@@ -6,7 +6,7 @@
     <artifactId>oss-parent</artifactId>
     <version>9</version>
   </parent>
-  <groupId>org.torquebox.mojo</groupId>
+  <groupId>com.headius</groupId>
   <artifactId>mavengem</artifactId>
   <version>1.0.4-SNAPSHOT</version>
   <packaging>pom</packaging>

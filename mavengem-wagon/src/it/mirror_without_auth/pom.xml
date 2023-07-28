@@ -38,7 +38,7 @@
       <extension>
         <groupId>org.torquebox.mojo</groupId>
         <artifactId>mavengem-wagon</artifactId>
-        <version>@project.version@</version>
+        <version>1.0.3</version>
       </extension>
     </extensions>
   </build>

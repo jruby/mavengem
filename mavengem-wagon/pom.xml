@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>mavengem</artifactId>
-    <groupId>org.torquebox.mojo</groupId>
+    <groupId>com.headius</groupId>
     <version>1.0.4-SNAPSHOT</version>
   </parent>
   <artifactId>mavengem-wagon</artifactId>
@@ -11,7 +11,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.torquebox.mojo</groupId>
+      <groupId>com.headius</groupId>
       <artifactId>mavengem-protocol</artifactId>
       <version>${project.version}</version>
     </dependency>
