@@ -206,7 +206,7 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
 
     @Test
     public void testBundlerApi() throws Exception {
-        String[] pathes = {"/api/v1/dependencies?gems=zip,pre"};
+        String[] pathes = {"/api/v1/dependencies?gems=zip,psych"};
         assertFiletypeWithPayload(pathes, FileType.BUNDLER_API, BytesStreamLocation.class);
     }
 

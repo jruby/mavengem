@@ -221,10 +221,9 @@ public class HostedGETLayoutTest
 
     @Test
     public void testBundlerApi() throws Exception {
-        String[] pathes = {"/api/v1/dependencies?gems=zip,pre"};
+        String[] pathes = {"/api/v1/dependencies?gems=zip,psych"};
         assertFiletypeWithPayload(pathes, FileType.BUNDLER_API, BytesStreamLocation.class);
     }
-
 
     @Test
     public void testApiV1Gems() throws Exception {

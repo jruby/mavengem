@@ -241,7 +241,7 @@ public class HostedPOSTLayoutTest
 
     @Test
     public void testBundlerApi() throws Exception {
-        String[] pathes = {"/api/v1/dependencies?gems=zip,pre", "/api/v1/dependencies?gems=zip,pre,second"};
+        String[] pathes = {"/api/v1/dependencies?gems=zip,psych", "/api/v1/dependencies?gems=zip,psych,rake"};
         if (isHosted) {
             assertNotExists(pathes);
         } else {
