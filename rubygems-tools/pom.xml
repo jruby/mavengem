@@ -18,7 +18,7 @@
 
   <parent>
     <artifactId>mavengem</artifactId>
-    <groupId>com.headius</groupId>
+    <groupId>org.jruby.maven</groupId>
     <version>1.0.4-SNAPSHOT</version>
   </parent>
 

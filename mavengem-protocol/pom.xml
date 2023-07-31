@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>mavengem</artifactId>
-    <groupId>com.headius</groupId>
+    <groupId>org.jruby.maven</groupId>
     <version>1.0.4-SNAPSHOT</version>
   </parent>
   <artifactId>mavengem-protocol</artifactId>
@@ -13,7 +13,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.headius</groupId>
+      <groupId>org.jruby.maven</groupId>
       <artifactId>rubygems-tools</artifactId>
       <version>${project.version}</version>
     </dependency>
