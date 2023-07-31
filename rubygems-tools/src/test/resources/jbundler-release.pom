@@ -11,6 +11,8 @@
   <licenses>
     <license>
       <name>MIT</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <comments>MIT license</comments>
     </license>
   </licenses>
   <developers>
@@ -24,7 +26,8 @@
   </scm>
   <properties>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-    <jruby.plugins.version>1.0.4</jruby.plugins.version>
+    <jruby.plugins.version>2.0.1</jruby.plugins.version>
+    <mavengem.wagon.version>1.0.3</mavengem.wagon.version>
   </properties>
   <dependencies>
     <dependency>
@@ -54,6 +57,11 @@
   </dependencies>
   <build>
     <extensions>
+      <extension>
+        <groupId>org.torquebox.mojo</groupId>
+        <artifactId>mavengem-wagon</artifactId>
+        <version>${mavengem.wagon.version}</version>
+      </extension>
       <extension>
         <groupId>de.saumya.mojo</groupId>
         <artifactId>gem-extension</artifactId>

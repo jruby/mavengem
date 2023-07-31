@@ -127,11 +127,11 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
         };
         String[] shas = {
                 "6fabc32da123f7013b2db804273df428a50bc6a4",
-                "a990ef23e01c1a0a8b8364319a91b5e9f8e7e53c",
+                "cc658431eb13f47cd1ad10ab5e937676040317fc",
                 "edfb9b1923514277b7256b0670a388da43706d39",
-                "b30edd7dae6d79b36b03fd03a2f0af17da475b0d",
+                "2b57344d1f255519ae19b34cd3836bbe35721c72",
                 "edfb9b1923514277b7256b0670a388da43706d39",
-                "cf017cee279df5a255e49490bf0d5f67da260b5f"
+                "d162aa950471128b37485453091ca10086aabdc6"
         };
 
         assertFiletypeWithPayload(pathes, FileType.SHA1, shas);
