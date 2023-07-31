@@ -127,7 +127,7 @@ public class DefaultRubygemsFileSystemTest
                 "/api/v1/dependencies?gems=nexus", "/api/v1/dependencies/jbundler.ruby",
                 "/api/v1/dependencies/b/bundler.ruby"
         };
-        assertFiletype(pathes, FileType.DEPENDENCY);
+        assertFiletype(pathes, FileType.COMPACT);
     }
 
     @Test

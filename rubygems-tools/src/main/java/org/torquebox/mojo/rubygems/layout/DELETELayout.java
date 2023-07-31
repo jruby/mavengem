@@ -109,7 +109,7 @@ public class DELETELayout extends NoopDefaultLayout {
     @Override
     public CompactInfoFile compactInfo(String name) {
         CompactInfoFile file = super.compactInfo(name);
-        store.retrieve(file);
+        store.delete(file);
         return file;
     }
 }

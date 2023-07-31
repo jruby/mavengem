@@ -118,10 +118,6 @@ public class HostedGETLayout extends GETLayout {
     public ApiV2File rubygemsInfoV2(String name, String version) {
         ApiV2File file = super.rubygemsInfoV2(name, version);
         store.retrieve(file);
-        if (file.notExists()) {
-            throw new RuntimeException("not found: " + file);
-        }
-
         return file;
     }
 
@@ -129,10 +125,6 @@ public class HostedGETLayout extends GETLayout {
     public CompactInfoFile compactInfo(String name) {
         CompactInfoFile file = super.compactInfo(name);
         store.retrieve(file);
-        if (file.notExists()) {
-            throw new RuntimeException("not found: " + file);
-        }
-
         return file;
     }
 

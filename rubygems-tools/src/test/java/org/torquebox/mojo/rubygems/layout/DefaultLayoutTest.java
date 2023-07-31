@@ -276,20 +276,20 @@ public class DefaultLayoutTest
         assertThat(file, equalTo(file2));
         file2 = fileSystem.get("/api/v1/dependencies/j/jbundler.ruby");
         assertThat(file, equalTo(file2));
-        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/jbundler.ruby"));
-        assertThat(file.remotePath(), equalTo("/api/v1/dependencies?gems=jbundler"));
+        assertThat(file.storagePath(), equalTo("/info/jbundler.compact"));
+        assertThat(file.remotePath(), equalTo("/info/jbundler"));
         assertThat(file.name(), equalTo("jbundler"));
-        assertThat(file.type(), equalTo(FileType.DEPENDENCY));
+        assertThat(file.type(), equalTo(FileType.COMPACT));
     }
 
     @Test
     public void testBundlerApiFile1() throws Exception {
         RubygemsFile file = fileSystem.get("/api/v1/dependencies?gems=jbundler");
         assertThat(file, notNullValue());
-        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/jbundler.ruby"));
-        assertThat(file.remotePath(), equalTo("/api/v1/dependencies?gems=jbundler"));
+        assertThat(file.storagePath(), equalTo("/info/jbundler.compact"));
+        assertThat(file.remotePath(), equalTo("/info/jbundler"));
         assertThat(file.name(), equalTo("jbundler"));
-        assertThat(file.type(), equalTo(FileType.DEPENDENCY));
+        assertThat(file.type(), equalTo(FileType.COMPACT));
     }
 
     @Test
