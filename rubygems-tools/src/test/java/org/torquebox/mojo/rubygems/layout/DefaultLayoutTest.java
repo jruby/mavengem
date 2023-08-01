@@ -296,10 +296,10 @@ public class DefaultLayoutTest
     public void testBundlerApiFile2() throws Exception {
         RubygemsFile file = fileSystem.get("/api/v1/dependencies?gems=jbundler,bundler");
         assertThat(file, notNullValue());
-        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/8d44e63a6cf933622c5f41a73371a1945e17a2db.gems"));
+        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/bundler+jbundler.gems"));
         assertThat(file.name(), nullValue());
         assertThat(file.remotePath(), equalTo("/api/v1/dependencies?gems=jbundler,bundler"));
-        assertThat(((BundlerApiFile) file).gemnames(), equalTo(new String[]{"jbundler", "bundler"}));
+        assertThat(((BundlerApiFile) file).gemnames(), equalTo(new String[]{"bundler", "jbundler"}));
         assertThat(file.type(), equalTo(FileType.BUNDLER_API));
     }
 
@@ -307,10 +307,10 @@ public class DefaultLayoutTest
     public void testBundlerApiFile3() throws Exception {
         RubygemsFile file = fileSystem.get("/api/v1/dependencies?gems=jbundler%2Cbundler");
         assertThat(file, notNullValue());
-        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/8d44e63a6cf933622c5f41a73371a1945e17a2db.gems"));
+        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/bundler+jbundler.gems"));
         assertThat(file.name(), nullValue());
         assertThat(file.remotePath(), equalTo("/api/v1/dependencies?gems=jbundler,bundler"));
-        assertThat(((BundlerApiFile) file).gemnames(), equalTo(new String[]{"jbundler", "bundler"}));
+        assertThat(((BundlerApiFile) file).gemnames(), equalTo(new String[]{"bundler", "jbundler"}));
         assertThat(file.type(), equalTo(FileType.BUNDLER_API));
     }
 

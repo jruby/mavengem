@@ -96,13 +96,13 @@ public class ProxiedGETLayout
     protected void retrieveAll(BundlerApiFile file, DependencyHelper deps) throws IOException {
         List<String> expiredNames = new LinkedList<>();
         for (String name : file.gemnames()) {
-            DependencyFile dep = super.dependencyFile(name);
+            CompactInfoFile dep = super.compactInfo(name);
             if (store.isExpired(dep)) {
                 expiredNames.add(name);
             } else {
                 store.retrieve(dep);
                 try (InputStream is = store.getInputStream(dep)) {
-                    deps.add(is);
+                    deps.addCompact(is, name, store.getModified(dep));
                 }
             }
         }
@@ -114,24 +114,24 @@ public class ProxiedGETLayout
             } else if (expired.hasPayload()) {
                 DependencyHelper bundlerDeps = gateway.newDependencyHelper();
                 try (InputStream bundlerResult = store.getInputStream(expired)) {
-                    bundlerDeps.add(bundlerResult);
+                    bundlerDeps.addCompact(bundlerResult, expired.name(), store.getModified(expired));
                 }
                 for (String gemname : expiredNames) {
-                    DependencyFile dep = super.dependencyFile(gemname);
+                    CompactInfoFile dep = super.compactInfo(gemname);
                     // first store the data for caching
                     store.update(bundlerDeps.getInputStreamOf(gemname), dep);
                     // then add it to collector
                     try (InputStream is = store.getInputStream(dep)) {
-                        deps.add(is);
+                        deps.addCompact(is, gemname, store.getModified(dep));
                     }
                 }
             } else {
                 // no payload so let's fall back and add the expired content
                 for (String name : expiredNames) {
-                    DependencyFile dep = super.dependencyFile(name);
+                    CompactInfoFile dep = super.compactInfo(name);
                     store.retrieve(dep);
                     try (InputStream is = store.getInputStream(dep)) {
-                        deps.add(is);
+                        deps.addCompact(is, name, store.getModified(dep));
                     }
                 }
             }

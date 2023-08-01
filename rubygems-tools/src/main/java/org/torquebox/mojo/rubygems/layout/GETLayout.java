@@ -102,8 +102,9 @@ public class GETLayout
      */
     protected void retrieveAll(BundlerApiFile file, DependencyHelper deps) throws IOException {
         for (String name : file.gemnames()) {
-            try (InputStream is = store.getInputStream(dependencyFile(name))) {
-                deps.add(is);
+            CompactInfoFile compactInfo = compactInfo(name);
+            try (InputStream is = store.getInputStream(compactInfo)) {
+                deps.addCompact(is, name, store.getModified(compactInfo));
             }
         }
     }

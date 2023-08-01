@@ -13,6 +13,7 @@
 package org.torquebox.mojo.rubygems.layout;
 
 import org.torquebox.mojo.rubygems.BundlerApiFile;
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.RubygemsFile;
 
@@ -30,6 +31,8 @@ public interface ProxyStorage
      * (when they come from https://rubygems.org).
      */
     boolean isExpired(DependencyFile file);
+
+    boolean isExpired(CompactInfoFile file);
 
     /**
      * expire the given file now, i.e. set the last modified timestamp to 0

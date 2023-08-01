@@ -19,6 +19,7 @@ module Nexus
       @name = name
       @modified = modified
       @versions = {}
+      @dependencies = {}
 
       # Format is as follows:
       # First line: "---"
@@ -26,7 +27,7 @@ module Nexus
       # The version-platform is [version] [dash] [platform].
       # The deps and mins are specified as [gemname] [colon] [comparator] [space] [version].
       data.lines.filter_map do |line|
-        line.match(/^(?<version>\S+?)(?:-(?<platform>\S+))? (.*)\|checksum:(?<checksum>[a-f0-9]+)(?:,(?<reqs>.*))?$/)&.named_captures
+        line.match(/^(?<version>\S+?)(?:-(?<platform>\S+))? (?<deps>.*)\|checksum:(?<checksum>[a-f0-9]+)(?:,(?<reqs>.*))?$/)&.named_captures
       end.sort do |match1, match2|
         Gem::Version.new(match1['version']) <=> Gem::Version.new(match2['version'])
       end.each do |match|
@@ -39,6 +40,7 @@ module Nexus
           # java overwrites since it has higher prio
           @versions[version] = match
         end
+        @dependencies[version] = match['deps'].split(',').map {|dep| dep.split(':')}
       end
     end
     
@@ -59,6 +61,10 @@ module Nexus
     # @return [String] the platform
     def platform(version)
       @versions[version]&.[]('platform')
+    end
+
+    def dependencies(version)
+      @dependencies[version]
     end
   end
 end

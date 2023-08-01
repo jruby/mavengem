@@ -13,6 +13,7 @@
 package org.torquebox.mojo.rubygems.layout;
 
 import org.torquebox.mojo.rubygems.BundlerApiFile;
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
@@ -59,7 +60,16 @@ public class CachingProxyStorage
 
     @Override
     public boolean isExpired(DependencyFile file) {
-        Path path = toPath(file);
+        return isExpiredTTL(toPath(file));
+    }
+
+    @Override
+    public boolean isExpired(CompactInfoFile file) {
+        return isExpiredTTL(toPath(file));
+    }
+
+    private boolean isExpiredTTL(Path file) {
+        Path path = file;
         if (Files.notExists(path)) {
             return true;
         }
