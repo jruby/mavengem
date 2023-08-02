@@ -115,31 +115,31 @@ public class HostedDELETELayoutTest
     @Test
     public void testSha1() throws Exception {
         String[] pathes = {
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.gem.sha1",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.pom.sha1",
-                "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.gem.sha1",
-                "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.pom.sha1"
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.gem.sha1",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1-123213123.pom.sha1",
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.gem.sha1",
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.pom.sha1"
         };
         String[] shas = {
-                "b7311d2f46398dbe40fd9643f3d4e5d473574335",
-                "054121dcccc572cdee2da2d15e1ca712a1bb77b3",
-                "b7311d2f46398dbe40fd9643f3d4e5d473574335",
-                "a83efdc872c7b453196ec3911236f6e2dbd45c60"
+                "edfb9b1923514277b7256b0670a388da43706d39",
+                "2b57344d1f255519ae19b34cd3836bbe35721c72",
+                "edfb9b1923514277b7256b0670a388da43706d39",
+                "d162aa950471128b37485453091ca10086aabdc6"
         };
 
         assertFiletypeWithPayload(pathes, FileType.SHA1, shas);
 
         pathes = new String[]{
-                "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.gem.sha1",
-                "/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.pom.sha1"
+                "/maven/releases/rubygems/zip/9.9.9.9/zip-9.9.9.9.gem.sha1",
+                "/maven/releases/rubygems/zip/9.9.9.9/zip-9.9.9.9.pom.sha1"
         };
         assertNotFound(pathes, FileType.SHA1);
 
         // these files carry a timestamp of creation of the .ruby file
         pathes = new String[]{
-                "/maven/prereleases/rubygems/pre/maven-metadata.xml.sha1",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/maven-metadata.xml.sha1",
-                "/maven/releases/rubygems/pre/maven-metadata.xml.sha1"
+                "/maven/prereleases/rubygems/psych/maven-metadata.xml.sha1",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1-SNAPSHOT/maven-metadata.xml.sha1",
+                "/maven/releases/rubygems/psych/maven-metadata.xml.sha1"
         };
         assertFiletypeWithPayload(pathes, FileType.SHA1, BytesStreamLocation.class);
     }
@@ -147,17 +147,17 @@ public class HostedDELETELayoutTest
     @Test
     public void testGemArtifact() throws Exception {
         String[] pathes = {
-                "/maven/releases/rubygems/pre/0.1.0.beta/pre-0.1.0.beta.gem",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/pre-0.1.0.beta-123213123.gem"
+                "/maven/releases/rubygems/psych/5.1.0.pre1/psych-5.1.0.pre1.gem",
+                "/maven/prereleases/rubygems/psych/5.1.0.pre1-SNAPSHOT/psych-5.1.0.pre1-123213123.gem"
         };
         assertFiletypeWithPayload(pathes, FileType.GEM_ARTIFACT, URLStreamLocation.class);
 
-        pathes = new String[]{"/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.gem"};
+        pathes = new String[]{"/maven/releases/rubygems/zip/9.9.9.9/zip-9.9.9.9.gem"};
         assertNotFound(pathes, FileType.GEM_ARTIFACT);
 
         pathes = new String[]{
                 "/maven/releases/rubygems/hufflepuf/0.1.0/hufflepuf-0.1.0.gem",
-                "/maven/releases/rubygems/hufflepuf/0.1.0/hufflepuf-0.2.0.gem"
+                "/maven/releases/rubygems/hufflepuf/0.2.0/hufflepuf-0.2.0.gem"
         };
         RubygemsFile[] result = assertFiletypeWithPayload(pathes, FileType.GEM_ARTIFACT, URLStreamLocation.class);
         for (RubygemsFile file : result) {
@@ -169,15 +169,15 @@ public class HostedDELETELayoutTest
     @Test
     public void testPom() throws Exception {
         String[] pathes = {
-                "/maven/releases/rubygems/pre/0.1.0.beta/jbundler-0.1.0.beta.pom",
-                "/maven/prereleases/rubygems/pre/0.1.0.beta-SNAPSHOT/jbundler-0.1.0.beta-123213123.pom"
+                "/maven/releases/rubygems/jbundler/0.8.0.pre/jbundler-0.8.0.pre.pom",
+                "/maven/prereleases/rubygems/jbundler/0.8.0.pre-SNAPSHOT/jbundler-0.8.0.pre-123213123.pom"
         };
         String[] xmls = {
-                loadPomResource("pre.pom"),
-                loadPomResource("pre-snapshot.pom")
+                loadPomResource("jbundler-release.pom"),
+                loadPomResource("jbundler-prerelease.pom")
         };
         assertFiletypeWithPayload(pathes, FileType.POM, xmls);
-        pathes = new String[]{"/maven/releases/rubygems/zip/2.0.2/zip-2.0.2.pom"};
+        pathes = new String[]{"/maven/releases/rubygems/zip/9.9.9.9/zip-9.9.9.9.pom"};
         assertNotFound(pathes, FileType.POM);
     }
 
@@ -185,40 +185,13 @@ public class HostedDELETELayoutTest
     public void testMavenMetadata() throws Exception {
         String[] pathes = {
                 "/maven/releases/rubygems/zip/maven-metadata.xml",
-                "/maven/releases/rubygems/pre/maven-metadata.xml",
-                "/maven/prereleases/rubygems/pre/maven-metadata.xml"
+                "/maven/releases/rubygems/psych/maven-metadata.xml",
+                "/maven/prereleases/rubygems/psych/maven-metadata.xml"
         };
         String[] xmls = {
-                "<metadata>\n"
-                        + "  <groupId>rubygems</groupId>\n"
-                        + "  <artifactId>zip</artifactId>\n"
-                        + "  <versioning>\n"
-                        + "    <versions>\n"
-                        + "    </versions>\n"
-                        + "    <lastUpdated>2014</lastUpdated>\n"
-                        + "  </versioning>\n"
-                        + "</metadata>\n",
-
-                "<metadata>\n"
-                        + "  <groupId>rubygems</groupId>\n"
-                        + "  <artifactId>pre</artifactId>\n"
-                        + "  <versioning>\n"
-                        + "    <versions>\n"
-                        + "    </versions>\n"
-                        + "    <lastUpdated>2014</lastUpdated>\n"
-                        + "  </versioning>\n"
-                        + "</metadata>\n",
-
-                "<metadata>\n"
-                        + "  <groupId>rubygems</groupId>\n"
-                        + "  <artifactId>pre</artifactId>\n"
-                        + "  <versioning>\n"
-                        + "    <versions>\n"
-                        + "      <version>0.1.0.beta-SNAPSHOT</version>\n"
-                        + "    </versions>\n"
-                        + "    <lastUpdated>2014</lastUpdated>\n"
-                        + "  </versioning>\n"
-                        + "</metadata>\n"
+                loadPomResource("zip-release-metadata.xml"),
+                loadPomResource("psych-release-metadata.xml"),
+                loadPomResource("psych-prerelease-metadata.xml")
         };
         assertFiletypeWithPayload(pathes, FileType.MAVEN_METADATA, xmls);
     }
@@ -258,7 +231,7 @@ public class HostedDELETELayoutTest
 
     @Test
     public void testBundlerApi() throws Exception {
-        String[] pathes = {"/api/v1/dependencies?gems=zip,pre"};
+        String[] pathes = {"/api/v1/dependencies?gems=zip,psych"};
         assertFiletypeWithPayload(pathes, FileType.BUNDLER_API, BytesStreamLocation.class);
     }
 
@@ -277,24 +250,24 @@ public class HostedDELETELayoutTest
     @Test
     public void testDependency() throws Exception {
         String[] pathes = {
-                "/api/v1/dependencies?gems=zip", "/api/v1/dependencies/pre.ruby", "/api/v1/dependencies/z/zip.ruby"
+                "/info/zip", "/info/psych.compact", "/info/psych.compact"
         };
-        assertFiletypeWithPayload(pathes, FileType.DEPENDENCY, URLStreamLocation.class);
+        assertFiletypeWithPayload(pathes, FileType.COMPACT, URLStreamLocation.class);
     }
 
     @Test
     public void testGemspec() throws Exception {
         String[] pathes = {
-                "/quick/Marshal.4.8/pre-0.1.0.beta.gemspec.rz", "/quick/Marshal.4.8/p/pre-0.1.0.beta.gemspec.rz"
+                "/api/v2/rubygems/psych/versions/5.1.0.pre1.json", "/api/v2/rubygems/psych/versions/5.1.0.pre1.json"
         };
-        assertFiletypeWithPayload(pathes, FileType.GEMSPEC, URLStreamLocation.class);
+        assertFiletypeWithPayload(pathes, FileType.JSON_API, URLStreamLocation.class);
         pathes = new String[]{"/quick/Marshal.4.8/zip-2.0.2.gemspec.rz", "/quick/Marshal.4.8/z/zip-2.0.2.gemspec.rz"};
         assertNotFound(pathes, FileType.GEMSPEC);
     }
 
     @Test
     public void testGem() throws Exception {
-        String[] pathes = {"/gems/pre-0.1.0.beta.gem", "/gems/p/pre-0.1.0.beta.gem"};
+        String[] pathes = {"/gems/psych-5.1.0.pre1-java.gem", "/gems/psych-5.1.0.pre1-java.gem"};
         assertFiletypeWithPayload(pathes, FileType.GEM, URLStreamLocation.class);
         pathes = new String[]{"/gems/zip-2.0.2.gem", "/gems/z/zip-2.0.2.gem"};
         assertNotFound(pathes, FileType.GEM);

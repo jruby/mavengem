@@ -12,12 +12,14 @@
  */
 package org.torquebox.mojo.rubygems.layout;
 
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.BundlerApiFile;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.DependencyHelper;
 import org.torquebox.mojo.rubygems.GemFile;
 import org.torquebox.mojo.rubygems.GemspecFile;
 import org.torquebox.mojo.rubygems.GemspecHelper;
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.RubygemsGateway;
 
 import java.io.IOException;
@@ -25,7 +27,8 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ProxiedGETLayout extends GETLayout {
+public class ProxiedGETLayout
+        extends GETLayout {
     private final ProxyStorage store;
 
     public ProxiedGETLayout(RubygemsGateway gateway, ProxyStorage store) {
@@ -68,8 +71,23 @@ public class ProxiedGETLayout extends GETLayout {
     }
 
     @Override
+    @Deprecated
     public DependencyFile dependencyFile(String name) {
         DependencyFile file = super.dependencyFile(name);
+        store.retrieve(file);
+        return file;
+    }
+
+    @Override
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        ApiV2File file = super.rubygemsInfoV2(name, version);
+        store.retrieve(file);
+        return file;
+    }
+
+    @Override
+    public CompactInfoFile compactInfo(String name) {
+        CompactInfoFile file = super.compactInfo(name);
         store.retrieve(file);
         return file;
     }
@@ -78,13 +96,13 @@ public class ProxiedGETLayout extends GETLayout {
     protected void retrieveAll(BundlerApiFile file, DependencyHelper deps) throws IOException {
         List<String> expiredNames = new LinkedList<>();
         for (String name : file.gemnames()) {
-            DependencyFile dep = super.dependencyFile(name);
+            CompactInfoFile dep = super.compactInfo(name);
             if (store.isExpired(dep)) {
                 expiredNames.add(name);
             } else {
                 store.retrieve(dep);
                 try (InputStream is = store.getInputStream(dep)) {
-                    deps.add(is);
+                    deps.addCompact(is, name, store.getModified(dep));
                 }
             }
         }
@@ -96,24 +114,24 @@ public class ProxiedGETLayout extends GETLayout {
             } else if (expired.hasPayload()) {
                 DependencyHelper bundlerDeps = gateway.newDependencyHelper();
                 try (InputStream bundlerResult = store.getInputStream(expired)) {
-                    bundlerDeps.add(bundlerResult);
+                    bundlerDeps.addCompact(bundlerResult, expired.name(), store.getModified(expired));
                 }
                 for (String gemname : expiredNames) {
-                    DependencyFile dep = super.dependencyFile(gemname);
+                    CompactInfoFile dep = super.compactInfo(gemname);
                     // first store the data for caching
                     store.update(bundlerDeps.getInputStreamOf(gemname), dep);
                     // then add it to collector
                     try (InputStream is = store.getInputStream(dep)) {
-                        deps.add(is);
+                        deps.addCompact(is, gemname, store.getModified(dep));
                     }
                 }
             } else {
                 // no payload so let's fall back and add the expired content
                 for (String name : expiredNames) {
-                    DependencyFile dep = super.dependencyFile(name);
+                    CompactInfoFile dep = super.compactInfo(name);
                     store.retrieve(dep);
                     try (InputStream is = store.getInputStream(dep)) {
-                        deps.add(is);
+                        deps.addCompact(is, name, store.getModified(dep));
                     }
                 }
             }

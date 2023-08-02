@@ -13,7 +13,9 @@
 package org.torquebox.mojo.rubygems.layout;
 
 import org.torquebox.mojo.rubygems.ApiV1File;
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.BundlerApiFile;
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.DependencyData;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.DependencyHelper;
@@ -30,6 +32,7 @@ import org.torquebox.mojo.rubygems.PomFile;
 import org.torquebox.mojo.rubygems.RubygemsDirectory;
 import org.torquebox.mojo.rubygems.RubygemsFile;
 import org.torquebox.mojo.rubygems.RubygemsGateway;
+import org.torquebox.mojo.rubygems.RubygemsV2GemInfo;
 import org.torquebox.mojo.rubygems.Sha1Digest;
 import org.torquebox.mojo.rubygems.Sha1File;
 import org.torquebox.mojo.rubygems.SpecsIndexFile;
@@ -99,8 +102,9 @@ public class GETLayout
      */
     protected void retrieveAll(BundlerApiFile file, DependencyHelper deps) throws IOException {
         for (String name : file.gemnames()) {
-            try (InputStream is = store.getInputStream(dependencyFile(name))) {
-                deps.add(is);
+            CompactInfoFile compactInfo = compactInfo(name);
+            try (InputStream is = store.getInputStream(compactInfo)) {
+                deps.addCompact(is, name, store.getModified(compactInfo));
             }
         }
     }
@@ -172,30 +176,30 @@ public class GETLayout
      */
     protected void setPomPayload(PomFile file, boolean snapshot) {
         try {
-            DependencyData dependencies = newDependencyData(file.dependency());
-            if ("java".equals(dependencies.platform(file.version()))) {
-                pomFromGem(file, snapshot, dependencies);
+            DependencyData dependencyData = newDependencyData(file.dependency());
+            if ("java".equals(dependencyData.platform(file.version()))) {
+                pomFromGem(file, snapshot, dependencyData);
             } else {
-                pomFromGemspec(file, snapshot, dependencies);
+                pomFromGemspec(file, snapshot, dependencyData);
             }
         } catch (IOException e) {
             file.setException(e);
         }
     }
 
-    private void pomFromGemspec(PomFile file, boolean snapshot, DependencyData dependencies) throws IOException {
-        GemspecFile gemspec = file.gemspec(dependencies);
+    private void pomFromGemspec(PomFile file, boolean snapshot, DependencyData dependencyData) throws IOException {
+        GemspecFile gemspec = file.gemspec(dependencyData);
         if (gemspec.notExists()) {
             file.markAsNotExists();
         } else {
             try (InputStream is = store.getInputStream(gemspec)) {
-                store.memory(gateway.newGemspecHelper(is).pom(snapshot), file);
+                store.memory(gateway.newGemspecHelperFromV2GemInfo(is).pom(snapshot), file);
             }
         }
     }
 
-    private void pomFromGem(PomFile file, boolean snapshot, DependencyData dependencies) throws IOException {
-        GemFile gem = file.gem(dependencies);
+    private void pomFromGem(PomFile file, boolean snapshot, DependencyData dependencyData) throws IOException {
+        GemFile gem = file.gem(dependencyData);
         if (gem.notExists()) {
             file.markAsNotExists();
         } else {
@@ -276,9 +280,15 @@ public class GETLayout
     /**
      * load all the dependency data into an object.
      */
-    protected DependencyData newDependencyData(DependencyFile file) throws IOException {
+    protected DependencyData newDependencyData(CompactInfoFile file) throws IOException {
         try (InputStream is = store.getInputStream(file)) {
-            return gateway.newDependencyData(is, file.name(), store.getModified(file));
+            return gateway.newCompactDependencyData(is, file.name(), store.getModified(file));
+        }
+    }
+
+    protected RubygemsV2GemInfo newRubygemsV2GemInfo(ApiV2File file) throws IOException {
+        try (InputStream is = store.getInputStream(file)) {
+            return gateway.newRubygemsV2GemInfo(is, file.name(), file.version(), store.getModified(file));
         }
     }
 

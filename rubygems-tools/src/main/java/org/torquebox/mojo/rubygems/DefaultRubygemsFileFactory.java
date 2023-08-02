@@ -37,7 +37,14 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
 
     private static final String API_V1 = "/" + RootCuba.API + "/" + ApiCuba.V1;
 
+    private static final String API_V2 = "/" + RootCuba.API + "/" + ApiCuba.V2;
+
+    @Deprecated
     private static final String API_V1_DEPS = API_V1 + "/" + ApiV1Cuba.DEPENDENCIES;
+
+    private static final String API_V2_RUBYGEMS = API_V2 + "/rubygems";
+
+    private static final String INFO = "info";
 
     private static final String MAVEN_PRERELEASED_RUBYGEMS = "/" + RootCuba.MAVEN + "/" + MavenCuba.PRERELEASES + "/" + MavenReleasesCuba.RUBYGEMS;
 
@@ -50,11 +57,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
     }
 
     private String join(String... parts) {
-        StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
-            builder.append(part);
-        }
-        return builder.toString();
+        return String.join("", parts);
     }
 
     private String toPath(String name, String version, String timestamp, boolean snapshot) {
@@ -157,8 +160,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
 
     @Override
     public GemspecFile gemspecFile(String name, String version, String platform) {
-        String filename = BaseGemFile.toFilename(name, version, platform);
-        return new GemspecFile(this, join(QUICK_MARSHAL, SEPARATOR, name.substring(0, 1), SEPARATOR, filename, QuickMarshalCuba.GEMSPEC_RZ), join(QUICK_MARSHAL, SEPARATOR, filename, QuickMarshalCuba.GEMSPEC_RZ), name, version, platform);
+        return new GemspecFile(this, join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), name, version, platform);
     }
 
     @Override
@@ -167,8 +169,19 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
     }
 
     @Override
+    @Deprecated
     public DependencyFile dependencyFile(String name) {
         return new DependencyFile(this, join(API_V1_DEPS, SEPARATOR, name, ApiV1DependenciesCuba.RUBY), join(API_V1_DEPS, "?gems=" + name), name);
+    }
+
+    @Override
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        return new ApiV2File(this, join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), join(API_V2_RUBYGEMS, SEPARATOR, name, SEPARATOR, "versions", SEPARATOR, version, ".json"), name, version);
+    }
+
+    @Override
+    public CompactInfoFile compactInfo(String name) {
+        return new CompactInfoFile(this, join("/info", SEPARATOR, name, ".compact"), join("/info", SEPARATOR, name), name);
     }
 
     @Override

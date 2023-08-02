@@ -39,7 +39,7 @@ class Endpoint < Sinatra::Base
     def load_spec(name, version, platform)
       full_name = "#{name}-#{version}"
       full_name += "-#{platform}" if platform != "ruby"
-      Marshal.load(Gem.inflate(File.open(gem_repo1("quick/Marshal.4.8/#{full_name}.gemspec.rz")).read))
+      Marshal.load(Zlib::Inflate.inflate(File.open(gem_repo1("quick/Marshal.4.8/#{full_name}.gemspec.rz")).read))
     end
   end
 

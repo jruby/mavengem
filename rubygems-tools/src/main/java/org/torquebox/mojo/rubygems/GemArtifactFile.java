@@ -46,11 +46,11 @@ public class GemArtifactFile
 
     /**
      * is lazy state of the associated GemFile. the GemFile needs to
-     * have the right platform for which the DependencyData is needed
-     * to retrieve this platform. a second call can be done without DependencyData !
+     * have the right platform for which the {@link RubygemsV2GemInfo} is needed
+     * to retrieve this platform. a second call can be done without RubygemsV2GemInfo !
      *
-     * @param dependencies can be null
-     * @return the associated GemFile - can be null if DependencyData was never passed in
+     * @param dependencyData can be null
+     * @return the associated GemFile - can be null if RubygemsV2GemInfo was never passed in
      */
     public GemFile gem(DependencyData dependencies) {
         if (this.gem == null && dependencies != null) {
@@ -65,7 +65,7 @@ public class GemArtifactFile
     /**
      * the associated DependencyFile object for the gem-artifact
      */
-    public DependencyFile dependency() {
-        return factory.dependencyFile(name());
+    public CompactInfoFile dependency() {
+        return factory.compactInfo(name());
     }
 }

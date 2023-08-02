@@ -1,0 +1,83 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>rubygems</groupId>
+  <artifactId>jbundler</artifactId>
+  <version>0.8.0.pre-SNAPSHOT</version>
+  <packaging>gem</packaging>
+  <name>managing jar dependencies</name>
+  <url>https://github.com/mkristian/jbundler</url>
+  <description>managing jar dependencies with or without bundler. adding bundler like handling of version ranges for jar dependencies.
+</description>
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <comments>MIT license</comments>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Christian Meier</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/mkristian/jbundler.git</connection>
+    <url>https://github.com/mkristian/jbundler</url>
+  </scm>
+  <properties>
+    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+    <jruby.plugins.version>2.0.1</jruby.plugins.version>
+    <mavengem.wagon.version>1.0.3</mavengem.wagon.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>bundler</artifactId>
+      <version>[1.7,1.99999]</version>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>jar-dependencies</artifactId>
+      <version>[0.1.11,0.1.99999]</version>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>maven-tools</artifactId>
+      <version>[1.0.8,1.0.99999]</version>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ruby-maven</artifactId>
+      <version>[3.1.1.0.6,3.1.2)</version>
+      <type>gem</type>
+    </dependency>
+  </dependencies>
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.torquebox.mojo</groupId>
+        <artifactId>mavengem-wagon</artifactId>
+        <version>${mavengem.wagon.version}</version>
+      </extension>
+      <extension>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>gem-extension</artifactId>
+        <version>${jruby.plugins.version}</version>
+      </extension>
+    </extensions>
+    <directory>${basedir}/pkg</directory>
+    <plugins>
+      <plugin>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>gem-maven-plugin</artifactId>
+        <version>${jruby.plugins.version}</version>
+        <configuration>
+          <gemspec>jbundler-0.8.0.pre.gemspec</gemspec>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -37,6 +37,15 @@ public interface DependencyHelper {
     void add(InputStream marshalledDependencyData);
 
     /**
+     * add dependency data to instance
+     *
+     * @param compactInfo stream of compact info for the given gem
+     * @param name the name of the gem
+     * @param modified last modified date of the compact info
+     */
+    void addCompact(InputStream compactInfo, String name, long modified);
+
+    /**
      * add dependency data to instance from a rzipped gemspec object.
      *
      * @param gemspec rzipped stream of the marshalled gemspec object

@@ -14,11 +14,13 @@ package org.torquebox.mojo.rubygems.layout;
 
 import org.jruby.runtime.builtin.IRubyObject;
 import org.torquebox.mojo.rubygems.ApiV1File;
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.GemFile;
 import org.torquebox.mojo.rubygems.GemspecFile;
 import org.torquebox.mojo.rubygems.GemspecHelper;
 import org.torquebox.mojo.rubygems.IOUtil;
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.RubygemsGateway;
 import org.torquebox.mojo.rubygems.SpecsHelper;
 import org.torquebox.mojo.rubygems.SpecsIndexFile;
@@ -70,8 +72,23 @@ public class HostedDELETELayout extends NoopDefaultLayout {
     }
 
     @Override
+    @Deprecated
     public DependencyFile dependencyFile(String name) {
         DependencyFile file = super.dependencyFile(name);
+        file.markAsForbidden();
+        return file;
+    }
+
+    @Override
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        ApiV2File file = super.rubygemsInfoV2(name, version);
+        file.markAsForbidden();
+        return file;
+    }
+
+    @Override
+    public CompactInfoFile compactInfo(String name) {
+        CompactInfoFile file = super.compactInfo(name);
         file.markAsForbidden();
         return file;
     }

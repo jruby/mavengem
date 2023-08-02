@@ -48,7 +48,7 @@ public class ApiV1DependenciesCuba
                 if (state.context.query.contains(",") || state.context.query.contains("%2C")) {
                     return state.context.factory.bundlerApiFile(state.context.query.substring(5));
                 } else if (state.context.query.length() > 5) {
-                    return state.context.factory.dependencyFile(state.context.query.substring(5));
+                    return state.context.factory.compactInfo(state.context.query.substring(5));
                 }
             }
             if (state.context.original.endsWith("/")) {
@@ -67,7 +67,7 @@ public class ApiV1DependenciesCuba
             m = FILE.matcher(state.name);
         }
         if (m.matches()) {
-            return state.context.factory.dependencyFile(m.group(1));
+            return state.context.factory.compactInfo(m.group(1));
         }
         return state.context.factory.notFound(state.context.original);
     }

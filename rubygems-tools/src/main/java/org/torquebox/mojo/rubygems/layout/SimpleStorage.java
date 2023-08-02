@@ -216,6 +216,7 @@ public class SimpleStorage
     }
 
     static class URLStreamLocation implements StreamLocation {
+        public static final String RUBYGEMS_TOOLS_USER_AGENT = "org.jruby.maven:rubygems-tools";
         private URL url;
         private Base64 base64 = new Base64();
 
@@ -225,6 +226,7 @@ public class SimpleStorage
 
         public URLConnection openConnection() throws IOException {
             URLConnection con = url.openConnection();
+            con.setRequestProperty("User-Agent", RUBYGEMS_TOOLS_USER_AGENT);
             String userinfo = this.url.getUserInfo();
             if (userinfo != null) {
                 String basicAuth = "Basic " + base64.encodeBase64String(URLDecoder.decode(userinfo, "UTF-8").getBytes(StandardCharsets.UTF_8));

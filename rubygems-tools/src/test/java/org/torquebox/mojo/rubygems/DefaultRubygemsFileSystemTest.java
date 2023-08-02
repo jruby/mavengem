@@ -99,6 +99,21 @@ public class DefaultRubygemsFileSystemTest
         assertFiletype(pathes, FileType.BUNDLER_API);
     }
 
+    @Test
+    public void testApiV2() throws Exception {
+        String[] paths = {
+                "/api/v2/rubygems/rails/versions/7.0.1.json"
+        };
+        assertFiletype(paths, FileType.JSON_API);
+    }
+
+    @Test
+    public void testCompactInfo() throws Exception {
+        String[] paths = {
+                "/info/hashdb"
+        };
+        assertFiletype(paths, FileType.COMPACT);
+    }
 
     @Test
     public void testApiV1() throws Exception {
@@ -106,14 +121,13 @@ public class DefaultRubygemsFileSystemTest
         assertFiletype(pathes, FileType.API_V1);
     }
 
-
     @Test
     public void testDependency() throws Exception {
         String[] pathes = {
                 "/api/v1/dependencies?gems=nexus", "/api/v1/dependencies/jbundler.ruby",
                 "/api/v1/dependencies/b/bundler.ruby"
         };
-        assertFiletype(pathes, FileType.DEPENDENCY);
+        assertFiletype(pathes, FileType.COMPACT);
     }
 
     @Test

@@ -1,3 +1,4 @@
 source 'http://rubygems.org'
 gem 'nexus', '< 0.2.0'
 gem 'zip'
+gem 'minitest'

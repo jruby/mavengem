@@ -86,7 +86,12 @@ public interface RubygemsFileFactory {
      * @param name of the gemfile
      * @return DependencyFile
      */
+    @Deprecated
     DependencyFile dependencyFile(String name);
+
+    ApiV2File rubygemsInfoV2(String name, String version);
+
+    CompactInfoFile compactInfo(String name);
 
     /**
      * create <code>BundlerApiFile</code> /api/v1/dependencies?gems=name1,name2,etc

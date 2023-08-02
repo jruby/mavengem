@@ -43,6 +43,14 @@ public interface RubygemsGateway {
     GemspecHelper newGemspecHelperFromGem(InputStream gem);
 
     /**
+     * create a new instance of <code>GemspecHelper</code>
+     *
+     * @param v2GemInfo the stream to the v2 API gem info
+     * @return an empty GemspecHelper
+     */
+    GemspecHelper newGemspecHelperFromV2GemInfo(InputStream v2GemInfo);
+
+    /**
      * create a new instance of <code>DependencyHelper</code>
      *
      * @return an empty DependencyHelper
@@ -73,4 +81,27 @@ public interface RubygemsGateway {
      * @return dependency data
      */
     DependencyData newDependencyData(InputStream dependency, String name, long modified);
+
+    /**
+     * create a new instance of <code>RubygemsV2GemInfo</code> and parse
+     * the given v2 API endpoint
+     *
+     * @param dependency the input-stream with the gem info data
+     * @param name       of gem of the gem info data
+     * @param version    of gem of the gem info data
+     * @param modified   when the gem info data were last modified
+     * @return gem info data
+     */
+    RubygemsV2GemInfo newRubygemsV2GemInfo(InputStream dependency, String name, String version, long modified);
+
+    /**
+     * create a new instance of <code>DependencyData</code> and parse
+     * the given compact dependency data
+     *
+     * @param dependency the input-stream with the dependency data
+     * @param name       of gem of the dependency data
+     * @param modified   when the dependency data were last modified
+     * @return dependency data
+     */
+    DependencyData newCompactDependencyData(InputStream dependency, String name, long modified);
 }

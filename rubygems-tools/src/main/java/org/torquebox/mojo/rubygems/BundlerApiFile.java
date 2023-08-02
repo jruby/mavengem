@@ -12,8 +12,10 @@
  */
 package org.torquebox.mojo.rubygems;
 
+import java.util.Arrays;
+
 /**
- * belongs to the path /api/v1/dependencies?gems=name1,name2
+ * belongs to the path /api/v1/dependencies?gems=name1,name2, now backed by the compact index api at /info/gemname
  *
  * @author christian
  */
@@ -23,15 +25,18 @@ public class BundlerApiFile
     private final String[] names;
 
     BundlerApiFile(RubygemsFileFactory factory, String remote, String... names) {
-        super(factory, FileType.BUNDLER_API, storageName(remote), remote, null);
+        super(factory, FileType.BUNDLER_API, storageName(remote, names = sortedNames(names)), remote, null);
         this.names = names;
     }
 
-    private static String storageName(String remote) {
-        Sha1Digest digest = new Sha1Digest();
-        digest.update(remote.getBytes());
-        // assume no digest collision happens
-        return remote.replaceFirst("\\?gems=.*$", "/" + digest.hexDigest() + ".gems");
+    private static String storageName(String remote, String[] names) {
+        return remote.replaceFirst("\\?gems=.*$", "/" + String.join("+", names) + ".gems");
+    }
+
+    private static String[] sortedNames(String[] names) {
+        String[] sorted = names.clone();
+        Arrays.sort(sorted);
+        return sorted;
     }
 
     /**

@@ -37,7 +37,9 @@ public enum FileType {
     NOT_FOUND(null),
     FORBIDDEN(null),
     TEMP_UNAVAILABLE(null),
-    NO_CONTENT("text/plain");
+    NO_CONTENT("text/plain"),
+    JSON_API("text/plain", "utf-8"),
+    COMPACT("test/plain", "utf-8");
 
     private final String encoding;
 

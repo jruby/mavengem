@@ -115,7 +115,7 @@ public class DELETELayoutTest
                 "/api/v1/dependencies?gems=nexus", "/api/v1/dependencies/jbundler.ruby",
                 "/api/v1/dependencies/b/bundler.ruby"
         };
-        assertFound(pathes, FileType.DEPENDENCY);
+        assertFound(pathes, FileType.COMPACT);
     }
 
     @Test

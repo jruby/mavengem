@@ -25,14 +25,19 @@ import org.torquebox.mojo.rubygems.cuba.State;
 public class ApiCuba implements Cuba {
     public static final String V1 = "v1";
 
+    public static final String V2 = "v2";
+
     private final Cuba v1;
+
+    private final Cuba v2;
 
     private final Cuba quick;
 
     private final Cuba gems;
 
-    public ApiCuba(Cuba v1, Cuba quick, Cuba gems) {
+    public ApiCuba(Cuba v1, Cuba v2, Cuba quick, Cuba gems) {
         this.v1 = v1;
+        this.v2 = v2;
         this.quick = quick;
         this.gems = gems;
     }
@@ -45,6 +50,8 @@ public class ApiCuba implements Cuba {
         switch (state.name) {
             case V1:
                 return state.nested(v1);
+            case V2:
+                return state.nested(v2);
             case RootCuba.QUICK:
                 return state.nested(quick);
             case RootCuba.GEMS:

@@ -12,12 +12,14 @@
  */
 package org.torquebox.mojo.rubygems.layout;
 
+import org.torquebox.mojo.rubygems.ApiV2File;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.DependencyHelper;
 import org.torquebox.mojo.rubygems.GemFile;
 import org.torquebox.mojo.rubygems.GemspecFile;
 import org.torquebox.mojo.rubygems.GemspecHelper;
 import org.torquebox.mojo.rubygems.IOUtil;
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.RubygemsGateway;
 import org.torquebox.mojo.rubygems.SpecsHelper;
 import org.torquebox.mojo.rubygems.SpecsIndexFile;
@@ -101,6 +103,7 @@ public class HostedGETLayout extends GETLayout {
     }
 
     @Override
+    @Deprecated
     public DependencyFile dependencyFile(String name) {
         DependencyFile file = super.dependencyFile(name);
         store.retrieve(file);
@@ -108,6 +111,20 @@ public class HostedGETLayout extends GETLayout {
             createDependency(file);
         }
 
+        return file;
+    }
+
+    @Override
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        ApiV2File file = super.rubygemsInfoV2(name, version);
+        store.retrieve(file);
+        return file;
+    }
+
+    @Override
+    public CompactInfoFile compactInfo(String name) {
+        CompactInfoFile file = super.compactInfo(name);
+        store.retrieve(file);
         return file;
     }
 

@@ -36,20 +36,20 @@ describe Nexus::GemspecHelperImpl do
 
   describe :gemspec do
     subject do
-      file = File.join( dir, '../repo/quick/Marshal.4.8/p/pre-0.1.0.beta.gemspec.rz' )
+      file = File.join( dir, '../repo/quick/Marshal.4.8/p/psych-5.1.0.pre1-java.gemspec.rz' )
       Nexus::GemspecHelperImpl.from_gemspec_rz( file )
     end
 
     it 'has the correct metadata' do
-      subject.name.must_equal 'pre'
-      subject.filename.must_equal 'pre-0.1.0.beta.gem'
+      subject.name.must_equal 'psych'
+      subject.filename.must_equal 'psych-5.1.0.pre1-java.gem'
       subject.gemspec.class.must_equal Gem::Specification
       subject.gemspec.must_equal subject.runzip( subject.rz_input_stream )      
     end
 
     it 'creates snapshot poms and non-snaphost poms' do
-      subject.pom( false ).must_equal File.read( File.join( dir, 'pre.pom' ) ).gsub( /^.*<project>/m, '<project>' )
-      subject.pom( true ).must_equal File.read( File.join( dir, 'pre-SNAPSHOT.pom' ) ).gsub( /^.*<project>/m, '<project>' )
+      subject.pom( false ).must_equal File.read( File.join( dir, 'psych-release.pom' ) ).gsub( /^.*<project>/m, '<project>' )
+      subject.pom( true ).must_equal File.read( File.join( dir, 'psych-prerelease.pom' ) ).gsub( /^.*<project>/m, '<project>' )
     end
   end
 end

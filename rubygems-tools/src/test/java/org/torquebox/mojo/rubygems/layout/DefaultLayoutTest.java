@@ -25,6 +25,7 @@ import org.torquebox.mojo.rubygems.MavenMetadataFile;
 import org.torquebox.mojo.rubygems.MavenMetadataSnapshotFile;
 import org.torquebox.mojo.rubygems.PomFile;
 import org.torquebox.mojo.rubygems.RubygemsFile;
+import org.torquebox.mojo.rubygems.RubygemsV2GemInfo;
 import org.torquebox.mojo.rubygems.SpecsIndexFile;
 import org.torquebox.mojo.rubygems.SpecsIndexType;
 import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
@@ -61,7 +62,7 @@ public class DefaultLayoutTest
 
         GemArtifactFile file3 = (GemArtifactFile) file;
 
-        DependencyData deps = new DependenciesMock();
+        DependencyData deps = new DependencyDataMock();
         assertThat(file3.version(), equalTo("1.2.3"));
         assertThat(file3.gem(deps).name(), equalTo("jbundler"));
         assertThat(file3.gem(deps).version(), equalTo("1.2.3"));
@@ -82,7 +83,7 @@ public class DefaultLayoutTest
 
         GemArtifactFile file3 = (GemArtifactFile) file;
 
-        DependencyData deps = new DependenciesMock();
+        DependencyData deps = new DependencyDataMock();
         assertThat(file3.version(), equalTo("1.2.3"));
         assertThat(file3.gem(deps).name(), equalTo("jbundler"));
         assertThat(file3.gem(deps).version(), equalTo("1.2.3"));
@@ -103,7 +104,7 @@ public class DefaultLayoutTest
 
         PomFile file3 = (PomFile) file;
 
-        DependencyData deps = new DependenciesMock();
+        DependencyData deps = new DependencyDataMock();
         assertThat(file3.version(), equalTo("1.2.3"));
         assertThat(file3.gemspec(deps).name(), equalTo("jbundler"));
         assertThat(file3.gemspec(deps).version(), equalTo("1.2.3"));
@@ -125,7 +126,7 @@ public class DefaultLayoutTest
 
         PomFile file3 = (PomFile) file;
 
-        DependencyData deps = new DependenciesMock();
+        DependencyData deps = new DependencyDataMock();
         assertThat(file3.version(), equalTo("1.2.3"));
         assertThat(file3.gemspec(deps).filename(), equalTo("jbundler-1.2.3"));
         assertThat(file3.gemspec(deps).version(), equalTo("1.2.3"));
@@ -252,8 +253,8 @@ public class DefaultLayoutTest
         assertThat(file, notNullValue());
         RubygemsFile file2 = layout.gemspecFile("jbundler", "9.2.1", "java");
         assertThat(file, equalTo(file2));
-        assertThat(file.storagePath(), equalTo("/quick/Marshal.4.8/j/jbundler-9.2.1-java.gemspec.rz"));
-        assertThat(file.remotePath(), equalTo("/quick/Marshal.4.8/jbundler-9.2.1-java.gemspec.rz"));
+        assertThat(file.storagePath(), equalTo("/api/v2/rubygems/jbundler/versions/9.2.1.json"));
+        assertThat(file.remotePath(), equalTo("/api/v2/rubygems/jbundler/versions/9.2.1.json"));
         assertThat(file.name(), equalTo("jbundler"));
         assertThat(file.type(), equalTo(FileType.GEMSPEC));
 
@@ -275,30 +276,30 @@ public class DefaultLayoutTest
         assertThat(file, equalTo(file2));
         file2 = fileSystem.get("/api/v1/dependencies/j/jbundler.ruby");
         assertThat(file, equalTo(file2));
-        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/jbundler.ruby"));
-        assertThat(file.remotePath(), equalTo("/api/v1/dependencies?gems=jbundler"));
+        assertThat(file.storagePath(), equalTo("/info/jbundler.compact"));
+        assertThat(file.remotePath(), equalTo("/info/jbundler"));
         assertThat(file.name(), equalTo("jbundler"));
-        assertThat(file.type(), equalTo(FileType.DEPENDENCY));
+        assertThat(file.type(), equalTo(FileType.COMPACT));
     }
 
     @Test
     public void testBundlerApiFile1() throws Exception {
         RubygemsFile file = fileSystem.get("/api/v1/dependencies?gems=jbundler");
         assertThat(file, notNullValue());
-        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/jbundler.ruby"));
-        assertThat(file.remotePath(), equalTo("/api/v1/dependencies?gems=jbundler"));
+        assertThat(file.storagePath(), equalTo("/info/jbundler.compact"));
+        assertThat(file.remotePath(), equalTo("/info/jbundler"));
         assertThat(file.name(), equalTo("jbundler"));
-        assertThat(file.type(), equalTo(FileType.DEPENDENCY));
+        assertThat(file.type(), equalTo(FileType.COMPACT));
     }
 
     @Test
     public void testBundlerApiFile2() throws Exception {
         RubygemsFile file = fileSystem.get("/api/v1/dependencies?gems=jbundler,bundler");
         assertThat(file, notNullValue());
-        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/8d44e63a6cf933622c5f41a73371a1945e17a2db.gems"));
+        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/bundler+jbundler.gems"));
         assertThat(file.name(), nullValue());
         assertThat(file.remotePath(), equalTo("/api/v1/dependencies?gems=jbundler,bundler"));
-        assertThat(((BundlerApiFile) file).gemnames(), equalTo(new String[]{"jbundler", "bundler"}));
+        assertThat(((BundlerApiFile) file).gemnames(), equalTo(new String[]{"bundler", "jbundler"}));
         assertThat(file.type(), equalTo(FileType.BUNDLER_API));
     }
 
@@ -306,10 +307,10 @@ public class DefaultLayoutTest
     public void testBundlerApiFile3() throws Exception {
         RubygemsFile file = fileSystem.get("/api/v1/dependencies?gems=jbundler%2Cbundler");
         assertThat(file, notNullValue());
-        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/8d44e63a6cf933622c5f41a73371a1945e17a2db.gems"));
+        assertThat(file.storagePath(), equalTo("/api/v1/dependencies/bundler+jbundler.gems"));
         assertThat(file.name(), nullValue());
         assertThat(file.remotePath(), equalTo("/api/v1/dependencies?gems=jbundler,bundler"));
-        assertThat(((BundlerApiFile) file).gemnames(), equalTo(new String[]{"jbundler", "bundler"}));
+        assertThat(((BundlerApiFile) file).gemnames(), equalTo(new String[]{"bundler", "jbundler"}));
         assertThat(file.type(), equalTo(FileType.BUNDLER_API));
     }
 
@@ -487,15 +488,15 @@ public class DefaultLayoutTest
         assertThat(file.get(), nullValue());
     }
 
-    static class DependenciesMock
+    static class DependencyDataMock
             implements DependencyData {
         private final String platform;
 
-        DependenciesMock() {
+        DependencyDataMock() {
             this("ruby");
         }
 
-        DependenciesMock(String platform) {
+        DependencyDataMock(String platform) {
             this.platform = platform;
         }
 
@@ -506,6 +507,39 @@ public class DefaultLayoutTest
 
         @Override
         public String platform(String version) {
+            return platform;
+        }
+
+        @Override
+        public String name() {
+            return null;
+        }
+
+        @Override
+        public long modified() {
+            return 0;
+        }
+    }
+
+    static class RubygemsV2GemInfoMock
+            implements RubygemsV2GemInfo {
+        private final String platform;
+
+        RubygemsV2GemInfoMock() {
+            this("ruby");
+        }
+
+        RubygemsV2GemInfoMock(String platform) {
+            this.platform = platform;
+        }
+
+        @Override
+        public String version() {
+            return null;
+        }
+
+        @Override
+        public String platform() {
             return platform;
         }
 

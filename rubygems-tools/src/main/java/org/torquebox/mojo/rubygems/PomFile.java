@@ -43,7 +43,7 @@ public class PomFile
         return factory.gemFile(name(), version(), platform);
     }
 
-    public DependencyFile dependency() {
-        return factory.dependencyFile(name());
+    public CompactInfoFile dependency() {
+        return factory.compactInfo(name());
     }
 }

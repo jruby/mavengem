@@ -11,6 +11,9 @@
 # Eclipse Foundation. All other trademarks are the property of their respective owners.
 #
 
+require 'zlib'
+require 'json'
+
 java_import java.io.ByteArrayInputStream
 
 # this module just has a bunch of helper method dealing
@@ -41,7 +44,7 @@ module Nexus
     # @param io [IO, String] stream or filename
     # @return [Object] unmarshalled object
     def runzip( io )
-      Marshal.load( Gem.inflate( read_binary( io ) ) )
+      Marshal.load( Zlib::Inflate.inflate( read_binary( io ) ) )
     end
 
     # marshal a given object and turn it into a ruby-zip stream.
@@ -63,6 +66,30 @@ module Nexus
     # @return [IO] stream of the marshalled object
     def marshal_dump( obj)
       ByteArrayInputStream.new( Marshal.dump( obj ).to_java_bytes )
+    end
+
+    # render the given array of gem information
+    # using the compact index format
+    # @param obj [Array] an array of gem info as Hash instances
+    # @return [IO-like] stream of the dumped object
+    def compact_dump(obj)
+      compact = "---\n" + obj.map {|gem|
+        version = gem[:number]
+        platform = gem[:platform]
+        if platform.nil? || platform == "ruby"
+          platform = ""
+        end
+        deps = gem[:dependencies].map {|name_req| name_req.join(':')}.join(',')
+        checksum = "0"
+        "#{version}#{platform} #{deps}|checksum:#{checksum}"
+      }.join("\n")
+    end
+
+    # load json object from stream or file
+    # @param io [IO, String] stream or filename
+    # @return [Object] json result in Ruby object
+    def json_load( io )
+      JSON.load( read_binary( io ) )
     end
 
     def load_specs( io )

@@ -1,0 +1,69 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>rubygems</groupId>
+  <artifactId>psych</artifactId>
+  <version>5.1.0.pre1</version>
+  <packaging>gem</packaging>
+  <name>Psych is a YAML parser and emitter</name>
+  <url>https://github.com/ruby/psych</url>
+  <description>Psych is a YAML parser and emitter. Psych leverages libyaml[https://pyyaml.org/wiki/LibYAML]
+for its YAML parsing and emitting capabilities. In addition to wrapping libyaml,
+Psych also knows how to serialize and de-serialize most Ruby objects to and from the YAML format.
+</description>
+  <developers>
+    <developer>
+      <name>Aaron Patterson</name>
+      <email>aaron@tenderlovemaking.com</email>
+    </developer>
+    <developer>
+      <name>SHIBATA Hiroshi</name>
+      <email>hsbt@ruby-lang.org</email>
+    </developer>
+    <developer>
+      <name>Charles Oliver Nutter</name>
+      <email>headius@headius.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/ruby/psych.git</connection>
+    <url>https://github.com/ruby/psych</url>
+  </scm>
+  <properties>
+    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+    <jruby.plugins.version>2.0.1</jruby.plugins.version>
+    <mavengem.wagon.version>1.0.3</mavengem.wagon.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>jar-dependencies</artifactId>
+      <version>[0.1.7,)</version>
+      <type>gem</type>
+    </dependency>
+  </dependencies>
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.torquebox.mojo</groupId>
+        <artifactId>mavengem-wagon</artifactId>
+        <version>${mavengem.wagon.version}</version>
+      </extension>
+      <extension>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>gem-extension</artifactId>
+        <version>${jruby.plugins.version}</version>
+      </extension>
+    </extensions>
+    <directory>${basedir}/pkg</directory>
+    <plugins>
+      <plugin>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>gem-maven-plugin</artifactId>
+        <version>${jruby.plugins.version}</version>
+        <configuration>
+          <gemspec>psych-5.1.0.pre1-java.gemspec</gemspec>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -41,8 +41,8 @@ public class GemArtifactIdDirectory
     /**
      * the <code>DependencyFile</code> of the given gem
      */
-    public DependencyFile dependency() {
-        return this.factory.dependencyFile(name());
+    public CompactInfoFile dependency() {
+        return this.factory.compactInfo(name());
     }
 
     /**

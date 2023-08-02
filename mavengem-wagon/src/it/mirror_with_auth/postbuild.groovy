@@ -3,7 +3,7 @@ import org.codehaus.plexus.util.FileUtils
 
 String log = FileUtils.fileRead( new File( basedir, "build.log" ) );
 
-[ "Downloaded: mavengem:http://rubygems.org/rubygems/jar-dependencies/0.2.6/jar-dependencies-0.2.6.pom", "Downloaded: mavengem:http://rubygems.org/rubygems/jar-dependencies/0.2.6/jar-dependencies-0.2.6.gem" ].each {
+[ "Downloaded from mavengems-with-mirror-with-auth: mavengem:http://rubygems.org/rubygems/jar-dependencies/0.2.6/jar-dependencies-0.2.6.pom", "Downloaded from mavengems-with-mirror-with-auth: mavengem:http://rubygems.org/rubygems/jar-dependencies/0.2.6/jar-dependencies-0.2.6.gem" ].each {
   
   if ( !log.contains( it ) ) throw new RuntimeException( "log file does not contain '" + it + "'" );
 

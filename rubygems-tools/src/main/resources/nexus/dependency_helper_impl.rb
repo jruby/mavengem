@@ -40,6 +40,18 @@ module Nexus
       @result += marshal_load( is )
     end
 
+    # add dependencies
+    # @param dep [IO, String] can be filename or an IO object
+    def add_compact( is, name, modified )
+      compact_info = CompactDependencyData.new(is, name, modified)
+      compact_info.versions(false).each do |version|
+        @result << dependency_data( compact_info.name,
+                                    version,
+                                    compact_info.platform(version),
+                                    compact_info.dependencies(version))
+      end
+    end
+
     # add dependency from given (rzipped) gemspec file
     # @param dep [IO, String] can be filename or an IO object
     def add_gemspec( is )

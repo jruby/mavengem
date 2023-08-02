@@ -29,10 +29,16 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-    <jruby.plugins.version>1.0.4</jruby.plugins.version>
+    <jruby.plugins.version>2.0.1</jruby.plugins.version>
+    <mavengem.wagon.version>1.0.3</mavengem.wagon.version>
   </properties>
   <build>
     <extensions>
+      <extension>
+        <groupId>org.torquebox.mojo</groupId>
+        <artifactId>mavengem-wagon</artifactId>
+        <version>${mavengem.wagon.version}</version>
+      </extension>
       <extension>
         <groupId>de.saumya.mojo</groupId>
         <artifactId>gem-extension</artifactId>
@@ -46,7 +52,7 @@
         <artifactId>gem-maven-plugin</artifactId>
         <version>${jruby.plugins.version}</version>
         <configuration>
-          <gemspec>hufflepuf-0.1.0.gemspec</gemspec>
+          <gemspec>hufflepuf-0.1.0-universal-java-1.5.gemspec</gemspec>
         </configuration>
       </plugin>
     </plugins>

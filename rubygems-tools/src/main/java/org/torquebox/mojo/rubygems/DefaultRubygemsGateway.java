@@ -24,6 +24,8 @@ public class DefaultRubygemsGateway
     private Object specsHelperImplClass;
     private Object mergeSpecsHelperImplClass;
     private Object dependencyDataImplClass;
+    private Object rubygemsV2GemInfoImplClass;
+    private Object compactDependencyDataImplClass;
 
     /**
      * Ctor that accepts prepared non-null scripting container.
@@ -40,6 +42,10 @@ public class DefaultRubygemsGateway
                 + "Nexus::MergeSpecsHelperImpl");
         dependencyDataImplClass = container.runScriptlet("require 'nexus/dependency_data_impl';"
                 + "Nexus::DependencyDataImpl");
+        rubygemsV2GemInfoImplClass = container.runScriptlet("require 'nexus/rubygems_v2_gem_info_impl';"
+                + "Nexus::RubygemsV2GemInfoImpl");
+        compactDependencyDataImplClass = container.runScriptlet("require 'nexus/compact_dependency_data';"
+                + "Nexus::CompactDependencyData");
     }
 
     @Override
@@ -49,6 +55,8 @@ public class DefaultRubygemsGateway
         specsHelperImplClass = null;
         mergeSpecsHelperImplClass = null;
         dependencyDataImplClass = null;
+        rubygemsV2GemInfoImplClass = null;
+        compactDependencyDataImplClass = null;
         container.terminate();
     }
 
@@ -78,8 +86,25 @@ public class DefaultRubygemsGateway
     }
 
     @Override
+    public GemspecHelper newGemspecHelperFromV2GemInfo(InputStream gem) {
+        return container.callMethod(gemspecHelperImplClass, "from_rubygems_v2_gem_info", gem, GemspecHelper.class);
+    }
+
+    @Override
     public DependencyData newDependencyData(InputStream dependency, String name, long modified) {
         return container.callMethod(dependencyDataImplClass, "new", new Object[]{dependency, name, modified},
+                DependencyData.class);
+    }
+
+    @Override
+    public RubygemsV2GemInfo newRubygemsV2GemInfo(InputStream apiV2FileIS, String name, String version, long modified) {
+        return container.callMethod(rubygemsV2GemInfoImplClass, "new", new Object[]{apiV2FileIS, name, version, modified},
+                RubygemsV2GemInfo.class);
+    }
+
+    @Override
+    public DependencyData newCompactDependencyData(InputStream dependency, String name, long modified) {
+        return container.callMethod(compactDependencyDataImplClass, "new", new Object[]{dependency, name, modified},
                 DependencyData.class);
     }
 }

@@ -16,7 +16,7 @@ module Nexus
 
     def check_gemspec_rz(gemfile, gemspec)
       spec_from_gem = Gem::Package.new( gemfile ).spec
-      spec_from_gemspec = Marshal.load( Gem.inflate( Gem.read_binary( gemspec) ) )
+      spec_from_gemspec = Marshal.load( Zlib::Inflate.inflate( Gem.read_binary( gemspec) ) )
       spec_from_gem == spec_from_gemspec
     end
 
