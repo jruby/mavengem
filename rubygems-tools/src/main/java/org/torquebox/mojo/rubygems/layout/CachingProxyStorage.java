@@ -97,6 +97,11 @@ public class CachingProxyStorage
     }
 
     @Override
+    public void retrieve(CompactInfoFile file) {
+        retrieveVolatile(file);
+    }
+
+    @Override
     public void retrieve(SpecsIndexZippedFile file) {
         retrieveVolatile(file);
     }

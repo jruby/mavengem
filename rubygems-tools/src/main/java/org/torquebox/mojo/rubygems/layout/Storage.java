@@ -12,6 +12,7 @@
  */
 package org.torquebox.mojo.rubygems.layout;
 
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.Directory;
 import org.torquebox.mojo.rubygems.RubygemsFile;
@@ -57,6 +58,11 @@ public interface Storage {
      * retrieve the payload of the given file.
      */
     void retrieve(DependencyFile file);
+
+    /**
+     * retrieve the payload of the given file.
+     */
+    void retrieve(CompactInfoFile file);
 
     /**
      * update the given file from an <code>InputStream</code>.

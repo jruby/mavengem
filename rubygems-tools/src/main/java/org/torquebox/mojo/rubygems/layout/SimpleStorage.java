@@ -13,6 +13,7 @@
 package org.torquebox.mojo.rubygems.layout;
 
 import org.apache.commons.codec.binary.Base64;
+import org.torquebox.mojo.rubygems.CompactInfoFile;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.Directory;
 import org.torquebox.mojo.rubygems.RubygemsFile;
@@ -101,6 +102,11 @@ public class SimpleStorage
 
     @Override
     public void retrieve(DependencyFile file) {
+        retrieve((RubygemsFile) file);
+    }
+
+    @Override
+    public void retrieve(CompactInfoFile file) {
         retrieve((RubygemsFile) file);
     }
 
