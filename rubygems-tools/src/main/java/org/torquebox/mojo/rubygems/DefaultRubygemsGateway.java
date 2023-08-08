@@ -12,6 +12,7 @@
  */
 package org.torquebox.mojo.rubygems;
 
+import org.jruby.RubyInstanceConfig;
 import org.jruby.embed.ScriptingContainer;
 
 import java.io.InputStream;
@@ -32,6 +33,7 @@ public class DefaultRubygemsGateway
      */
     public DefaultRubygemsGateway(final ScriptingContainer container) {
         this.container = container;
+        this.container.setCompileMode(RubyInstanceConfig.CompileMode.OFF);
         dependencyHelperImplClass = container.runScriptlet("require 'nexus/dependency_helper_impl';"
                 + "Nexus::DependencyHelperImpl");
         gemspecHelperImplClass = container.runScriptlet("require 'nexus/gemspec_helper_impl';"
