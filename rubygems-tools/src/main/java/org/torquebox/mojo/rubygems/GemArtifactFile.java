@@ -49,7 +49,7 @@ public class GemArtifactFile
      * have the right platform for which the {@link RubygemsV2GemInfo} is needed
      * to retrieve this platform. a second call can be done without RubygemsV2GemInfo !
      *
-     * @param dependencyData can be null
+     * @param dependencies can be null
      * @return the associated GemFile - can be null if RubygemsV2GemInfo was never passed in
      */
     public GemFile gem(DependencyData dependencies) {
