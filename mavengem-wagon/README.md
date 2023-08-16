@@ -19,9 +19,9 @@ pom.xml setup
   <build>
     <extensions>
       <extension>
-        <groupId>org.torquebox.mojo</groupId>
+        <groupId>org.jruby.maven</groupId>
         <artifactId>mavengem-wagon</artifactId>
-        <version>1.0.3</version>
+        <version>2.0.0</version>
       </extension>
     </extensions>
   </build>
@@ -34,7 +34,7 @@ the same with POM using ruby-DSL
 ```
 repository :id => :mavengems, :url => 'mavengem:https://rubygems.org'
 
-extension 'org.torquebox.mojo:mavengem-wagon:1.0.3'
+extension 'org.jruby.maven:mavengem-wagon:2.0.0'
 ```
 
 the wagon extension allos the use of the **mavengem:** protocol in the
@@ -128,9 +128,9 @@ the only way to avoid such warning or in case the build fails, is to use maven-3
 <?xml version="1.0" encoding="UTF-8"?>
 <extensions>
   <extension>
-    <groupId>org.torquebox.mojo</groupId>
+    <groupId>org.jruby.maven</groupId>
     <artifactId>mavengem-wagon</artifactId>
-    <version>1.0.3</version>
+    <version>2.0.0</version>
   </extension>
 </extensions>
 ```
@@ -150,9 +150,9 @@ or
 using any of the jruby-maven-plugins like
 ```
 <plugin>
-  <groupId>de.saumya.mojo</groupId>
+  <groupId>org.jruby.maven</groupId>
   <artifactId>gem-maven-plugin</artifactId>
-  <version>1.0.10</version>
+  <version>3.0.0</version>
   <extensions>true</extensions>
   ...
   <dependencies>

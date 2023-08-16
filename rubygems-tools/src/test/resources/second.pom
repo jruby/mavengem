@@ -34,7 +34,7 @@
   <build>
     <extensions>
       <extension>
-        <groupId>de.saumya.mojo</groupId>
+        <groupId>org.jruby.maven</groupId>
         <artifactId>gem-extension</artifactId>
         <version>${jruby.plugins.version}</version>
       </extension>
@@ -42,7 +42,7 @@
     <directory>${basedir}/pkg</directory>
     <plugins>
       <plugin>
-        <groupId>de.saumya.mojo</groupId>
+        <groupId>org.jruby.maven</groupId>
         <artifactId>gem-maven-plugin</artifactId>
         <version>${jruby.plugins.version}</version>
         <configuration>

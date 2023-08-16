@@ -122,9 +122,9 @@ public class HostedDELETELayoutTest
         };
         String[] shas = {
                 "edfb9b1923514277b7256b0670a388da43706d39",
-                "2b57344d1f255519ae19b34cd3836bbe35721c72",
+                "2a5b7fa349c165f5d32872e47934ba21f73afa4e",
                 "edfb9b1923514277b7256b0670a388da43706d39",
-                "d162aa950471128b37485453091ca10086aabdc6"
+                "b8eea5229c506c18d764debce625b70f0a9d474a"
         };
 
         assertFiletypeWithPayload(pathes, FileType.SHA1, shas);
