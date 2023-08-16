@@ -17,11 +17,11 @@
     maven repository and the mavengem wagon uses it to provide gem
     artifacts to maven POMs
   </description>
-  <url>http://github.com/torquebox/mavengem</url>
+  <url>http://github.com/jruby/mavengem</url>
   <scm>
-    <connection>scm:git:git://github.com/torquebox/mavengem.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/torquebox/mavengem.git</developerConnection>
-    <url>http://github.com/torquebox/mavengem</url>
+    <connection>scm:git:git://github.com/jruby/mavengem.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jruby/mavengem.git</developerConnection>
+    <url>http://github.com/jruby/mavengem</url>
   </scm>
   <licenses>
     <license>
