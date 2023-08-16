@@ -14,7 +14,7 @@
 -->
 # design notes #
 
-some files on rubygems.org are actually virtual, like <http://rubygems.org/gems/maven-tools-1.0.3.gem>. storing all gems inside a single directory may or may not the right thing. the nexus-ruby-tools decided it is not a good thing to do because of past inode on the filesystem with such huge directories.
+some files on rubygems.org are actually virtual, like <http://rubygems.org/gems/maven-tools-1.2.1.gem>. storing all gems inside a single directory may or may not the right thing. the nexus-ruby-tools decided it is not a good thing to do because of past inode on the filesystem with such huge directories.
 
 ## directory layout - local vs. remote ##
 
