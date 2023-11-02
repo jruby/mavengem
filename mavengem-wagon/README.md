@@ -152,7 +152,7 @@ using any of the jruby-maven-plugins like
 <plugin>
   <groupId>org.jruby.maven</groupId>
   <artifactId>gem-maven-plugin</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.2</version>
   <extensions>true</extensions>
   ...
   <dependencies>
