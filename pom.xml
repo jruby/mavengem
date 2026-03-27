@@ -51,7 +51,7 @@
   </modules>
 
   <properties>
-    <jruby.version>9.4.5.0</jruby.version>
+    <jruby.version>9.4.12.1</jruby.version>
   </properties>
 
   <repositories>
