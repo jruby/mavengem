@@ -24,6 +24,7 @@ import java.net.Proxy.Type;
 import java.net.SocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Matcher;
 
 public class MavenGemWagon extends StreamWagon {
 
@@ -115,7 +116,7 @@ public class MavenGemWagon extends StreamWagon {
             throws MalformedURLException {
         if (authenticationInfo != null && authenticationInfo.getUserName() != null) {
             String credentials = authenticationInfo.getUserName() + ":" + authenticationInfo.getPassword();
-            url = url.replaceFirst("^(https?://)(.*)$", "$1" + credentials + "@$2");
+            url = url.replaceFirst("^(https?://)(.*)$", "$1" + Matcher.quoteReplacement(credentials) + "@$2");
         }
         return new URL(url);
     }
