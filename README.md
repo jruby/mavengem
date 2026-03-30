@@ -25,6 +25,19 @@ Contributing
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+Releasing
+---------
+
+Java 1.8 must be used to run integration tests at the moment.
+
+Deploy snapshots when the version ends with "-SNAPSHOT" using `mvn deploy`.
+
+Releasing requires the version to not end with "-SNAPSHOT" and you should specify the "-Prelease" profile to sign the artifacts.
+
+```
+mvn deploy -Prelease
+```
+
 meta-fu
 -------
 
