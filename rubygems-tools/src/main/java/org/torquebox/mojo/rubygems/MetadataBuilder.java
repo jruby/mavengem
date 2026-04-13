@@ -33,9 +33,9 @@ public class MetadataBuilder
     public void appendVersions(boolean isPrerelease) {
         for (String version : deps.versions(isPrerelease)) {
             xml.append("      <version>").append(version);
-            if (isPrerelease) {
-                xml.append("-SNAPSHOT");
-            }
+//            if (isPrerelease) {
+//                xml.append("-SNAPSHOT");
+//            }
             xml.append("</version>\n");
         }
     }

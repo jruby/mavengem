@@ -62,7 +62,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
 
     private String toPath(String name, String version, String timestamp, boolean snapshot) {
         String v1 = snapshot ? version + "-" + timestamp : version;
-        String v2 = snapshot ? version + MavenPrereleasesRubygemsArtifactIdCuba.SNAPSHOT : version;
+        String v2 = version;
         return join(snapshot ? MAVEN_PRERELEASED_RUBYGEMS : MAVEN_RELEASED_RUBYGEMS, SEPARATOR, name, SEPARATOR, v2, SEPARATOR, name + '-' + v1);
     }
 
@@ -103,7 +103,7 @@ public class DefaultRubygemsFileFactory implements RubygemsFileFactory {
 
     @Override
     public MavenMetadataSnapshotFile mavenMetadataSnapshot(String name, String version) {
-        String path = join(MAVEN_PRERELEASED_RUBYGEMS, SEPARATOR, name, SEPARATOR, version + MavenPrereleasesRubygemsArtifactIdCuba.SNAPSHOT, SEPARATOR, MavenReleasesRubygemsArtifactIdCuba.MAVEN_METADATA_XML);
+        String path = join(MAVEN_PRERELEASED_RUBYGEMS, SEPARATOR, name, SEPARATOR, version, SEPARATOR, MavenReleasesRubygemsArtifactIdCuba.MAVEN_METADATA_XML);
         return new MavenMetadataSnapshotFile(this, path, name, version);
     }
 

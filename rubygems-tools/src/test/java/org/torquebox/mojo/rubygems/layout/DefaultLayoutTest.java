@@ -71,7 +71,7 @@ public class DefaultLayoutTest
 
     @Test
     public void testGemSnapshotArtifact() throws Exception {
-        String path = "/maven/prereleases/rubygems/jbundler/1.2.3-SNAPSHOT/jbundler-1.2.3-123123123.gem";
+        String path = "/maven/prereleases/rubygems/jbundler/1.2.3/jbundler-1.2.3-123123123.gem";
         RubygemsFile file = fileSystem.get(path);
         assertThat(file, notNullValue());
         RubygemsFile file2 = fileSystem.get(path);
@@ -114,7 +114,7 @@ public class DefaultLayoutTest
 
     @Test
     public void testPomSnapshot() throws Exception {
-        String path = "/maven/prereleases/rubygems/jbundler/1.2.3-SNAPSHOT/jbundler-1.2.3-123123123.pom";
+        String path = "/maven/prereleases/rubygems/jbundler/1.2.3/jbundler-1.2.3-123123123.pom";
         RubygemsFile file = fileSystem.get(path);
         assertThat(file, notNullValue());
         RubygemsFile file2 = fileSystem.get(path);
@@ -171,7 +171,7 @@ public class DefaultLayoutTest
 
     @Test
     public void testMetadataXmlSnapshots() throws Exception {
-        String path = "/maven/prereleases/rubygems/jbundler/9.2.3-SNAPSHOT/maven-metadata.xml";
+        String path = "/maven/prereleases/rubygems/jbundler/9.2.3/maven-metadata.xml";
         RubygemsFile file = fileSystem.get(path);
         assertThat(file, notNullValue());
         RubygemsFile file2 = fileSystem.get(path);
