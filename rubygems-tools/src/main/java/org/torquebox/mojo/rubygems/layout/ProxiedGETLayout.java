@@ -58,9 +58,7 @@ public class ProxiedGETLayout
 
     @Override
     public GemspecFile gemspecFile(String name, String version, String platform) {
-        GemspecFile gemspec = super.gemspecFile(name, version, platform);
-        maybeCreate(gemspec);
-        return gemspec;
+        return super.gemspecFile(name, version, platform);
     }
 
     @Override
@@ -80,9 +78,7 @@ public class ProxiedGETLayout
 
     @Override
     public ApiV2File rubygemsInfoV2(String name, String version) {
-        ApiV2File file = super.rubygemsInfoV2(name, version);
-        store.retrieve(file);
-        return file;
+        return super.rubygemsInfoV2(name, version);
     }
 
     @Override
