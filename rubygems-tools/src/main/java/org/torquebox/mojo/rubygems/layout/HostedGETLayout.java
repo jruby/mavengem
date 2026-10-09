@@ -59,13 +59,7 @@ public class HostedGETLayout extends GETLayout {
 
     @Override
     public GemspecFile gemspecFile(String name, String version, String platform) {
-        GemspecFile gemspec = super.gemspecFile(name, version, platform);
-
-        if (gemspec.notExists()) {
-            createGemspec(gemspec);
-        }
-
-        return gemspec;
+        return super.gemspecFile(name, version, platform);
     }
 
     @Override
@@ -116,9 +110,7 @@ public class HostedGETLayout extends GETLayout {
 
     @Override
     public ApiV2File rubygemsInfoV2(String name, String version) {
-        ApiV2File file = super.rubygemsInfoV2(name, version);
-        store.retrieve(file);
-        return file;
+        return super.rubygemsInfoV2(name, version);
     }
 
     @Override

@@ -40,6 +40,9 @@ import org.torquebox.mojo.rubygems.SpecsIndexZippedFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PushbackInputStream;
+import java.util.zip.InflaterInputStream;
+import java.util.zip.ZipException;
 
 /**
  * a base layout for HTTP GET requests.
@@ -65,6 +68,58 @@ public class GETLayout
     public GETLayout(RubygemsGateway gateway, Storage store) {
         this.gateway = gateway;
         this.store = store;
+    }
+
+    // The old missing-v2 fallback cached a gem's compressed Marshal gemspec at the shared .json path.
+    // That payload is neither valid v2 JSON nor safe to serve as v2 metadata.
+    protected void discardLegacyMarshalV2CacheEntry(RubygemsFile file) {
+        String path = file.remotePath();
+        if (!path.startsWith("/api/v2/rubygems/") || !path.endsWith(".json") || !file.hasPayload()) {
+            return;
+        }
+
+        boolean marshal;
+        try (InputStream input = store.getInputStream(file)) {
+            marshal = isCompressedRubyMarshal(input);
+        } catch (IOException e) {
+            file.setException(e);
+            return;
+        }
+
+        if (marshal) {
+            store.delete(file);
+            if (file.hasException()) {
+                return;
+            }
+        }
+
+        store.retrieve(file);
+    }
+
+    private boolean isCompressedRubyMarshal(InputStream input) throws IOException {
+        try (PushbackInputStream compressed = new PushbackInputStream(input, 2)) {
+            int first = compressed.read();
+            int second = compressed.read();
+            if (first != 0x78 || second < 0) {
+                return false;
+            }
+            compressed.unread(second);
+            compressed.unread(first);
+
+            try (InflaterInputStream inflated = new InflaterInputStream(compressed)) {
+                return inflated.read() == 0x04 && inflated.read() == 0x08;
+            } catch (ZipException e) {
+                return false;
+            }
+        }
+    }
+
+    @Override
+    public ApiV2File rubygemsInfoV2(String name, String version) {
+        ApiV2File file = super.rubygemsInfoV2(name, version);
+        store.retrieve(file);
+        discardLegacyMarshalV2CacheEntry(file);
+        return file;
     }
 
     /**
@@ -189,8 +244,12 @@ public class GETLayout
 
     private void pomFromGemspec(PomFile file, boolean snapshot, DependencyData dependencyData) throws IOException {
         GemspecFile gemspec = file.gemspec(dependencyData);
-        if (gemspec.notExists()) {
-            file.markAsNotExists();
+        if (gemspec.notExists() || gemspec.hasException()) {
+            Exception gemspecException = gemspec.getException();
+            pomFromGem(file, snapshot, dependencyData);
+            if (gemspecException != null && (file.notExists() || file.hasException())) {
+                file.setException(gemspecException);
+            }
         } else {
             try (InputStream is = store.getInputStream(gemspec)) {
                 store.memory(gateway.newGemspecHelperFromV2GemInfo(is).pom(snapshot), file);
@@ -310,6 +369,7 @@ public class GETLayout
     public GemspecFile gemspecFile(String name, String version, String platform) {
         GemspecFile gemspec = super.gemspecFile(name, version, platform);
         store.retrieve(gemspec);
+        discardLegacyMarshalV2CacheEntry(gemspec);
         return gemspec;
     }
 

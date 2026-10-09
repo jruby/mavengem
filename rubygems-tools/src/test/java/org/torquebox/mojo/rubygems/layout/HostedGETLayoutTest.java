@@ -17,6 +17,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.torquebox.mojo.rubygems.ApiV2File;
+import org.torquebox.mojo.rubygems.DefaultRubygemsFileFactory;
 import org.torquebox.mojo.rubygems.Directory;
 import org.torquebox.mojo.rubygems.FileType;
 import org.torquebox.mojo.rubygems.GemArtifactFile;
@@ -30,6 +32,7 @@ import org.torquebox.mojo.rubygems.layout.SimpleStorage.URLStreamLocation;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -39,6 +42,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -49,8 +53,10 @@ import static org.hamcrest.Matchers.nullValue;
 public class HostedGETLayoutTest
         extends RubyScriptingTestSupport {
     private final DefaultRubygemsFileSystem bootstrap;
+    private final Storage store;
 
     public HostedGETLayoutTest(Storage store) {
+        this.store = store;
         bootstrap = new DefaultRubygemsFileSystem(
                 new HostedGETLayout(rubygemsGateway(),
                         store),
@@ -169,6 +175,49 @@ public class HostedGETLayoutTest
                 loadPomResource("psych-prerelease.pom")
         };
         assertFiletypeWithPayload(pathes, FileType.POM, xmls);
+    }
+
+    @Test
+    public void testPomFallsBackToGemWhenV2MetadataIsMissing() throws Exception {
+        store.delete(v2File());
+
+        assertHufflepufPom();
+        assertHufflepufV2MetadataMissing();
+    }
+
+    @Test
+    public void testLegacyMarshalCacheEntryIsDiscarded() throws Exception {
+        seedLegacyV2Cache();
+        assertHufflepufV2MetadataMissing();
+
+        seedLegacyV2Cache();
+        assertHufflepufPom();
+        assertHufflepufV2MetadataMissing();
+    }
+
+    private ApiV2File v2File() {
+        return new DefaultRubygemsFileFactory().rubygemsInfoV2("hufflepuf", "0.1.0");
+    }
+
+    private void seedLegacyV2Cache() throws IOException {
+        File gemspec = new File("src/test/repo/quick/Marshal.4.8/h/hufflepuf-0.1.0.gemspec.rz");
+        try (InputStream input = FileUtils.openInputStream(gemspec)) {
+            store.update(input, v2File());
+        }
+    }
+
+    private void assertHufflepufPom() {
+        RubygemsFile pom = bootstrap.get("/maven/releases/rubygems/hufflepuf/0.1.0/hufflepuf-0.1.0.pom");
+        assertThat(pom.type(), equalTo(FileType.POM));
+        assertThat(pom.hasException(), is(false));
+        assertThat(pom.hasPayload(), is(true));
+        assertThat(readPayload(pom), containsString("<version>0.1.0</version>"));
+    }
+
+    private void assertHufflepufV2MetadataMissing() {
+        RubygemsFile metadata = bootstrap.get("/api/v2/rubygems/hufflepuf/versions/0.1.0.json");
+        assertThat(metadata.notExists(), is(true));
+        assertThat(metadata.hasException(), is(false));
     }
 
     @Test

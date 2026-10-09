@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.torquebox.mojo.rubygems.ApiV2File;
+import org.torquebox.mojo.rubygems.DefaultRubygemsFileFactory;
 import org.torquebox.mojo.rubygems.DependencyFile;
 import org.torquebox.mojo.rubygems.Directory;
 import org.torquebox.mojo.rubygems.FileType;
@@ -33,6 +34,7 @@ import org.torquebox.mojo.rubygems.layout.SimpleStorage.URLStreamLocation;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -42,6 +44,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -52,8 +55,10 @@ import static org.hamcrest.Matchers.nullValue;
 public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
     private final DefaultRubygemsFileSystem fileSystem;
     private final boolean isProxy;
+    private final Storage store;
 
     public ProxiesGETLayoutTest(Storage store) {
+        this.store = store;
         if (store instanceof CachingProxyStorage) {
             fileSystem = new DefaultRubygemsFileSystem(new ProxiedGETLayout(rubygemsGateway(), (CachingProxyStorage) store), null, null);
             isProxy = true;
@@ -64,13 +69,6 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
                 @Deprecated
                 public DependencyFile dependencyFile(String name) {
                     DependencyFile file = super.dependencyFile(name);
-                    store.retrieve(file);
-                    return file;
-                }
-
-                @Override
-                public ApiV2File rubygemsInfoV2(String name, String version) {
-                    ApiV2File file = super.rubygemsInfoV2(name, version);
                     store.retrieve(file);
                     return file;
                 }
@@ -93,9 +91,17 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
         return base;
     }
 
+    private static File localBase() throws IOException {
+        File source = new File("src/test/repo");
+        File base = new File("target/proxies-get-repo");
+        FileUtils.deleteDirectory(base);
+        FileUtils.copyDirectory(source, base, true);
+        return base;
+    }
+
     @Parameters
     public static Collection<Object[]> stores() throws IOException {
-        return Arrays.asList(new Object[][]{{new SimpleStorage(new File("src/test/repo"))}, {new CachingProxyStorage(proxyBase(), new File("src/test/repo").toURI().toURL()) {
+        return Arrays.asList(new Object[][]{{new SimpleStorage(localBase())}, {new CachingProxyStorage(proxyBase(), new File("src/test/repo").toURI().toURL()) {
 
             protected URLStreamLocation toUrl(RubygemsFile file) throws MalformedURLException {
                 return new URLStreamLocation(new URL(baseurl + file.storagePath().replace("?", "/")));
@@ -180,6 +186,49 @@ public class ProxiesGETLayoutTest extends RubyScriptingTestSupport {
         };
 
         assertFiletypeWithPayload(pathes, FileType.POM, xmls);
+    }
+
+    @Test
+    public void testPomFallsBackToGemWhenV2MetadataIsMissing() throws Exception {
+        store.delete(v2File());
+
+        assertHufflepufPom();
+        assertHufflepufV2MetadataMissing();
+    }
+
+    @Test
+    public void testLegacyMarshalCacheEntryIsDiscarded() throws Exception {
+        seedLegacyV2Cache();
+        assertHufflepufV2MetadataMissing();
+
+        seedLegacyV2Cache();
+        assertHufflepufPom();
+        assertHufflepufV2MetadataMissing();
+    }
+
+    private ApiV2File v2File() {
+        return new DefaultRubygemsFileFactory().rubygemsInfoV2("hufflepuf", "0.1.0");
+    }
+
+    private void seedLegacyV2Cache() throws IOException {
+        File gemspec = new File("src/test/repo/quick/Marshal.4.8/h/hufflepuf-0.1.0.gemspec.rz");
+        try (InputStream input = FileUtils.openInputStream(gemspec)) {
+            store.update(input, v2File());
+        }
+    }
+
+    private void assertHufflepufPom() {
+        RubygemsFile pom = fileSystem.get("/maven/releases/rubygems/hufflepuf/0.1.0/hufflepuf-0.1.0.pom");
+        assertThat(pom.type(), equalTo(FileType.POM));
+        assertThat(pom.hasException(), is(false));
+        assertThat(pom.hasPayload(), is(true));
+        assertThat(readPayload(pom), containsString("<version>0.1.0</version>"));
+    }
+
+    private void assertHufflepufV2MetadataMissing() {
+        RubygemsFile metadata = fileSystem.get("/api/v2/rubygems/hufflepuf/versions/0.1.0.json");
+        assertThat(metadata.notExists(), is(true));
+        assertThat(metadata.hasException(), is(false));
     }
 
     @Test
